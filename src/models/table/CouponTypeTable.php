@@ -12,7 +12,7 @@ class CouponTypeTable extends \yii\db\ActiveRecord
 
     public static function tableName()
     {
-        return 'coupon_type';
+        return 'affiliate_coupon_type';
     }
 
 

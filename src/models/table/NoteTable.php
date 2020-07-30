@@ -10,7 +10,7 @@ class NoteTable extends \yii\db\ActiveRecord
 {
     public static function tableName()
     {
-        return 'note';
+        return 'affiliate_note';
     }
 
 

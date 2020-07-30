@@ -6,7 +6,7 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use backend\widgets\ToastrWidget;
 use modava\affiliate\AffiliateModule;
-use modava\customer\components\CustomerDateTimePicker;
+use modava\datetime\DateTimePicker;
 use modava\affiliate\widgets\JsCreateModalWidget;
 
 /* @var $this yii\web\View */
@@ -37,7 +37,7 @@ $model->recall_time = $model->recall_time != null
             <?= $form->field($model, 'customer_id')->textInput() ?>
         </div>
         <div class="col-6">
-            <?= $form->field($model, 'call_time')->widget(CustomerDateTimePicker::class, [
+            <?= $form->field($model, 'call_time')->widget(DateTimePicker::class, [
             'template' => '{input}{button}',
             'pickButtonIcon' => 'btn btn-increment btn-light',
             'pickIconContent' => Html::tag('span', '', ['class' => 'glyphicon glyphicon-th']),
@@ -49,7 +49,7 @@ $model->recall_time = $model->recall_time != null
         ]) ?>
         </div>
         <div class="col-6">
-            <?= $form->field($model, 'recall_time')->widget(CustomerDateTimePicker::class, [
+            <?= $form->field($model, 'recall_time')->widget(DateTimePicker::class, [
             'template' => '{input}{button}',
             'pickButtonIcon' => 'btn btn-increment btn-light',
             'pickIconContent' => Html::tag('span', '', ['class' => 'glyphicon glyphicon-th']),

@@ -1,7 +1,7 @@
 <?php
 
 use modava\affiliate\widgets\JsCreateModalWidget;
-use modava\customer\components\CustomerDateTimePicker;
+use modava\datetime\DateTimePicker;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -41,7 +41,7 @@ $model->expired_date = $model->expired_date != null
             <?= $form->field($model, 'quantity')->textInput() ?>
         </div>
         <div class="col-6">
-            <?= $form->field($model, 'expired_date')->widget(CustomerDateTimePicker::class, [
+            <?= $form->field($model, 'expired_date')->widget(DateTimePicker::class, [
                 'template' => '{input}{button}',
                 'pickButtonIcon' => 'btn btn-increment btn-light',
                 'pickIconContent' => Html::tag('span', '', ['class' => 'glyphicon glyphicon-th']),

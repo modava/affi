@@ -17,7 +17,7 @@ class m200727_044619_create_table_coupon extends Migration
             $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%coupon}}', [
+        $this->createTable('{{%affiliate_coupon}}', [
             'id' => $this->primaryKey(),
             'title' => $this->string(255)->notNull(),
             'slug' => $this->string(255)->notNull()->unique(),
@@ -37,10 +37,10 @@ class m200727_044619_create_table_coupon extends Migration
             'updated_by' => $this->integer(11)->null(),
         ], $tableOptions);
 
-        $this->createIndex('idx-slug', 'coupon', 'slug', true);
-        $this->addForeignKey('fk_coupon_coupon_type_id_coupon_type_id', 'coupon', 'coupon_type_id', 'coupon_type', 'id');
-        $this->addForeignKey('fk-coupon-user_created-by_user-id', 'coupon', 'created_by', 'user', 'id');
-        $this->addForeignKey('fk-coupon-user_updated-by_user-id', 'coupon', 'updated_by', 'user', 'id');
+        $this->createIndex('idx-slug', 'affiliate_coupon', 'slug', true);
+        $this->addForeignKey('fk_coupon_coupon_type_id_coupon_type_id', 'affiliate_coupon', 'coupon_type_id', 'affiliate_coupon_type', 'id');
+        $this->addForeignKey('fk-coupon-user_created-by_user-id', 'affiliate_coupon', 'created_by', 'user', 'id');
+        $this->addForeignKey('fk-coupon-user_updated-by_user-id', 'affiliate_coupon', 'updated_by', 'user', 'id');
     }
 
     /**
@@ -48,7 +48,7 @@ class m200727_044619_create_table_coupon extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%coupon}}');
+        $this->dropTable('{{%affiliate_coupon}}');
     }
 
     /*

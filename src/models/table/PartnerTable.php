@@ -12,7 +12,7 @@ class PartnerTable extends \yii\db\ActiveRecord
 
     public static function tableName()
     {
-        return 'partner';
+        return 'affiliate_partner';
     }
 
 

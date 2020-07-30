@@ -10,7 +10,7 @@ class CouponTable extends \yii\db\ActiveRecord
 {
     public static function tableName()
     {
-        return 'coupon';
+        return 'affiliate_coupon';
     }
 
 

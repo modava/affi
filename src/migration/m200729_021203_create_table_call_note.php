@@ -17,7 +17,7 @@ class m200729_021203_create_table_call_note extends Migration
             $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%note}}', [
+        $this->createTable('{{%affiliate_note}}', [
             'id' => $this->primaryKey(),
             'title' => $this->string(255)->notNull(),
             'slug' => $this->string(255)->notNull()->unique(),
@@ -32,10 +32,10 @@ class m200729_021203_create_table_call_note extends Migration
             'updated_by' => $this->integer(11)->null(),
         ], $tableOptions);
 
-        $this->createIndex('idx-slug', 'note', 'slug', true);
-        $this->addForeignKey('fk-note-user_created-by_user-id', 'note', 'created_by', 'user', 'id');
-        $this->addForeignKey('fk-note-user_updated-by_user-id', 'note', 'updated_by', 'user', 'id');
-        $this->addForeignKey('fk_note_partner_id_partner_id', 'note', 'partner_id', 'partner', 'id');
+        $this->createIndex('idx-slug', 'affiliate_note', 'slug', true);
+        $this->addForeignKey('fk-note-user_created-by_user-id', 'affiliate_note', 'created_by', 'user', 'id');
+        $this->addForeignKey('fk-note-user_updated-by_user-id', 'affiliate_note', 'updated_by', 'user', 'id');
+        $this->addForeignKey('fk_note_partner_id_partner_id', 'affiliate_note', 'partner_id', 'affiliate_partner', 'id');
     }
 
     /**
@@ -43,6 +43,6 @@ class m200729_021203_create_table_call_note extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%note}}');
+        $this->dropTable('{{%affiliate_note}}');
     }
 }

@@ -17,7 +17,7 @@ class m200728_074100_create_table_partner extends Migration
             $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%partner}}', [
+        $this->createTable('{{%affiliate_partner}}', [
             'id' => $this->primaryKey(),
             'title' => $this->string(255)->notNull(),
             'slug' => $this->string(255)->notNull()->unique(),
@@ -28,11 +28,11 @@ class m200728_074100_create_table_partner extends Migration
             'updated_by' => $this->integer(11)->null(),
         ], $tableOptions);
 
-        $this->createIndex('idx-slug', 'partner', 'slug', true);
-        $this->addForeignKey('fk-partner-user_created-by_user-id', 'partner', 'created_by', 'user', 'id');
-        $this->addForeignKey('fk-partner-user_updated-by_user-id', 'partner', 'updated_by', 'user', 'id');
-        $this->addForeignKey('fk_coupon_partner_id_partner_id', 'coupon', 'partner_id', 'partner', 'id');
-        $this->execute('INSERT INTO `partner` (`id`, `title`, `slug`, `description`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES (\'1\', \'Dashboard MyAuris\', \'dashboard-myauris\', \'<p>Link: http://dashboard.myauris.vn/</p>\', \'1596092085\', \'1596092085\', \'1\', \'1\');');
+        $this->createIndex('idx-slug', 'affiliate_partner', 'slug', true);
+        $this->addForeignKey('fk-partner-user_created-by_user-id', 'affiliate_partner', 'created_by', 'user', 'id');
+        $this->addForeignKey('fk-partner-user_updated-by_user-id', 'affiliate_partner', 'updated_by', 'user', 'id');
+        $this->addForeignKey('fk_coupon_partner_id_partner_id', 'affiliate_coupon', 'partner_id', 'affiliate_partner', 'id');
+        $this->execute('INSERT INTO `affiliate_partner` (`id`, `title`, `slug`, `description`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES (\'1\', \'Dashboard MyAuris\', \'dashboard-myauris\', \'<p>Link: http://dashboard.myauris.vn/</p>\', \'1596092085\', \'1596092085\', \'1\', \'1\');');
     }
 
 
@@ -41,7 +41,7 @@ class m200728_074100_create_table_partner extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%partner}}');
+        $this->dropTable('{{%affiliate_partner}}');
     }
 
     /*
