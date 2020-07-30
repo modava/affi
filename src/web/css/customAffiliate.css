@@ -1,0 +1,31 @@
+li.page-disabled {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #404e67;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+li.nav-item.mb-5 {
+    margin-right: 10px;
+}
+
+.page-item.disabled span {
+    color: #dee2e6;
+    pointer-events: none;
+    cursor: auto;
+    background-color: #fff;
+    border-color: #d1d5d9;
+}
+
+.form-group .help-block {
+    color: red;
+}
+
+form div.required label.control-label:after {
+    content:" * ";
+    color:red;
+}
