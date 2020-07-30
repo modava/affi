@@ -22,7 +22,7 @@ class HandleAjaxController extends MyAffiliateController
     var $classModelName = null;
     var $toastr_key = 'handle-ajax';
 
-    public function actionIndex()
+    public function behaviors()
     {
         return [
             [

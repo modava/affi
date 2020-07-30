@@ -1,4 +1,7 @@
 <?php if (Yii::$app->request->isAjax): ?>
+<?php
+    $route = \yii\helpers\Url::toRoute(['/affiliate/handle-ajax/save-ajax']);
+    ?>
 <script>
     formModal = $('#<?=$formClassName?>');
 
@@ -8,7 +11,7 @@
 
         $.ajax({
             type: 'post',
-            url: '/backend/affiliate/handle-ajax/save-ajax',
+            url: '<?=$route?>',
             dataType: 'json',
             data: formModal.serialize() + '&model=<?=$modelName?>'
         }).done(res => {
