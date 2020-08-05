@@ -6,8 +6,14 @@ use modava\affiliate\AffiliateModule;
 $routeInfos = [
     [
         'module' => 'affiliate',
+        'controllerId' => 'affiliate',
+        'label' => AffiliateModule::t('affiliate', 'Affiliate'),
+        'icon' => '<i class="ion ion-md-contacts"></i>',
+    ],
+    [
+        'module' => 'affiliate',
         'controllerId' => 'customer',
-        'label' => AffiliateModule::t('affiliate', 'Customer'),
+        'label' => AffiliateModule::t('affiliate', 'Customer Called'),
         'icon' => '<i class="ion ion-md-contacts"></i>',
     ],
     [

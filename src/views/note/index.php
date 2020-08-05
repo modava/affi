@@ -107,13 +107,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                             }
                                         ],
                                         [
-                                            'attribute' => 'partner_id',
+                                            'attribute' => 'customer_id',
                                             'format' => 'raw',
                                             'value' => function ($model) {
-                                                return $model->partner_id ? Html::a($model->partner->title, Url::toRoute(['/affiliate/partner/view', 'id' => $model->partner_id])) : '';
+                                                return $model->customer_id ? Html::a($model->customer->full_name, Url::toRoute(['/affiliate/customer/view', 'id' => $model->customer_id])) : '';
                                             }
                                         ],
-										'customer_id',
                                         [
                                             'attribute' => 'call_time',
                                             'value' => function ($model) {

@@ -2,37 +2,40 @@
 
 namespace modava\affiliate\models;
 
+use common\helpers\MyHelper;
 use common\models\User;
 use modava\affiliate\AffiliateModule;
-use modava\affiliate\models\table\NoteTable;
-use yii\behaviors\AttributeBehavior;
+use modava\affiliate\models\table\CustomerTable;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\SluggableBehavior;
-use common\helpers\MyHelper;
 use yii\db\ActiveRecord;
 use Yii;
 
 /**
-* This is the model class for table "note".
+* This is the model class for table "affiliate_customer".
 *
     * @property int $id
-    * @property string $title
     * @property string $slug
-    * @property int $customer_id Mã khách hàng
-    * @property string $call_time Thời gian gọi
-    * @property string $recall_time Thời gian gọi lại
+    * @property string $full_name Họ và tên Khách hàng
+    * @property string $phone Số điện thoại - Không trùng
+    * @property string $email Email khách hàng - không quan tâm trùng
+    * @property string $face_customer Link facebook của KH
+    * @property int $partner_id Partner tích hợp affiliate
     * @property string $description Mô tả
     * @property int $created_at
     * @property int $updated_at
     * @property int $created_by Người gọi
     * @property int $updated_by
     *
+            * @property AffiliateCoupon[] $affiliateCoupons
             * @property User $createdBy
             * @property User $updatedBy
+            * @property AffiliatePartner $partner
+            * @property AffiliateNote[] $affiliateNotes
     */
-class Note extends NoteTable
+class Customer extends CustomerTable
 {
-    public $toastr_key = 'note';
+    public $toastr_key = 'customer';
     public function behaviors()
     {
         return array_merge(
@@ -43,7 +46,7 @@ class Note extends NoteTable
                     'immutable' => false,
                     'ensureUnique' => true,
                     'value' => function () {
-                        return MyHelper::createAlias($this->title);
+                        return MyHelper::createAlias($this->full_name);
                     }
                 ],
                 [
@@ -59,26 +62,6 @@ class Note extends NoteTable
                         ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
                     ],
                 ],
-                [
-                    'class' => AttributeBehavior::class,
-                    'attributes' => [
-                        ActiveRecord::EVENT_BEFORE_INSERT => ['call_time', ],
-                        ActiveRecord::EVENT_BEFORE_UPDATE => ['call_time',],
-                    ],
-                    'value' => function ($event) {
-                        return date('Y-m-d H:i:s', strtotime($this->call_time));
-                    },
-                ],
-                [
-                    'class' => AttributeBehavior::class,
-                    'attributes' => [
-                        ActiveRecord::EVENT_BEFORE_INSERT => ['recall_time'],
-                        ActiveRecord::EVENT_BEFORE_UPDATE => ['recall_time'],
-                    ],
-                    'value' => function ($event) {
-                        return date('Y-m-d H:i:s', strtotime($this->recall_time));
-                    },
-                ],
             ]
         );
     }
@@ -89,14 +72,17 @@ class Note extends NoteTable
     public function rules()
     {
         return [
-			[['title', 'slug', 'customer_id', 'call_time', 'recall_time',], 'required'],
-			[['customer_id',], 'integer'],
-			[['call_time', 'recall_time'], 'safe'],
+			[['full_name', 'phone', 'partner_id',], 'required'],
+			[['partner_id',], 'integer'],
 			[['description'], 'string'],
-			[['title', 'slug'], 'string', 'max' => 255],
+			[['full_name', 'email', 'face_customer'], 'string', 'max' => 255],
+			[['phone'], 'string', 'max' => 15],
 			[['slug'], 'unique'],
+			[['phone'], 'unique'],
+			[['email'], 'email'],
 			[['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
 			[['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
+			[['partner_id'], 'exist', 'skipOnError' => true, 'targetClass' => Partner::class, 'targetAttribute' => ['partner_id' => 'id']],
 		];
     }
 
@@ -107,11 +93,12 @@ class Note extends NoteTable
     {
         return [
             'id' => AffiliateModule::t('affiliate', 'ID'),
-            'title' => AffiliateModule::t('affiliate', 'Title'),
             'slug' => AffiliateModule::t('affiliate', 'Slug'),
-            'customer_id' => AffiliateModule::t('affiliate', 'Customer ID'),
-            'call_time' => AffiliateModule::t('affiliate', 'Call Time'),
-            'recall_time' => AffiliateModule::t('affiliate', 'Recall Time'),
+            'full_name' => AffiliateModule::t('affiliate', 'Full Name'),
+            'phone' => AffiliateModule::t('affiliate', 'Phone'),
+            'email' => AffiliateModule::t('affiliate', 'Email'),
+            'face_customer' => AffiliateModule::t('affiliate', 'Face Customer'),
+            'partner_id' => AffiliateModule::t('affiliate', 'Partner ID'),
             'description' => AffiliateModule::t('affiliate', 'Description'),
             'created_at' => AffiliateModule::t('affiliate', 'Created At'),
             'updated_at' => AffiliateModule::t('affiliate', 'Updated At'),
@@ -140,7 +127,15 @@ class Note extends NoteTable
         return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
 
-    public function getCustomer() {
-        return $this->hasOne(Customer::class, ['id' => 'customer_id']);
+    public function getPartner() {
+        return $this->hasOne(Partner::class, ['id' => 'partner_id']);
     }
+
+    /*public function getNotes() {
+        return $this->hasMany(Note::class, ['id' => 'customer_id']);
+    }
+
+    public function getCoupons() {
+        return $this->hasMany(Coupon::class, ['id' => 'customer_id']);
+    }*/
 }

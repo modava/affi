@@ -7,6 +7,7 @@ use yii\grid\GridView;
 use backend\widgets\ToastrWidget;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel modava\affiliate\models\search\CouponSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -96,7 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'class' => 'd-none',
                                             ],
                                         ],
-                                                                            [
+                                         [
                                             'attribute' => 'title',
                                             'format' => 'raw',
                                             'value' => function ($model) {
@@ -107,7 +108,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                             }
                                         ],
 										'coupon_code',
-                                        'customer_id',
+                                        [
+                                            'attribute' => 'customer_id',
+                                            'format' => 'raw',
+                                            'value' => function ($model) {
+                                                return $model->customer_id ? Html::a($model->customer->full_name, Url::toRoute(['/affiliate/customer/view', 'id' => $model->customer_id])) : '';
+                                            }
+                                        ],
 										'quantity',
                                         'quantity_used',
                                         [
@@ -122,13 +129,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'attribute' => 'promotion_type',
                                             'value' => function ($model) {
                                                 return AffiliateModule::t('affiliate', Yii::$app->controller->module->params["promotion_type"][$model->promotion_type]);
-                                            }
-                                        ],
-                                        [
-                                            'attribute' => 'partner_id',
-                                            'format' => 'raw',
-                                            'value' => function ($model) {
-                                                return $model->partner_id ? Html::a($model->partner->title, Url::toRoute(['/affiliate/partner/view', 'id' => $model->partner_id])) : '';
                                             }
                                         ],
 										//'description:ntext',

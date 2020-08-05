@@ -2,72 +2,210 @@
 
 namespace modava\affiliate\controllers;
 
-use modava\affiliate\components\MyAffiliateController;
-use modava\affiliate\helpers\CurlHelper;
-use modava\affiliate\models\Coupon;
-use yii\data\ArrayDataProvider;
+use yii\db\Exception;
+use Yii;
+use yii\helpers\Html;
+use yii\filters\VerbFilter;
+use yii\web\NotFoundHttpException;
+use modava\affiliate\AffiliateModule;
+use backend\components\MyController;
+use modava\affiliate\models\Customer;
+use modava\affiliate\models\search\CustomerSearch;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 
-class CustomerController extends MyAffiliateController
+/**
+ * CustomerController implements the CRUD actions for Customer model.
+ */
+class CustomerController extends MyController
 {
+    /**
+    * {@inheritdoc}
+    */
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+    * Lists all Customer models.
+    * @return mixed
+    */
     public function actionIndex()
     {
-        $apiParam = \Yii::$app->controller->module->params['myauris_config'];
-
-        $page = (int) \Yii::$app->request->get('page');
-        $page = $page > 0 ? $page : 1;
-
-        $curlHelper = new CurlHelper($apiParam['api_endpoint'] . '/?page=' . $page .'&per-page=' . $apiParam['row_per_page']);
-        $curlHelper->setHeader($apiParam['header']);
-        $response = $curlHelper->execute();
-        $realResponse = json_decode($response['result'], true);
-
-        if (!$realResponse) {
-            $dataProvider = new ArrayDataProvider([
-                'allModels' => [],
-                'pagination' => [
-                    'pageSize' => $apiParam['row_per_page'],
-                ]
-            ]);
-
-            return $this->render('index', [
-                'dataProvider' => $dataProvider
-            ]);
-        }
-
-        $data = $realResponse['data'];
-
-        /*
-         * Mô tả các case:
-         * 1. Dữ liệu có 99 dòng, per-page = 10
-         * page = 1: index từ 0 -> 9
-         * page = 2: index từ 10 -> 19
-         * page = 0, -1, abd: => page = 1
-         * */
-        // Fill fake data to use Array Data Provider for Grid View Pagination
-        $fakeData = array_fill(0, $realResponse['totalCount'], null);
-        $pageForFakeData = $page - 1;
-        foreach ($data as $rowIndex => $row) {
-            $index = $pageForFakeData * $apiParam['row_per_page'] + $rowIndex;
-            $fakeData[$index] = $row;
-        }
-
-        $dataProvider = new ArrayDataProvider([
-            'allModels' => $fakeData,
-            'pagination' => [
-                'pageSize' => $apiParam['row_per_page'],
-            ]
-        ]);
+        $searchModel = new CustomerSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+            }
+
+
+
+    /**
+    * Displays a single Customer model.
+    * @param integer $id
+    * @return mixed
+    * @throws NotFoundHttpException if the model cannot be found
+    */
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
         ]);
     }
 
-    public function actionGetCreateCouponModal ($data) {
-        $model = new Coupon();
+    /**
+    * Creates a new Customer model.
+    * If creation is successful, the browser will be redirected to the 'view' page.
+    * @return mixed
+    */
+    public function actionCreate()
+    {
+        $model = new Customer();
 
-        return $this->render('create-coupon-modal', [
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate() && $model->save()) {
+                Yii::$app->session->setFlash('toastr-' . $model->toastr_key . '-view', [
+                    'title' => 'Thông báo',
+                    'text' => 'Tạo mới thành công',
+                    'type' => 'success'
+                ]);
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                $errors = Html::tag('p', 'Tạo mới thất bại');
+                foreach ($model->getErrors() as $error) {
+                    $errors .= Html::tag('p', $error[0]);
+                }
+                Yii::$app->session->setFlash('toastr-' . $model->toastr_key . '-form', [
+                    'title' => 'Thông báo',
+                    'text' => $errors,
+                    'type' => 'warning'
+                ]);
+            }
+        }
+
+        return $this->render('create', [
             'model' => $model,
         ]);
+    }
+
+    /**
+    * Updates an existing Customer model.
+    * If update is successful, the browser will be redirected to the 'view' page.
+    * @param integer $id
+    * @return mixed
+    * @throws NotFoundHttpException if the model cannot be found
+    */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post())) {
+            if($model->validate()) {
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('toastr-' . $model->toastr_key . '-view', [
+                        'title' => 'Thông báo',
+                        'text' => 'Cập nhật thành công',
+                        'type' => 'success'
+                    ]);
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            } else {
+                $errors = Html::tag('p', 'Cập nhật thất bại');
+                foreach ($model->getErrors() as $error) {
+                    $errors .= Html::tag('p', $error[0]);
+                }
+                Yii::$app->session->setFlash('toastr-' . $model->toastr_key . '-form', [
+                    'title' => 'Thông báo',
+                    'text' => $errors,
+                    'type' => 'warning'
+                ]);
+            }
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+    * Deletes an existing Customer model.
+    * If deletion is successful, the browser will be redirected to the 'index' page.
+    * @param integer $id
+    * @return mixed
+    * @throws NotFoundHttpException if the model cannot be found
+    */
+    public function actionDelete($id)
+    {
+        $model = $this->findModel($id);
+        try {
+            if ($model->delete()) {
+                Yii::$app->session->setFlash('toastr-' . $model->toastr_key . '-index', [
+                    'title' => 'Thông báo',
+                    'text' => 'Xoá thành công',
+                    'type' => 'success'
+                ]);
+            } else {
+                $errors = Html::tag('p', 'Xoá thất bại');
+                foreach ($model->getErrors() as $error) {
+                    $errors .= Html::tag('p', $error[0]);
+                }
+                Yii::$app->session->setFlash('toastr-' . $model->toastr_key . '-index', [
+                    'title' => 'Thông báo',
+                    'text' => $errors,
+                    'type' => 'warning'
+                ]);
+            }
+        } catch (Exception $ex) {
+            Yii::$app->session->setFlash('toastr-' . $model->toastr_key . '-index', [
+                'title' => 'Thông báo',
+                'text' => Html::tag('p', 'Xoá thất bại: ' . $ex->getMessage()),
+                'type' => 'warning'
+            ]);
+        }
+        return $this->redirect(['index']);
+    }
+
+    public function actionValidate($id = null)
+    {
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+
+            $model = new Customer();
+
+            if ($id != null) $model = $this->findModel($id);
+
+            if ($model->load(Yii::$app->request->post())) {
+                return ActiveForm::validate($model);
+            }
+        }
+    }
+
+    /**
+    * Finds the Customer model based on its primary key value.
+    * If the model is not found, a 404 HTTP exception will be thrown.
+    * @param integer $id
+    * @return Customer the loaded model
+    * @throws NotFoundHttpException if the model cannot be found
+    */
+
+
+    protected function findModel($id)
+    {
+        if (($model = Customer::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException(Yii::t('affiliate', 'The requested page does not exist.'));
     }
 }

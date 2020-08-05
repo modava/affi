@@ -8,10 +8,10 @@ use modava\affiliate\widgets\NavbarWidgets;
 use modava\affiliate\AffiliateModule;
 
 /* @var $this yii\web\View */
-/* @var $model modava\affiliate\models\Note */
+/* @var $model modava\affiliate\models\Customer */
 
-$this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => AffiliateModule::t('affiliate', 'Notes'), 'url' => ['index']];
+$this->title = $model->full_name;
+$this->params['breadcrumbs'][] = ['label' => AffiliateModule::t('affiliate', 'Customers'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -48,32 +48,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     'model' => $model,
                     'attributes' => [
 						'id',
-						'title',
 						'slug',
+						'full_name',
+						'phone',
+						'email:email',
+                        'face_customer',
                         [
-                            'attribute' => 'customer_id',
+                            'attribute' => 'partner_id',
                             'format' => 'raw',
                             'value' => function ($model) {
-                                return $model->customer_id ? Html::a($model->customer->full_name, Url::toRoute(['/affiliate/customer/view', 'id' => $model->customer_id])) : '';
+                                return $model->partner_id ? Html::a($model->partner->title, Url::toRoute(['/affiliate/partner/view', 'id' => $model->partner_id])) : '';
                             }
                         ],
-                        [
-                            'attribute' => 'call_time',
-                            'value' => function ($model) {
-                                return $model->call_time
-                                    ? date('d-m-Y H:i', strtotime($model->call_time))
-                                    : '';
-                            }
-                        ],
-                        [
-                            'attribute' => 'recall_time',
-                            'value' => function ($model) {
-                                return $model->recall_time
-                                    ? date('d-m-Y H:i', strtotime($model->recall_time))
-                                    : '';
-                            }
-                        ],
-						'description:html',
+						'description:ntext',
 						'created_at:datetime',
 						'updated_at:datetime',
                         [

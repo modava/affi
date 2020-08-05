@@ -61,7 +61,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                     : '';
                             }
                         ],
-						'customer_id', // Todo handle this
+                        [
+                            'attribute' => 'customer_id',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return $model->customer_id ? Html::a($model->customer->full_name, Url::toRoute(['/affiliate/customer/view', 'id' => $model->customer_id])) : '';
+                            }
+                        ],
 						[
 						    'attribute'   => 'coupon_type_id',
                             'format' => 'raw',
@@ -76,13 +82,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                         ],
 						'promotion_value',
-                        [
-                            'attribute' => 'partner_id',
-                            'format' => 'raw',
-                            'value' => function ($model) {
-                                return $model->partner_id ? Html::a($model->partner->title, Url::toRoute(['/affiliate/partner/view', 'id' => $model->partner_id])) : '';
-                            }
-                        ],
 						'created_at:datetime',
 						'updated_at:datetime',
                         [

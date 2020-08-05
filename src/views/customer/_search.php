@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model modava\affiliate\models\search\NoteSearch */
+/* @var $model modava\affiliate\models\search\CustomerSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="note-search">
+<div class="customer-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -20,15 +20,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'title') ?>
-
     <?= $form->field($model, 'slug') ?>
 
-    <?= $form->field($model, 'customer_id') ?>
+    <?= $form->field($model, 'full_name') ?>
 
-    <?php // echo $form->field($model, 'call_time') ?>
+    <?= $form->field($model, 'phone') ?>
 
-    <?php // echo $form->field($model, 'recall_time') ?>
+    <?= $form->field($model, 'email') ?>
+
+    <?php // echo $form->field($model, 'face_customer') ?>
+
+    <?php // echo $form->field($model, 'partner_id') ?>
 
     <?php // echo $form->field($model, 'description') ?>
 

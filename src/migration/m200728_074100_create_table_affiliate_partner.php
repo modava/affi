@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m200728_074100_create_table_partner
+ * Class m200728_074100_create_table_affiliate_partner
  */
-class m200728_074100_create_table_partner extends Migration
+class m200728_074100_create_table_affiliate_partner extends Migration
 {
     /**
      * {@inheritdoc}
@@ -31,7 +31,6 @@ class m200728_074100_create_table_partner extends Migration
         $this->createIndex('idx-slug', 'affiliate_partner', 'slug', true);
         $this->addForeignKey('fk-partner-user_created-by_user-id', 'affiliate_partner', 'created_by', 'user', 'id');
         $this->addForeignKey('fk-partner-user_updated-by_user-id', 'affiliate_partner', 'updated_by', 'user', 'id');
-        $this->addForeignKey('fk_coupon_partner_id_partner_id', 'affiliate_coupon', 'partner_id', 'affiliate_partner', 'id');
         $this->execute('INSERT INTO `affiliate_partner` (`id`, `title`, `slug`, `description`, `created_at`, `updated_at`, `created_by`, `updated_by`) VALUES (\'1\', \'Dashboard MyAuris\', \'dashboard-myauris\', \'<p>Link: http://dashboard.myauris.vn/</p>\', \'1596092085\', \'1596092085\', \'1\', \'1\');');
     }
 

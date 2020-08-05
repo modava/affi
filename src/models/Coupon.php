@@ -83,7 +83,7 @@ class Coupon extends CouponTable
     public function rules()
     {
         return [
-			[['title', 'slug', 'partner_id','coupon_code', 'quantity', 'customer_id', 'coupon_type_id', 'promotion_type', 'promotion_value',], 'required'],
+			[['title', 'slug','coupon_code', 'quantity', 'customer_id', 'coupon_type_id', 'promotion_type', 'promotion_value',], 'required'],
 			[['quantity', 'customer_id', 'coupon_type_id', 'quantity_used', 'promotion_type',], 'integer'],
             ['quantity_used', 'validateQuantityUsed'],
             [['quantity', 'promotion_value'], 'compare', 'compareValue' => 0, 'operator' => '>=', 'type' => 'number'],
@@ -124,7 +124,6 @@ class Coupon extends CouponTable
             'updated_at' => AffiliateModule::t('affiliate', 'Updated At'),
             'created_by' => AffiliateModule::t('affiliate', 'Created By'),
             'updated_by' => AffiliateModule::t('affiliate', 'Updated By'),
-            'partner_id' => AffiliateModule::t('affiliate', 'Partner Id'),
         ];
     }
 
@@ -157,7 +156,8 @@ class Coupon extends CouponTable
     public function getCouponType() {
         return $this->hasOne(CouponType::class, ['id' => 'coupon_type_id']);
     }
-    public function getPartner() {
-        return $this->hasOne(Partner::class, ['id' => 'partner_id']);
+
+    public function getCustomer() {
+        return $this->hasOne(Customer::class, ['id' => 'customer_id']);
     }
 }

@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m200727_044619_create_table_coupon
+ * Class m200727_044619_create_table_affiliate_coupon
  */
-class m200727_044619_create_table_coupon extends Migration
+class m200727_044619_create_table_affiliate_coupon extends Migration
 {
     /**
      * {@inheritdoc}
@@ -30,7 +30,6 @@ class m200727_044619_create_table_coupon extends Migration
             'quantity_used' => $this->integer()->defaultValue(0)->notNull()->comment('Số lượng đã sử dụng'),
             'promotion_type' => $this->smallInteger(3)->notNull()->comment('Loại khuyễn mại'),
             'promotion_value' => $this->integer(11)->notNull()->comment('Giá trị coupon'),
-            'partner_id' => $this->integer(11)->notNull()->comment('Partner tích hợp affiliate'),
             'created_at' => $this->integer(11)->notNull(),
             'updated_at' => $this->integer(11)->notNull(),
             'created_by' => $this->integer(11)->null(),
@@ -38,9 +37,9 @@ class m200727_044619_create_table_coupon extends Migration
         ], $tableOptions);
 
         $this->createIndex('idx-slug', 'affiliate_coupon', 'slug', true);
-        $this->addForeignKey('fk_coupon_coupon_type_id_coupon_type_id', 'affiliate_coupon', 'coupon_type_id', 'affiliate_coupon_type', 'id');
-        $this->addForeignKey('fk-coupon-user_created-by_user-id', 'affiliate_coupon', 'created_by', 'user', 'id');
-        $this->addForeignKey('fk-coupon-user_updated-by_user-id', 'affiliate_coupon', 'updated_by', 'user', 'id');
+        $this->addForeignKey('fk-affiliate_coupon__coupon_type_id-affiliate_coupon_type__id', 'affiliate_coupon', 'coupon_type_id', 'affiliate_coupon_type', 'id');
+        $this->addForeignKey('fk-affiliate_coupon-user_created-by_user-id', 'affiliate_coupon', 'created_by', 'user', 'id');
+        $this->addForeignKey('fk-affiliate_coupon-user_updated-by_user-id', 'affiliate_coupon', 'updated_by', 'user', 'id');
     }
 
     /**

@@ -42,4 +42,11 @@ return [
     'Object is not existed' => 'Đối tượng không tồn tại',
     'Form is not existed' => 'Biểu mẫu không tồn tại',
     'An Error Occur' => 'Đã có lỗi xảy ra',
+    'Full Name' => 'Họ và tên',
+    'Phone' => 'Số điện thoại',
+    'Email' => 'Email',
+    'Face Customer' => 'FB Link',
+    'Customer Called' => 'KH Đã gọi',
+    'Related Record' => 'Danh sách liên quan',
+    'List' => 'Danh sách',
 ];

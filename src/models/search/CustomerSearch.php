@@ -5,12 +5,12 @@ namespace modava\affiliate\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use modava\affiliate\models\Note;
+use modava\affiliate\models\Customer;
 
 /**
- * NoteSearch represents the model behind the search form of `modava\affiliate\models\Note`.
+ * CustomerSearch represents the model behind the search form of `modava\affiliate\models\Customer`.
  */
-class NoteSearch extends Note
+class CustomerSearch extends Customer
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class NoteSearch extends Note
     public function rules()
     {
         return [
-            [['id', 'customer_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['title', 'slug', 'call_time', 'recall_time', 'description'], 'safe'],
+            [['id', 'partner_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['slug', 'full_name', 'phone', 'email', 'face_customer', 'description'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class NoteSearch extends Note
      */
     public function search($params)
     {
-        $query = Note::find();
+        $query = Customer::find();
 
         // add conditions that should always apply here
 
@@ -61,17 +61,18 @@ class NoteSearch extends Note
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'customer_id' => $this->customer_id,
-            'call_time' => $this->call_time,
-            'recall_time' => $this->recall_time,
+            'partner_id' => $this->partner_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'slug', $this->slug])
+        $query->andFilterWhere(['like', 'slug', $this->slug])
+            ->andFilterWhere(['like', 'full_name', $this->full_name])
+            ->andFilterWhere(['like', 'phone', $this->phone])
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'face_customer', $this->face_customer])
             ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;

@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m200727_035943_create_table_coupon_type
+ * Class m200727_035943_create_table_affiliate_coupon_type
  */
-class m200727_035943_create_table_coupon_type extends Migration
+class m200727_035943_create_table_affiliate_coupon_type extends Migration
 {
     /**
      * {@inheritdoc}

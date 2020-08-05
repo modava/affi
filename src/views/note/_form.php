@@ -34,7 +34,12 @@ $model->recall_time = $model->recall_time != null
             <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-6">
-            <?= $form->field($model, 'customer_id')->textInput() ?>
+            <?= $form->field($model, 'customer_id')->dropDownList(
+                ArrayHelper::map(\modava\affiliate\models\table\CustomerTable::getAllRecords(), 'id', function($model) { return $model['full_name'] . ' - ' . $model['phone']; }),
+                [ 'prompt' => AffiliateModule::t('affiliate', 'Select an option ...'),
+                    'id' => 'customer-id'
+                ]
+            ) ?>
         </div>
         <div class="col-6">
             <?= $form->field($model, 'call_time')->widget(DateTimePicker::class, [
@@ -59,14 +64,6 @@ $model->recall_time = $model->recall_time != null
                 'todayHighLight' => true,
             ]
         ]) ?>
-        </div>
-        <div class="col-6">
-            <?= $form->field($model, 'partner_id')->dropDownList(
-                ArrayHelper::map(\modava\affiliate\models\table\PartnerTable::getAllRecords(), 'id', 'title'),
-                [ 'prompt' => AffiliateModule::t('affiliate', 'Select an option ...'),
-                    'id' => 'partner-id'
-                ]
-            ) ?>
         </div>
         <div class="col-12">
             <?= $form->field($model, 'description')->widget(\modava\tiny\TinyMce::class, [

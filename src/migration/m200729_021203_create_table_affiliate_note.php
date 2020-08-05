@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m200729_021203_create_table_call_note
+ * Class m200729_021203_create_table_affiliate_note
  */
-class m200729_021203_create_table_call_note extends Migration
+class m200729_021203_create_table_affiliate_note extends Migration
 {
     /**
      * {@inheritdoc}
@@ -21,7 +21,6 @@ class m200729_021203_create_table_call_note extends Migration
             'id' => $this->primaryKey(),
             'title' => $this->string(255)->notNull(),
             'slug' => $this->string(255)->notNull()->unique(),
-            'partner_id' => $this->integer(11)->notNull()->comment('Partner tích hợp affiliate'),
             'customer_id' => $this->integer(11)->notNull()->comment('Mã khách hàng'),
             'call_time' => $this->dateTime()->notNull()->comment('Thời gian gọi'),
             'recall_time' => $this->dateTime()->notNull()->comment('Thời gian gọi lại'),
@@ -33,9 +32,8 @@ class m200729_021203_create_table_call_note extends Migration
         ], $tableOptions);
 
         $this->createIndex('idx-slug', 'affiliate_note', 'slug', true);
-        $this->addForeignKey('fk-note-user_created-by_user-id', 'affiliate_note', 'created_by', 'user', 'id');
-        $this->addForeignKey('fk-note-user_updated-by_user-id', 'affiliate_note', 'updated_by', 'user', 'id');
-        $this->addForeignKey('fk_note_partner_id_partner_id', 'affiliate_note', 'partner_id', 'affiliate_partner', 'id');
+        $this->addForeignKey('fk-affiliate_note-user_created-by_user-id', 'affiliate_note', 'created_by', 'user', 'id');
+        $this->addForeignKey('fk-affiliate_note-user_updated-by_user-id', 'affiliate_note', 'updated_by', 'user', 'id');
     }
 
     /**

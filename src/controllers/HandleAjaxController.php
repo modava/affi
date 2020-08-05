@@ -20,9 +20,11 @@ class HandleAjaxController extends MyAffiliateController
 {
     var $modelName = null;
     var $classModelName = null;
+    var $classModelNameTable = null;
+    var $classModelNameSearch = null;
     var $toastr_key = 'handle-ajax';
 
-    public function behaviors()
+    /*public function behaviors()
     {
         return [
             [
@@ -30,7 +32,7 @@ class HandleAjaxController extends MyAffiliateController
                 'only' => ['*']
             ],
         ];
-    }
+    }*/
 
     public function actionGetCreateModal()
     {
@@ -85,9 +87,11 @@ class HandleAjaxController extends MyAffiliateController
         $modelName = \Yii::$app->request->get('model');
         if (!$modelName) $modelName = \Yii::$app->request->post('model');
         $className = 'modava\affiliate\models\\' . $modelName;
+        $classNameTable = 'modava\affiliate\models\table\\' . $modelName . 'Table';
+        $classNameSearch = 'modava\affiliate\models\search\\' . $modelName . 'Search';
 
         // Validate Query Param
-        if (!$modelName || !class_exists($className)) {
+        if (!$modelName || !class_exists($className) || !class_exists($classNameTable) || !class_exists($classNameSearch)) {
             echo $this->renderAjax('error-modal', [
                 'errorMessage' => AffiliateModule::t('affiliate', 'Object is not existed'),
             ]);
@@ -97,7 +101,29 @@ class HandleAjaxController extends MyAffiliateController
 
         $this->modelName = $modelName;
         $this->classModelName = $className;
+        $this->classModelNameTable = $classNameTable;
+        $this->classModelNameSearch = $classNameSearch;
 
         return parent::beforeAction($action);
+    }
+
+    public function actionGetListRelatedRecordsModal () {
+        $formView = Utils::decamelize($this->modelName);
+        $filePath = \Yii::getAlias('@modava/affiliate/views/' . $formView . '/related-list.php');
+        if (!file_exists($filePath)) {
+            return $this->renderAjax('error-modal', [
+                'errorMessage' => AffiliateModule::t('affiliate', 'File is not existed'),
+            ]);
+        }
+
+        $searchModel = new $this->classModelNameSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->renderAjax('list-related-records-modal', [
+            'modelName' =>  $this->modelName,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'filePath' => $filePath
+        ]);
     }
 }
