@@ -6,13 +6,13 @@ use yii\helpers\Url;
 use modava\affiliate\AffiliateModule;
 
 /* @var $this yii\web\View */
-/* @var $model modava\affiliate\models\Customer */
+/* @var $model modava\affiliate\models\Order */
 
 $this->title = AffiliateModule::t('affiliate', 'Update : {name}', [
-    'name' => $model->full_name,
+    'name' => $model->title,
 ]);
-$this->params['breadcrumbs'][] = ['label' => AffiliateModule::t('affiliate', 'Customers'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => AffiliateModule::t('affiliate', 'Orders'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = AffiliateModule::t('affiliate', 'Update');
 ?>
 <div class="container-fluid px-xxl-25 px-xl-10">

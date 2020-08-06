@@ -1,5 +1,6 @@
 <?php
 
+use modava\affiliate\helpers\Utils;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -47,12 +48,88 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
+                        [
+                            'label'=> AffiliateModule::t('affiliate', 'Related Record'),
+                            'format'=>'raw',
+                            'value'=> function ($model) {
+                                $listButton = '';
+
+                                if (Utils::isReleaseObject('Coupon')) {
+                                    $count = count($model->coupons);
+
+                                    $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
+
+                                    $listButton .= Html::a('<i class="icon dripicons-ticket"></i> ' . $bage , Url::toRoute(['/affiliate/coupon', 'CouponSearch[customer_id]' => $model->primaryKey]),[
+                                        'title' => AffiliateModule::t('affiliate', 'List Tickets'),
+                                        'alia-label' => AffiliateModule::t('affiliate', 'List Tickets'),
+                                        'data-pjax' => 0,
+                                        'class' => 'btn btn-info btn-xs list-relate-record m-1',
+                                        'data-related-id' => $model->primaryKey,
+                                        'data-related-field' => 'customer_id',
+                                        'data-model' => 'Coupon',
+                                        'target' => '_blank'
+                                    ]);
+                                }
+
+                                if (Utils::isReleaseObject('Note')) {
+                                    $count = count($model->notes);
+
+                                    $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
+
+                                    $listButton .= Html::a('<i class="icon dripicons-to-do"></i>' . $bage, Url::toRoute(['/affiliate/note', 'NoteSearch[customer_id]' => $model->primaryKey]),[
+                                        'title' => AffiliateModule::t('affiliate', 'List Notes'),
+                                        'alia-label' => AffiliateModule::t('affiliate', 'List Notes'),
+                                        'data-pjax' => 0,
+                                        'class' => 'btn btn-success btn-xs list-relate-record m-1',
+                                        'data-related-id' => $model->primaryKey,
+                                        'data-related-field' => 'customer_id',
+                                        'data-model' => 'Note',
+                                        'target' => '_blank'
+                                    ]);
+                                }
+
+                                return $listButton;
+                            },
+                        ],
 						'id',
 						'slug',
 						'full_name',
 						'phone',
 						'email:email',
                         'face_customer',
+                        'birthday:date',
+                        [
+                            'attribute' => 'sex',
+                            'value' => function ($model) {
+                                return Yii::$app->controller->module->params['sex'][$model->sex];
+                            }
+                        ],
+                        'date_accept_do_service:date',
+                        'date_checkin:date',
+                        [
+                            'attribute' => 'country_id',
+                            'value' => function ($model) {
+                                return $model->country_id ? $model->country->CommonName : null;
+                            }
+                        ],
+                        [
+                            'attribute' => 'province_id',
+                            'value' => function ($model) {
+                                return $model->province_id ? $model->province->name : null;
+                            }
+                        ],
+                        [
+                            'attribute' => 'district_id',
+                            'value' => function ($model) {
+                                return $model->district_id ? $model->district->name : null;
+                            }
+                        ],
+                        [
+                            'attribute' => 'ward_id',
+                            'value' => function ($model) {
+                                return $model->ward_id ? $model->ward->name : null;
+                            }
+                        ],
                         [
                             'attribute' => 'partner_id',
                             'format' => 'raw',

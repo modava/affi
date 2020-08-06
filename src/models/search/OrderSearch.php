@@ -5,12 +5,12 @@ namespace modava\affiliate\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use modava\affiliate\models\Customer;
+use modava\affiliate\models\Order;
 
 /**
- * CustomerSearch represents the model behind the search form of `modava\affiliate\models\Customer`.
+ * OrderSearch represents the model behind the search form of `modava\affiliate\models\Order`.
  */
-class CustomerSearch extends Customer
+class OrderSearch extends Order
 {
     /**
      * @inheritdoc
@@ -18,8 +18,9 @@ class CustomerSearch extends Customer
     public function rules()
     {
         return [
-            [['id', 'partner_id', 'created_at', 'updated_at', 'created_by', 'updated_by', ], 'integer'],
-            [['slug', 'full_name', 'phone', 'email', 'face_customer', 'description', 'sex', 'birthday', 'phone'], 'safe'],
+            [['id', 'coupon_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['title', 'slug', 'description'], 'safe'],
+            [['pre_total', 'discount', 'final_total'], 'number'],
         ];
     }
 
@@ -41,7 +42,7 @@ class CustomerSearch extends Customer
      */
     public function search($params)
     {
-        $query = Customer::find();
+        $query = Order::find();
 
         // add conditions that should always apply here
 
@@ -61,18 +62,18 @@ class CustomerSearch extends Customer
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'partner_id' => $this->partner_id,
+            'coupon_id' => $this->coupon_id,
+            'pre_total' => $this->pre_total,
+            'discount' => $this->discount,
+            'final_total' => $this->final_total,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
         ]);
 
-        $query->andFilterWhere(['like', 'slug', $this->slug])
-            ->andFilterWhere(['like', 'full_name', $this->full_name])
-            ->andFilterWhere(['like', 'phone', $this->phone])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'face_customer', $this->face_customer])
+        $query->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'slug', $this->slug])
             ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;

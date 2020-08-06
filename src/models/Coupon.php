@@ -160,4 +160,10 @@ class Coupon extends CouponTable
     public function getCustomer() {
         return $this->hasOne(Customer::class, ['id' => 'customer_id']);
     }
+
+    public static function countByCustomer ($customerId) {
+        return (int) self::find()
+            ->where(['customer_id' => $customerId])
+            ->count();
+    }
 }

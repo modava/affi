@@ -3,6 +3,7 @@
 namespace modava\affiliate\controllers;
 
 use modava\affiliate\helpers\CurlHelper;
+use modava\affiliate\helpers\MyAurisApi;
 use Yii;
 use yii\data\ArrayDataProvider;
 
@@ -15,10 +16,29 @@ class AffiliateController extends \backend\components\MyController
         $page = (int) \Yii::$app->request->get('page');
         $page = $page > 0 ? $page : 1;
 
-        $curlHelper = new CurlHelper($apiParam['api_endpoint'] . '/?page=' . $page .'&per-page=' . $apiParam['row_per_page']);
-        $curlHelper->setHeader($apiParam['header']);
-        $response = $curlHelper->execute();
+        // Get Customer Data
+        $clinicSearch = \Yii::$app->request->get('ClinicSearch');
+        $payload = [
+            'page' => $page,
+            'ClinicSearch[thao_tac]' => isset($clinicSearch['thao_tac']) ? $clinicSearch['thao_tac'] : null,
+            'ClinicSearch[appointment_time]' => isset($clinicSearch['appointment_time']) ? $clinicSearch['appointment_time'] : null,
+        ];
+
+        if (!$payload['ClinicSearch[appointment_time]']) {
+            $appointment_time = date('01-m-Y') . ' - ' . date('d-m-Y');
+            $payload['ClinicSearch[appointment_time]'] = $appointment_time;
+        }
+
+        $appointment_timeArr = explode(' - ', $payload['ClinicSearch[appointment_time]']);
+
+        $payload['ClinicSearch[appointment_time_from]'] = $appointment_timeArr[0];
+        $payload['ClinicSearch[appointment_time_to]'] = $appointment_timeArr[1];
+
+        $response = MyAurisApi::getCompleteCustomerService($payload);
         $realResponse = json_decode($response['result'], true);
+
+        // Get List Thao Tac
+        $listThaoTac = MyAurisApi::getListThaoTac();
 
         if (!$realResponse || (isset($realResponse['status']) && $realResponse['status'] == 500)) {
             if (isset($realResponse['status']) && $realResponse['status'] == 500) {
@@ -66,7 +86,9 @@ class AffiliateController extends \backend\components\MyController
         ]);
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider
+            'dataProvider' => $dataProvider,
+            'listThaotac' => $listThaoTac,
+            'payload' => $payload,
         ]);
     }
 

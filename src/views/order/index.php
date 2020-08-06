@@ -5,12 +5,13 @@ use modava\affiliate\widgets\NavbarWidgets;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use backend\widgets\ToastrWidget;
+use yii\helpers\Url;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel modava\affiliate\models\search\PartnerSearch */
+/* @var $searchModel modava\affiliate\models\search\OrderSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = AffiliateModule::t('affiliate', 'Partners');
+$this->title = AffiliateModule::t('affiliate', 'Orders');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?= ToastrWidget::widget(['key' => 'toastr-' . $searchModel->toastr_key . '-index']) ?>
@@ -36,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="row">
                     <div class="col-sm">
                         <div class="table-wrap">
-                            <div class="dataTables_wrapper dt-bootstrap4">
+                            <div class="dataTables_wrapper dt-bootstrap4 table-responsive">
                                 <?= GridView::widget([
                                     'dataProvider' => $dataProvider,
                                     'layout' => '
@@ -105,8 +106,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 ]);
                                             }
                                         ],
-                                    
-										'slug',
+                                        [
+                                            'attribute' => 'coupon_id',
+                                            'format' => 'raw',
+                                            'value' => function ($model) {
+                                                return Html::a($model->coupon->coupon_code, Url::toRoute(['coupon/view', 'id' => $model->coupon_id]), [
+                                                    'target' => '_blank',
+                                                    'data-pjax' => 0
+                                                ]);
+                                            }
+                                        ],
+										'pre_total',
+										'discount',
+										'final_total',
+										//'description:ntext',
                                         [
                                             'attribute' => 'created_by',
                                             'value' => 'userCreated.userProfile.fullname',

@@ -4,9 +4,7 @@ namespace modava\affiliate\models;
 
 use common\models\User;
 use modava\affiliate\AffiliateModule;
-use modava\affiliate\helpers\Utils;
-use modava\affiliate\models\table\NoteTable;
-use yii\behaviors\AttributeBehavior;
+use modava\affiliate\models\table\OrderTable;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\SluggableBehavior;
 use common\helpers\MyHelper;
@@ -14,26 +12,28 @@ use yii\db\ActiveRecord;
 use Yii;
 
 /**
-* This is the model class for table "note".
+* This is the model class for table "affiliate_order".
 *
     * @property int $id
     * @property string $title
     * @property string $slug
-    * @property int $customer_id Mã khách hàng
-    * @property string $call_time Thời gian gọi
-    * @property string $recall_time Thời gian gọi lại
+    * @property int $coupon_id Mã coupon
+    * @property string $pre_total Số tiền trên đơn hàng
+    * @property string $discount Số tiền được chiết khấu
+    * @property string $final_total Số tiền còn lại
     * @property string $description Mô tả
     * @property int $created_at
     * @property int $updated_at
-    * @property int $created_by Người gọi
+    * @property int $created_by
     * @property int $updated_by
     *
+            * @property Coupon $coupon
             * @property User $createdBy
             * @property User $updatedBy
     */
-class Note extends NoteTable
+class Order extends OrderTable
 {
-    public $toastr_key = 'note';
+    public $toastr_key = 'affiliate-order';
     public function behaviors()
     {
         return array_merge(
@@ -60,26 +60,6 @@ class Note extends NoteTable
                         ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
                     ],
                 ],
-                [
-                    'class' => AttributeBehavior::class,
-                    'attributes' => [
-                        ActiveRecord::EVENT_BEFORE_INSERT => ['call_time'],
-                        ActiveRecord::EVENT_BEFORE_UPDATE => ['call_time'],
-                    ],
-                    'value' => function ($event) {
-                        return Utils::convertDateTimeToDBFormat($this->call_time);
-                    },
-                ],
-                [
-                    'class' => AttributeBehavior::class,
-                    'attributes' => [
-                        ActiveRecord::EVENT_BEFORE_INSERT => ['recall_time'],
-                        ActiveRecord::EVENT_BEFORE_UPDATE => ['recall_time'],
-                    ],
-                    'value' => function ($event) {
-                        return Utils::convertDateTimeToDBFormat($this->recall_time);
-                    },
-                ],
             ]
         );
     }
@@ -90,12 +70,13 @@ class Note extends NoteTable
     public function rules()
     {
         return [
-			[['title', 'slug', 'customer_id', 'call_time',], 'required'],
-			[['customer_id',], 'integer'],
-			[['call_time', 'recall_time'], 'safe'],
+			[['title', 'slug', 'coupon_id', 'pre_total', 'discount', 'final_total',], 'required'],
+			[['coupon_id',], 'integer'],
+			[['pre_total', 'discount', 'final_total'], 'number'],
 			[['description'], 'string'],
 			[['title', 'slug'], 'string', 'max' => 255],
 			[['slug'], 'unique'],
+			[['coupon_id'], 'exist', 'skipOnError' => true, 'targetClass' => Coupon::class, 'targetAttribute' => ['coupon_id' => 'id']],
 			[['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
 			[['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
 		];
@@ -110,9 +91,10 @@ class Note extends NoteTable
             'id' => AffiliateModule::t('affiliate', 'ID'),
             'title' => AffiliateModule::t('affiliate', 'Title'),
             'slug' => AffiliateModule::t('affiliate', 'Slug'),
-            'customer_id' => AffiliateModule::t('affiliate', 'Customer ID'),
-            'call_time' => AffiliateModule::t('affiliate', 'Call Time'),
-            'recall_time' => AffiliateModule::t('affiliate', 'Recall Time'),
+            'coupon_id' => AffiliateModule::t('affiliate', 'Coupon ID'),
+            'pre_total' => AffiliateModule::t('affiliate', 'Pre Total'),
+            'discount' => AffiliateModule::t('affiliate', 'Discount'),
+            'final_total' => AffiliateModule::t('affiliate', 'Final Total'),
             'description' => AffiliateModule::t('affiliate', 'Description'),
             'created_at' => AffiliateModule::t('affiliate', 'Created At'),
             'updated_at' => AffiliateModule::t('affiliate', 'Updated At'),
@@ -141,13 +123,7 @@ class Note extends NoteTable
         return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
 
-    public function getCustomer() {
-        return $this->hasOne(Customer::class, ['id' => 'customer_id']);
-    }
-
-    public static function countByCustomer ($customerId) {
-        return (int) self::find()
-            ->where(['customer_id' => $customerId])
-            ->count();
+    public function getCoupon() {
+        return $this->hasOne(Coupon::class, ['id' => 'coupon_id']);
     }
 }

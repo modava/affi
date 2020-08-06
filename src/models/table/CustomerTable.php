@@ -9,6 +9,7 @@ use yii\db\ActiveRecord;
 class CustomerTable extends \yii\db\ActiveRecord
 {
     const CACHE_KEY_GET_ALL = 'redis-affiliate-customer-get-all';
+    const CACHE_KEY_RECORD_PREFIX = 'redis-affiliate-customer-record';
 
     public static function tableName()
     {
@@ -20,7 +21,8 @@ class CustomerTable extends \yii\db\ActiveRecord
     {
         $cache = Yii::$app->cache;
         $keys = [
-            self::CACHE_KEY_GET_ALL
+            self::CACHE_KEY_GET_ALL,
+            $this->getRecordCacheKey(),
         ];
         foreach ($keys as $key) {
             $cache->delete($key);
@@ -37,7 +39,26 @@ class CustomerTable extends \yii\db\ActiveRecord
         foreach ($keys as $key) {
             $cache->delete($key);
         }
+
+        /* Set cache for record customer for fetch with api */
+        $cache->set($this->getRecordCacheKey(), $this->getAttributes());
+
         parent::afterSave($insert, $changedAttributes);
+    }
+
+    public function getRecordCacheKey () {
+        return self::CACHE_KEY_RECORD_PREFIX . '-partner-' . $this->partner_id . '-id-' . $this->partner_customer_id;
+    }
+
+    public static function getRecordByPartnerInfoFromCache ($partnerId, $partnerCustomerId) {
+        $cache = Yii::$app->cache;
+
+        $cacheKey = self::CACHE_KEY_RECORD_PREFIX . '-partner-' . $partnerId . '-id-' . $partnerCustomerId;
+
+        if ($cache->exists($cacheKey))
+            return $cache->get($cacheKey);
+
+        return null;
     }
 
     public static function getAllRecords()

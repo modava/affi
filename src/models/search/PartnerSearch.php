@@ -75,6 +75,6 @@ class PartnerSearch extends Partner
     }
 
     public static function getRecordBySlug($slug) {
-        return self::find()->where(['slug' => $slug]) ->one();
+        return self::find()->where(['slug' => $slug])->one();
     }
 }

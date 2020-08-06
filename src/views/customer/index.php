@@ -1,6 +1,7 @@
 <?php
 
 use modava\affiliate\AffiliateModule;
+use modava\affiliate\helpers\Utils;
 use modava\affiliate\widgets\JsUtils;
 use modava\affiliate\widgets\NavbarWidgets;
 use yii\helpers\Html;
@@ -101,6 +102,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         [
                                             'attribute' => 'full_name',
                                             'format' => 'raw',
+                                            'headerOptions' => [
+                                                'class' => 'header-300',
+                                            ],
                                             'value' => function ($model) {
                                                 return Html::a($model->full_name, ['view', 'id' => $model->id], [
                                                     'title' => $model->full_name,
@@ -108,14 +112,99 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 ]);
                                             }
                                         ],
-										'phone',
-										'email:email',
-                                        'face_customer',
+                                        [
+                                            'attribute' => 'phone',
+                                            'label' => AffiliateModule::t('affiliate', 'Phone'),
+                                            'format' => 'raw',
+                                            'value' => function ($model) {
+                                                $content = '';
+                                                if (class_exists('modava\voip24h\CallCenter')) $content .= Html::a('<i class="fa fa-phone"></i>', 'javascript: void(0)', [
+                                                    'class' => 'btn btn-xs btn-success call-to',
+                                                    'title' => 'Gọi',
+                                                    'data-uri' => $model['phone']
+                                                ]);
+                                                $content .= Html::a('<i class="fa fa-paste"></i>', 'javascript: void(0)', [
+                                                    'class' => 'btn btn-xs btn-info copy ml-1',
+                                                    'title' => 'Copy'
+                                                ]);
+                                                return $content;
+                                            }
+                                        ],
+                                        [
+                                            'attribute' => 'email',
+                                            'format' => 'email',
+                                            'headerOptions' => [
+                                                'class' => 'header-100',
+                                            ],
+                                        ],
+                                        [
+                                            'attribute' => 'face_customer',
+                                            'headerOptions' => [
+                                                'class' => 'header-100',
+                                            ],
+                                        ],
                                         [
                                             'attribute' => 'partner_id',
                                             'format' => 'raw',
                                             'value' => function ($model) {
                                                 return $model->partner_id ? Html::a($model->partner->title, Url::toRoute(['/affiliate/partner/view', 'id' => $model->partner_id])) : '';
+                                            },
+                                            'headerOptions' => [
+                                                'class' => 'header-100',
+                                            ],
+                                        ],
+                                        [
+                                            'attribute' => 'sex',
+                                            'headerOptions' => [
+                                                'class' => 'header-100',
+                                            ],
+                                            'value' => function ($model) {
+                                                return Yii::$app->controller->module->params['sex'][$model->sex];
+                                            }
+                                        ],
+                                        [
+                                            'attribute' => 'birthday',
+                                            'format' => 'date',
+                                            'headerOptions' => [
+                                                'class' => 'header-100',
+                                            ],
+                                        ],
+                                        [
+                                            'attribute' => 'date_accept_do_service',
+                                            'format' => 'date',
+                                            'headerOptions' => [
+                                                'class' => 'header-100',
+                                            ],
+                                        ],
+                                        [
+                                            'attribute' => 'date_checkin',
+                                            'format' => 'date',
+                                            'headerOptions' => [
+                                                'class' => 'header-100',
+                                            ],
+                                        ],
+                                        [
+                                            'attribute' => 'country_id',
+                                            'value' => function ($model) {
+                                                return $model->country_id ? $model->country->CommonName : null;
+                                            }
+                                        ],
+                                        [
+                                            'attribute' => 'province_id',
+                                            'value' => function ($model) {
+                                                return $model->province_id ? $model->province->name : null;
+                                            }
+                                        ],
+                                        [
+                                            'attribute' => 'district_id',
+                                            'value' => function ($model) {
+                                                return $model->district_id ? $model->district->name : null;
+                                            }
+                                        ],
+                                        [
+                                            'attribute' => 'ward_id',
+                                            'value' => function ($model) {
+                                                return $model->ward_id ? $model->ward->name : null;
                                             }
                                         ],
                                         //'description:ntext',
@@ -123,14 +212,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'attribute' => 'created_by',
                                             'value' => 'userCreated.userProfile.fullname',
                                             'headerOptions' => [
-                                                'width' => 150,
+                                                'class' => 'header-100',
                                             ],
                                         ],
                                         [
                                             'attribute' => 'created_at',
-                                            'format' => 'date',
+                                            'format' => 'datetime',
                                             'headerOptions' => [
-                                                'width' => 150,
+                                                'class' => 'header-100',
                                             ],
                                         ],
                                         [
@@ -139,27 +228,37 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'template' => '{list-coupon} {list-note}',
                                             'buttons' => [
                                                 'list-coupon' => function ($url, $model) {
-                                                    return Html::button('<i class="icon dripicons-ticket"></i>', [
+                                                    if (!Utils::isReleaseObject('Coupon')) return '';
+
+                                                    $count = count($model->coupons);
+
+                                                    $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
+
+                                                    return Html::a('<i class="icon dripicons-ticket"></i> ' . $bage , Url::toRoute(['/affiliate/coupon', 'CouponSearch[customer_id]' => $model->primaryKey]),[
                                                         'title' => AffiliateModule::t('affiliate', 'List Tickets'),
                                                         'alia-label' => AffiliateModule::t('affiliate', 'List Tickets'),
                                                         'data-pjax' => 0,
-                                                        'class' => 'btn btn-info btn-xs list-relate-record',
+                                                        'class' => 'btn btn-info btn-xs list-relate-record m-1',
                                                         'data-related-id' => $model->primaryKey,
                                                         'data-related-field' => 'customer_id',
                                                         'data-model' => 'Coupon',
-                                                        'onclick' => 'getListRelatedRecords(this)'
+                                                        'target' => '_blank'
                                                     ]);
                                                 },
                                                 'list-note' => function ($url, $model) {
-                                                    return Html::button('<i class="icon dripicons-to-do"></i>', [
+                                                    $count = count($model->notes);
+
+                                                    $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
+
+                                                    return Html::a('<i class="icon dripicons-to-do"></i>' . $bage, Url::toRoute(['/affiliate/note', 'NoteSearch[customer_id]' => $model->primaryKey]),[
                                                         'title' => AffiliateModule::t('affiliate', 'List Notes'),
                                                         'alia-label' => AffiliateModule::t('affiliate', 'List Notes'),
                                                         'data-pjax' => 0,
-                                                        'class' => 'btn btn-success btn-xs list-relate-record',
+                                                        'class' => 'btn btn-success btn-xs list-relate-record m-1',
                                                         'data-related-id' => $model->primaryKey,
                                                         'data-related-field' => 'customer_id',
                                                         'data-model' => 'Note',
-                                                        'onclick' => 'getListRelatedRecords(this)'
+                                                        'target' => '_blank'
                                                     ]);
                                                 },
                                             ],
@@ -177,13 +276,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         'title' => AffiliateModule::t('affiliate', 'Update'),
                                                         'alia-label' => AffiliateModule::t('affiliate', 'Update'),
                                                         'data-pjax' => 0,
-                                                        'class' => 'btn btn-info btn-xs',
+                                                        'class' => 'btn btn-info btn-xs m-1',
                                                     ]);
                                                 },
                                                 'delete' => function ($url, $model) {
                                                     return Html::a('<span class="glyphicon glyphicon-trash"></span>', 'javascript:;', [
                                                         'title' => AffiliateModule::t('affiliate', 'Delete'),
-                                                        'class' => 'btn btn-danger btn-xs btn-del',
+                                                        'class' => 'btn btn-danger btn-xs btn-del m-1',
                                                         'data-title' => AffiliateModule::t('affiliate', 'Delete?'),
                                                         'data-pjax' => 0,
                                                         'data-url' => $url,
@@ -193,12 +292,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     ]);
                                                 },
                                                 'create-coupon' => function ($url, $model) {
+                                                    if (!Utils::isReleaseObject('Coupon')) return '';
+
                                                     return Html::a('<i class="icon dripicons-ticket"></i>', 'javascript:;', [
                                                         'title' => AffiliateModule::t('affiliate', 'Create Coupon'),
                                                         'alia-label' => AffiliateModule::t('affiliate', 'Create Coupon'),
                                                         'data-pjax' => 0,
                                                         'data-partner' => 'myaris',
-                                                        'class' => 'btn btn-info btn-xs create-coupon'
+                                                        'class' => 'btn btn-info btn-xs create-coupon m-1'
                                                     ]);
                                                 },
                                                 'create-call-note' => function ($url, $model) {
@@ -207,7 +308,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         'alia-label' => AffiliateModule::t('affiliate', 'Create Call Note'),
                                                         'data-pjax' => 0,
                                                         'data-partner' => 'myaris',
-                                                        'class' => 'btn btn-success btn-xs create-call-note'
+                                                        'class' => 'btn btn-success btn-xs create-call-note m-1'
                                                     ]);
                                                 },
                                                 'hidden-input-customer-info' => function ($url, $model) {
@@ -215,7 +316,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 }
                                             ],
                                             'headerOptions' => [
-                                                'width' => 150,
+                                                'class' => 'header-200',
                                             ],
                                         ],
                                     ],

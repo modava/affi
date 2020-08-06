@@ -25,6 +25,11 @@
                 stack: 6,
                 showHideTransition: 'fade'
             });
+
+            // Trigger Event
+            const event = new Event('post-object-created');
+            document.getElementsByTagName('body')[0].dispatchEvent(event);
+
         }).fail(f => {
             $('.ModalContainer').modal('hide');
             $.toast({

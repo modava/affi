@@ -99,6 +99,15 @@ class HandleAjaxController extends MyAffiliateController
             Yii::$app->end();
         }
 
+
+        if (in_array($modelName, Yii::$app->controller->module->params['not_release_object'])) {
+            echo $this->renderAjax('error-modal', [
+                'errorMessage' => AffiliateModule::t('affiliate', 'Object is not released'),
+            ]);
+
+            Yii::$app->end();
+        }
+
         $this->modelName = $modelName;
         $this->classModelName = $className;
         $this->classModelNameTable = $classNameTable;
