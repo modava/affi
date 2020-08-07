@@ -43,7 +43,7 @@ return [
     'Form is not existed' => 'Biểu mẫu không tồn tại',
     'An Error Occur' => 'Đã có lỗi xảy ra',
     'Full Name' => 'Họ và tên',
-    'Phone' => 'Số điện thoại',
+    'Phone' => 'SĐT',
     'Email' => 'Email',
     'Face Customer' => 'FB Link',
     'Customer Called' => 'KH Đã gọi',
@@ -81,5 +81,8 @@ return [
     'Customer 3 Month' => 'KH 3 tháng',
     'Customer 6 Month' => 'KH 6 tháng',
     'Full Name, Phone, Code' => 'Tên, SĐT, Mã KH',
-    'Order Infomation' => 'Thông tin đơn hàng',
+    'Order Infomation' => 'Thông tin HĐ',
+    'Customer Infomation' => 'Thông tin KH',
+    'Delete cache successfully' => 'Xoá cache thành công!',
+    'Notification' => 'Thông báo',
 ];

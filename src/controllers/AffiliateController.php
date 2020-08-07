@@ -2,10 +2,12 @@
 
 namespace modava\affiliate\controllers;
 
-use modava\affiliate\helpers\CurlHelper;
+use modava\affiliate\AffiliateModule;
 use modava\affiliate\helpers\MyAurisApi;
 use Yii;
 use yii\data\ArrayDataProvider;
+use yii\helpers\Url;
+use yii\web\Response;
 
 class AffiliateController extends \backend\components\MyController
 {
@@ -95,4 +97,25 @@ class AffiliateController extends \backend\components\MyController
         ]);
     }
 
+    public function actionClearCache()
+    {
+        $cache = Yii::$app->cache;
+
+        if ($cache->exists(MyAurisApi::$CACHE_MANAGE_KEY)) {
+            $keys = $cache->get(MyAurisApi::$CACHE_MANAGE_KEY);
+            foreach ($keys as $key) {
+                $cache->delete($key);
+            }
+
+            $cache->delete(MyAurisApi::$CACHE_MANAGE_KEY);
+        }
+
+        Yii::$app->session->setFlash('toastr-affiliate-list', [
+            'title' => AffiliateModule::t('affiliate', 'Notification'),
+            'text' => AffiliateModule::t('affiliate', 'Delete cache successfully'),
+            'type' => 'success'
+        ]);
+
+        return $this->redirect(Yii::$app->request->referrer ?: Url::toRoute(['index']));
+    }
 }
