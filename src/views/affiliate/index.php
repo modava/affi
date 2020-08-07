@@ -13,15 +13,24 @@ use modava\affiliate\models\Note;
 use \modava\affiliate\models\Coupon;
 use \modava\affiliate\helpers\Utils;
 
+/* @var $listThaotac */
+/* @var $dataProvider */
+/* @var $payload */
+
 $this->title = AffiliateModule::t('affiliate', 'Customer');
 $this->params['breadcrumbs'][] = $this->title;
 $myAuris = PartnerSearch::getRecordBySlug('dashboard-myauris');
 Yii::$app->controller->module->params['partner_id']['dashboard-myauris'] = $myAuris->primaryKey;
 
-/* @var $listThaotac */
-/* @var $dataProvider */
-/* @var $payload */
-
+$currentRoute = Url::toRoute(['/' . Yii::$app->requestedRoute]);
+$currentDate = date('d-m-Y');
+$timestapmtCurrentDate = strtotime($currentDate);
+$current1Month = date("d-m-Y", strtotime("-1 month", $timestapmtCurrentDate));
+$current3Months = date("d-m-Y", strtotime("-3 month", $timestapmtCurrentDate));
+$current6Months = date("d-m-Y", strtotime("-6 month", $timestapmtCurrentDate));
+$oneMonthRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[appointment_time]' => "$current1Month - $currentDate"]);
+$threeMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[appointment_time]' => "$current3Months - $currentDate"]);
+$sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[appointment_time]' => "$current6Months - $currentDate"]);
 ?>
 
 <?= ToastrWidget::widget(['key' => 'toastr-affiliate-list']) ?>
@@ -35,6 +44,13 @@ Yii::$app->controller->module->params['partner_id']['dashboard-myauris'] = $myAu
                 <form action="<?=Url::toRoute(['/affiliate/affiliate'])?>" method="get" width="100%">
                 <div class="hk-sec-wrapper">
                     <div class="row">
+                        <div class="col-md-4 col-sm-6 col-lg-4">
+                            <div class="form-group row">
+                                <div class="col-4"><?=AffiliateModule::t('affiliate', 'Date Range')?>: </div>
+                                <div class="col-8">
+                                    <input type="text" name="ClinicSearch[keyword]" class="form-control" placeholder="<?=AffiliateModule::t('affiliate', 'Full Name, Phone, Code')?>" value="<?=$payload['ClinicSearch[keyword]']?>"></div>
+                            </div>
+                        </div>
                         <div class="col-md-4 col-sm-6 col-lg-4">
                             <div class="form-group row">
                                 <div class="col-4"><?=AffiliateModule::t('affiliate', 'Date Range')?>: </div>
@@ -58,7 +74,11 @@ Yii::$app->controller->module->params['partner_id']['dashboard-myauris'] = $myAu
 <!--                            </div>-->
 <!--                        </div>-->
                         <div class="col-12">
-                            <button type="submit" class="btn-success btn"><?=AffiliateModule::t('affiliate', 'Search')?></button>
+                            <a href="<?=$currentRoute?>" type="button" class="btn-success btn"><?=AffiliateModule::t('affiliate', 'Default')?></a>
+                            <a href="<?=$oneMonthRoute?>" type="button" class="btn-info btn"><?=AffiliateModule::t('affiliate', 'Customer 1 Month')?></a>
+                            <a href="<?=$threeMonthsRoute?>" type="button" class="btn-pink btn"><?=AffiliateModule::t('affiliate', 'Customer 3 Month')?></a>
+                            <a href="<?=$sixMonthsRoute?>" type="button" class="btn-indigo btn"><?=AffiliateModule::t('affiliate', 'Customer 6 Month')?></a>
+                            <button type="submit" class="btn-primary btn"><?=AffiliateModule::t('affiliate', 'Search')?></button>
                         </div>
                     </div>
                 </div>
@@ -70,13 +90,25 @@ Yii::$app->controller->module->params['partner_id']['dashboard-myauris'] = $myAu
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-wrap">
-                                <div class="dataTables_wrapper dt-bootstrap4">
+                                <div class="dataTables_wrapper dt-bootstrap4 ">
                                     <?= GridView::widget([
                                         'dataProvider' => $dataProvider,
                                         'layout' => '
                                         {errors}
+                                        <div class="row mb-2">
+                                            <div class="col-sm-12 col-md-5">
+                                                <div class="dataTables_info" role="status" aria-live="polite">
+                                                    {pager}
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-7">
+                                                <div class="dataTables_paginate paging_simple_numbers">
+                                                    {summary}
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row">
-                                            <div class="col-sm-12">
+                                            <div class="col-sm-12 table-responsive">
                                                 {items}
                                             </div>
                                         </div>
@@ -133,6 +165,9 @@ Yii::$app->controller->module->params['partner_id']['dashboard-myauris'] = $myAu
                                                 'attribute' => 'full_name',
                                                 'label' => AffiliateModule::t('affiliate', 'Full Name'),
                                                 'format' => 'raw',
+                                                'headerOptions' => [
+                                                     'class' => 'header-200'
+                                                ],
                                                 'value' => function ($model) {
                                                     $message = AffiliateModule::t('affiliate', 'Converted');
                                                     $tick = '';
@@ -151,17 +186,26 @@ Yii::$app->controller->module->params['partner_id']['dashboard-myauris'] = $myAu
                                             [
                                                 'attribute' => 'sex',
                                                 'label' => AffiliateModule::t('affiliate', 'Sex'),
+                                                'headerOptions' => [
+                                                    'class' => 'header-100'
+                                                ],
                                                 'value' => function ($model) {
                                                     return Yii::$app->controller->module->params['sex'][$model['sex']];
                                                 }
                                             ],
                                             [
-                                                'attribute' => 'birthday',
-                                                'label' => AffiliateModule::t('affiliate', 'Birthday'),
+                                                'attribute' => 'permission_user',
+                                                'label' => AffiliateModule::t('affiliate', 'Permission User'),
+                                                'headerOptions' => [
+                                                    'class' => 'header-100'
+                                                ],
                                             ],
                                             [
                                                 'label' => AffiliateModule::t('affiliate', 'Phone'),
                                                 'format' => 'raw',
+                                                'headerOptions' => [
+                                                    'class' => 'header-100'
+                                                ],
                                                 'value' => function ($model) {
                                                     $content = '';
                                                     if (class_exists('modava\voip24h\CallCenter')) $content .= Html::a('<i class="fa fa-phone"></i>', 'javascript: void(0)', [
@@ -176,7 +220,83 @@ Yii::$app->controller->module->params['partner_id']['dashboard-myauris'] = $myAu
                                                     return $content;
                                                 }
                                             ],
+                                            [
+                                                'label' => AffiliateModule::t('affiliate', 'Images Before/After'),
+                                                'format' => 'raw',
+                                                'headerOptions' => [
+                                                    'class' => 'header-300'
+                                                ],
+                                                'value' => function ($model) {
+                                                    $as ='';
+                                                    $hostUrl = Yii::$app->controller->module->params['myauris_config']['url_website'];
 
+                                                    foreach ($model['image'] as $img) {
+                                                        $imgs = Html::img($hostUrl . $img['thumbnailLink'], [
+                                                                'class' => 'img-fluid mx-1 rounded',
+                                                                'width' => '100px'
+                                                        ]);
+
+                                                        $as = Html::a($imgs, $hostUrl . $img['webContentLink']) . $as;
+                                                    }
+
+                                                    return "<div class='customer-img-container'>{$as}</div>";
+                                                }
+                                            ],
+                                            [
+                                                'label' => AffiliateModule::t('affiliate', 'Order Infomation'),
+                                                'format' => 'raw',
+                                                'headerOptions' => [
+                                                    'class' => 'header-300'
+                                                ],
+                                                'value' => function ($model) use ($listThaotac) {
+                                                    if (!array_key_exists('don_hang', $model)) return '';
+
+                                                    $content = '';
+                                                    foreach ($model['don_hang'] as $donhang) {
+                                                        $content1 = "<strong>Mã HĐ: {$donhang['order_code']}</strong> <i>(" . date('d-m-Y', $donhang['ngay_tao']) . ")</i><br/>";
+                                                        foreach ($donhang['chi_tiet'] as $chiTietDonHang) {
+                                                            $content1 .= "{$chiTietDonHang['dich_vu']} | {$chiTietDonHang['san_pham']} : <strong>{$chiTietDonHang['so_luong']}</strong><br/>";
+                                                        }
+
+                                                        $content .= "<div class='hk-sec-wrapper header-400 mx-2 mb-0 px-3 py-2'>{$content1}</div>";
+                                                    }
+
+                                                    return "<div class='d-flex'>{$content}</div>";
+                                                }
+                                            ],
+                                            [
+                                                'label' => AffiliateModule::t('affiliate', 'Thông tin lịch điều trị'),
+                                                'format' => 'raw',
+                                                'headerOptions' => [
+                                                    'class' => 'header-300'
+                                                ],
+                                                'value' => function ($model) use ($listThaotac) {
+                                                    if (!array_key_exists('don_hang', $model)) return '';
+
+                                                    $content = '';
+                                                    foreach ($model['don_hang'] as $donhang) {
+                                                        if (array_key_exists('lich_dieu_tri', $donhang)) {
+                                                            foreach ($donhang['lich_dieu_tri'] as $lichDieuTriInfo) {
+                                                                $content1 = '';
+                                                                $arrThaoTac = [];
+
+                                                                foreach ($lichDieuTriInfo['thao_tac'] as $thaotac) {
+                                                                    $arrThaoTac[] = $listThaotac[$thaotac];
+                                                                }
+
+                                                                $content1 .= '<strong>Thac tác: </strong>'. implode(', ', $arrThaoTac) . '<br>';
+                                                                $content1 .= '<strong>Ekip:</strong> '. $lichDieuTriInfo['ekip'] . '<br>';
+                                                                $content1 .= '<strong>Trợ thủ:</strong> '. implode(', ', $lichDieuTriInfo['tro_thu']) . '<br>';
+                                                                $content1 .= '<strong>Ngày điều trị: </strong>'. date('d-m-Y H:i', $lichDieuTriInfo['time_dieu_tri']) . '<br>';
+
+                                                                $content .= "<div class='hk-sec-wrapper header-400 mx-2 mb-0 px-3 py-2'>{$content1}</div>";
+                                                            }
+                                                        }
+                                                    }
+
+                                                    return "<div class='d-flex'>{$content}</div>";
+                                                }
+                                            ],
                                             [
                                                 'class' => 'yii\grid\ActionColumn',
                                                 'header' => AffiliateModule::t('affiliate', 'Related Record'),
@@ -374,5 +494,6 @@ $('[name="ClinicSearch[appointment_time]"]').daterangepicker({
 }, function(start, end, label) {
     console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
 });
+$('.customer-img-container').lightGallery();
 JS;
 $this->registerJs($script, \yii\web\View::POS_END);

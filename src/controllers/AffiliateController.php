@@ -22,6 +22,7 @@ class AffiliateController extends \backend\components\MyController
             'page' => $page,
             'ClinicSearch[thao_tac]' => isset($clinicSearch['thao_tac']) ? $clinicSearch['thao_tac'] : null,
             'ClinicSearch[appointment_time]' => isset($clinicSearch['appointment_time']) ? $clinicSearch['appointment_time'] : null,
+            'ClinicSearch[keyword]' => isset($clinicSearch['keyword']) ? $clinicSearch['keyword'] : null,
         ];
 
         if (!$payload['ClinicSearch[appointment_time]']) {
@@ -57,7 +58,9 @@ class AffiliateController extends \backend\components\MyController
             ]);
 
             return $this->render('index', [
-                'dataProvider' => $dataProvider
+                'dataProvider' => $dataProvider,
+                'listThaotac' => $listThaoTac,
+                'payload' => $payload,
             ]);
         }
 

@@ -23,7 +23,8 @@ return [
         '1' => AffiliateModule::t('affiliate', 'Discount Amount In Order'),
     ],
     'myauris_config' => [
-        'uri' => "http://dashboard.myauris.vn/api/v2/affiliate/",
+        'url_website' => "https://dashboard.myauris.vn",
+        'url_end_point' => "https://dashboard.myauris.vn/api/v2/affiliate/",
         'endpoint' => [
             'complete_customer_service' => "complete-customer-service",
             'list_thao_tac' => "list-thao-tac",

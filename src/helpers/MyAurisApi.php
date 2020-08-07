@@ -13,7 +13,7 @@ class MyAurisApi
     public static function getListThaoTac () {
         $apiParam = \Yii::$app->controller->module->params['myauris_config'];
 
-        $curlHelper2 = new CurlHelper($apiParam['uri'] . $apiParam['endpoint']['list_thao_tac']);
+        $curlHelper2 = new CurlHelper($apiParam['url_end_point'] . $apiParam['endpoint']['list_thao_tac']);
         $curlHelper2->setHeader($apiParam['header']);
         $response2 = $curlHelper2->execute();
 
@@ -25,7 +25,7 @@ class MyAurisApi
     public static function getCompleteCustomerService ($payload) {
         $apiParam = \Yii::$app->controller->module->params['myauris_config'];
 
-        $url = $apiParam['uri'] . $apiParam['endpoint']['complete_customer_service'] . '?per-page=' . $apiParam['row_per_page'] . '&' . http_build_query($payload);
+        $url = $apiParam['url_end_point'] . $apiParam['endpoint']['complete_customer_service'] . '?per-page=' . $apiParam['row_per_page'] . '&' . http_build_query($payload);
 
         $curlHelper = new CurlHelper($url);
         $curlHelper->setHeader($apiParam['header']);

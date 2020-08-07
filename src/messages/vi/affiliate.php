@@ -75,4 +75,11 @@ return [
     'Ward' => 'Phường/Xã',
     'Address' => 'Địa chỉ',
     'Object is not released' => 'Đối tượng đang được phát triển',
+    'Images Before/After' => 'Hình ảnh trước/sau',
+    'Default' => 'Mặc định',
+    'Customer 1 Month' => 'KH 1 tháng',
+    'Customer 3 Month' => 'KH 3 tháng',
+    'Customer 6 Month' => 'KH 6 tháng',
+    'Full Name, Phone, Code' => 'Tên, SĐT, Mã KH',
+    'Order Infomation' => 'Thông tin đơn hàng',
 ];
