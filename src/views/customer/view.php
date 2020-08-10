@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         class="ion ion-md-apps"></span></span><?= Html::encode($this->title) ?>
         </h4>
         <p>
+            <button class="btn btn-primary js-more-info" data-customer-id="<?=$model->partner_customer_id?>"><?=AffiliateModule::t('affiliate', 'More Information')?></button>
             <a class="btn btn-outline-light" href="<?= Url::to(['create']); ?>"
                 title="<?= AffiliateModule::t('affiliate', 'Create'); ?>">
                 <i class="fa fa-plus"></i> <?= AffiliateModule::t('affiliate', 'Create'); ?></a>
@@ -154,3 +155,30 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+
+<?php
+
+$controllerURL = Url::toRoute(["/affiliate/handle-ajax"]);
+
+$script = <<< JS
+function showMoreInfoCustomer(customerId) {
+        let modalHTML = `<div class="modal fade ModalContainer" tabindex="-1" role="dialog" aria-labelledby="ModalContainer" aria-hidden="true"></div>`;
+
+        if ($('.ModalContainer').length) $('.ModalContainer').remove();
+
+        $('body').append(modalHTML);
+        
+    $.get('$controllerURL/get-customer-more-info', {customerId, model: 'Customer'}, function(data, status, xhr) {
+        if (status === 'success') {
+            $('.ModalContainer').html(data);
+            $('.ModalContainer').modal();
+            $('.customer-img-container').lightGallery();
+        }
+    });
+}
+
+$('.js-more-info').on('click', function() {
+    showMoreInfoCustomer($(this).data('customer-id'));
+});
+JS;
+$this->registerJs($script, \yii\web\View::POS_END);

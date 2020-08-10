@@ -53,20 +53,20 @@ class AffiliateDisplayHelper
         return $content;
     }
 
-    public static function getImages ($model) {
+    public static function getImages ($model, $param = [ 'container_class' => '', 'img_class' => '']) {
         $as ='';
         $hostUrl = Yii::$app->controller->module->params['myauris_config']['url_website'];
 
         foreach ($model['image'] as $img) {
             $imgs = Html::img($hostUrl . $img['thumbnailLink'], [
-                'class' => 'img-fluid mx-1 rounded',
+                'class' => "img-fluid mx-1 rounded " . (isset($param['img_class']) ? $param['img_class'] : ''),
                 'width' => '100px'
             ]);
 
             $as = Html::a($imgs, $hostUrl . $img['webContentLink']) . $as;
         }
 
-        return "<div class='customer-img-container'>{$as}</div>";
+        return "<div class='customer-img-container " . ($param['container_class'] ? $param['container_class'] : '') . "'>{$as}</div>";
     }
 
     public static function getOrderInformation ($model, $listThaotac) {
@@ -99,6 +99,7 @@ class AffiliateDisplayHelper
                         $arrThaoTac[] = $listThaotac[$thaotac];
                     }
 
+                    $content1 = "<strong>Mã HĐ: {$donhang['order_code']}</strong> <i>(" . date('d-m-Y', $donhang['ngay_tao']) . ")</i><br/>";
                     $content1 .= '<strong>Thac tác: </strong>'. implode(', ', $arrThaoTac) . '<br>';
                     $content1 .= '<strong>Ekip:</strong> '. $lichDieuTriInfo['ekip'] . '<br>';
                     $content1 .= '<strong>Trợ thủ:</strong> '. implode(', ', $lichDieuTriInfo['tro_thu']) . '<br>';

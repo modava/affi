@@ -66,4 +66,6 @@ textarea[readonly] {
     cursor: not-allowed!important;
 }
 
-.btn-pink
+.lg-backdrop {
+    z-index: 1050;
+}

@@ -33,6 +33,26 @@ class MyAurisApi
         return $listThaoTac;
     }
 
+    public static function getCustomerInfo ($customerId) {
+        $cache = \Yii::$app->cache;
+        $cacheKey = 'redis-affiliate-dashboard-myauris-get-customer-info-with-id-' . $customerId;
+
+        $apiParam = \Yii::$app->controller->module->params['myauris_config'];
+
+        if ($cache->exists($cacheKey)) return $cache->get($cacheKey);
+
+        $curlHelper2 = new CurlHelper($apiParam['url_end_point'] . $apiParam['endpoint']['get_customer'] . "?id={$customerId}");
+        $curlHelper2->setHeader($apiParam['header']);
+        $response2 = $curlHelper2->execute();
+
+        $listThaoTac = json_decode($response2['result'], true);
+        $cache->set($cacheKey, $listThaoTac, self::$CACHE_TIME);
+
+        self::manageCacheKey($cacheKey);
+
+        return $listThaoTac;
+    }
+
     public static function getCompleteCustomerService ($payload) {
         $cache = \Yii::$app->cache;
         $cacheKey = 'redis-affiliate-dashboard-myauris';

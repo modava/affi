@@ -2,13 +2,12 @@
 
 namespace modava\affiliate\controllers;
 
-use backend\widgets\ToastrWidget;
 use modava\affiliate\AffiliateModule;
 use modava\affiliate\components\MyAffiliateController;
 use modava\affiliate\helpers\Utils;
 use Yii;
-use yii\helpers\Html;
 use yii\web\Response;
+use modava\affiliate\helpers\MyAurisApi;
 
 /*
  * Implement by Duc Huynh
@@ -133,6 +132,17 @@ class HandleAjaxController extends MyAffiliateController
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'filePath' => $filePath
+        ]);
+    }
+
+    public function actionGetCustomerMoreInfo () {
+        $customerId = Yii::$app->request->get('customerId');
+        $data = MyAurisApi::getCustomerInfo($customerId);
+        $listThaoTac = MyAurisApi::getListThaoTac();
+
+        return $this->renderAjax('dashboard-myauris-customer-modal', [
+            'model' => $data['data'],
+            'listThaotac' => $listThaoTac
         ]);
     }
 }
