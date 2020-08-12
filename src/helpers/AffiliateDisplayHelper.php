@@ -16,6 +16,9 @@ class AffiliateDisplayHelper
         $customerInfo .=  "<strong>" . AffiliateModule::t('affiliate', 'Sex') . ": </strong>" . self::getSex($model) . "<br>";
         $customerInfo .=  "<strong>" . AffiliateModule::t('affiliate', 'Permission User') . ": </strong>{$model['permission_user']}<br>";
         $customerInfo .=  "<strong>" . AffiliateModule::t('affiliate', 'Phone') . ": </strong>" . self::getPhone($model) . "<br>";
+        $customerInfo .=  "<strong>" . AffiliateModule::t('affiliate', 'Direct Sales') . ": </strong>{$model['directsale']}<br>";
+        $customerInfo .=  "<strong>" . AffiliateModule::t('affiliate', 'Service') . ": </strong>{$model['id_dich_vu']}<br>";
+        $customerInfo .=  "<strong>" . AffiliateModule::t('affiliate', 'Cơ sở') . ": </strong>{$model['co_so']}<br>";
 
         return $customerInfo;
     }
@@ -55,15 +58,14 @@ class AffiliateDisplayHelper
 
     public static function getImages ($model, $param = [ 'container_class' => '', 'img_class' => '']) {
         $as ='';
-        $hostUrl = Yii::$app->controller->module->params['myauris_config']['url_website'];
 
         foreach ($model['image'] as $img) {
-            $imgs = Html::img($hostUrl . $img['thumbnailLink'], [
+            $imgs = Html::img($img['thumbnailLink'], [
                 'class' => "img-fluid mx-1 rounded " . (isset($param['img_class']) ? $param['img_class'] : ''),
                 'width' => '100px'
             ]);
 
-            $as = Html::a($imgs, $hostUrl . $img['webContentLink']) . $as;
+            $as = Html::a($imgs, $img['webContentLink']) . $as;
         }
 
         return "<div class='customer-img-container " . ($param['container_class'] ? $param['container_class'] : '') . "'>{$as}</div>";
@@ -100,6 +102,7 @@ class AffiliateDisplayHelper
                     }
 
                     $content1 = "<strong>Mã HĐ: {$donhang['order_code']}</strong> <i>(" . date('d-m-Y', $donhang['ngay_tao']) . ")</i><br/>";
+                    $content1 .= '<strong>Phòng:</strong> '. $lichDieuTriInfo['room_id'] . '<br>';
                     $content1 .= '<strong>Thac tác: </strong>'. implode(', ', $arrThaoTac) . '<br>';
                     $content1 .= '<strong>Ekip:</strong> '. $lichDieuTriInfo['ekip'] . '<br>';
                     $content1 .= '<strong>Trợ thủ:</strong> '. implode(', ', $lichDieuTriInfo['tro_thu']) . '<br>';

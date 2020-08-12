@@ -5,8 +5,17 @@ $controllerURL = Url::toRoute(["/affiliate/handle-ajax"]);
 
 ?>
 <script>
+    function changeButtonSave(modalConatiner) {
+        let buttonSubmit = modalConatiner.find('button[type="submit"]').clone();
+        modalConatiner.find('button[type="submit"]').remove();
+        buttonSubmit.on('click', function () {
+            modalConatiner.find('form').submit();
+        });
+        modalConatiner.find('.modal-footer').prepend(buttonSubmit);
+    }
+
     function openCreateModal(params) {
-        let modalHTML = `<div class="modal fade ModalContainer" tabindex="-1" role="dialog" aria-labelledby="ModalContainer" aria-hidden="true"></div>`;
+        let modalHTML = `<div class="modal ModalContainer" tabindex="-1" role="dialog" aria-labelledby="ModalContainer" aria-hidden="true"></div>`;
 
         if ($('.ModalContainer').length) $('.ModalContainer').remove();
 
@@ -17,12 +26,14 @@ $controllerURL = Url::toRoute(["/affiliate/handle-ajax"]);
                 if (typeof tinymce != "undefined") tinymce.remove();
                 $('.ModalContainer').html(data);
                 $('.ModalContainer').modal();
+
+                changeButtonSave($('.ModalContainer'));
             }
         });
     }
 
     function getListRelatedRecords(elementDOM) {
-        let modalHTML = `<div class="modal fade ModalContainer" tabindex="-1" role="dialog" aria-labelledby="ModalContainer" aria-hidden="true"></div>`;
+        let modalHTML = `<div class="modal ModalContainer" tabindex="-1" role="dialog" aria-labelledby="ModalContainer" aria-hidden="true"></div>`;
 
         if ($('.ModalContainer').length) $('.ModalContainer').remove();
 

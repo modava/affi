@@ -95,4 +95,5 @@ return [
     'Place a short answer...' => 'Câu trả lời ngắn ...',
     'Topic' => 'Chủ đề',
     'Faq Category' => 'Chủ đề',
+    'Service' => 'Dịch vụ',
 ];

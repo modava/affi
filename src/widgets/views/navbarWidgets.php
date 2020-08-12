@@ -55,20 +55,6 @@ $routeInfos = [
         'label' => AffiliateModule::t('affiliate', 'Partners'),
         'icon' => '<i class="fa fa-share-alt"></i>',
     ],
-    [
-        'module' => 'affiliate',
-        'controllerId' => 'faq-category',
-        'model' => 'Partner',
-        'label' => AffiliateModule::t('affiliate', 'Faq Category'),
-        'icon' => '<i class="fa fa-share-alt"></i>',
-    ],
-    [
-        'module' => 'affiliate',
-        'controllerId' => 'faq',
-        'model' => 'Partner',
-        'label' => AffiliateModule::t('affiliate', 'Faq'),
-        'icon' => '<i class="icon dripicons-question"></i>',
-    ],
 ];
 ?>
 <ul class="nav nav-tabs nav-sm nav-light mb-25">

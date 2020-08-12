@@ -140,6 +140,16 @@ class HandleAjaxController extends MyAffiliateController
         $data = MyAurisApi::getCustomerInfo($customerId);
         $listThaoTac = MyAurisApi::getListThaoTac();
 
+        if (!$data || (isset($data['status']) && $data['status'] == 500)) {
+            if (isset($data['status']) && $data['status'] == 500) {
+                Yii::warning($data['message']);
+            }
+
+            return $this->renderAjax('error-modal', [
+                'errorMessage' => AffiliateModule::t('affiliate', 'Error connection!'),
+            ]);
+        }
+
         return $this->renderAjax('dashboard-myauris-customer-modal', [
             'model' => $data['data'],
             'listThaotac' => $listThaoTac
