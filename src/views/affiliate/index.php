@@ -29,9 +29,9 @@ $timestapmtCurrentDate = strtotime($currentDate);
 $current1Month = date("d-m-Y", strtotime("-1 month", $timestapmtCurrentDate));
 $current3Months = date("d-m-Y", strtotime("-3 month", $timestapmtCurrentDate));
 $current6Months = date("d-m-Y", strtotime("-6 month", $timestapmtCurrentDate));
-$oneMonthRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[appointment_time]' => "$current1Month - $currentDate"]);
-$threeMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[appointment_time]' => "$current3Months - $currentDate"]);
-$sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[appointment_time]' => "$current6Months - $currentDate"]);
+$oneMonthRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[appointment_time]' => "$current1Month - $current1Month"]);
+$threeMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[appointment_time]' => "$current3Months - $current3Months"]);
+$sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[appointment_time]' => "$current6Months - $current6Months"]);
 ?>
 
 <?= ToastrWidget::widget(['key' => 'toastr-affiliate-list']) ?>
