@@ -2,6 +2,7 @@
 
 namespace modava\affiliate\controllers;
 
+use modava\affiliate\AffiliateModule;
 use yii\db\Exception;
 use Yii;
 use yii\helpers\Html;
@@ -205,6 +206,6 @@ class NoteController extends MyController
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('affiliate', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(AffiliateModule::t('affiliate', 'The requested page does not exist.'));
     }
 }

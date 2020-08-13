@@ -204,6 +204,6 @@ class CouponController extends MyController
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('affiliate', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(AffiliateModule::t('affiliate', 'The requested page does not exist.'));
     }
 }

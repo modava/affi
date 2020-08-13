@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use modava\affiliate\AffiliateModule;
 
 /* @var $this yii\web\View */
 /* @var $model modava\affiliate\models\search\CouponTypeSearch */
@@ -35,8 +36,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'updated_by') ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('affiliate', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('affiliate', 'Reset'), ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton(AffiliateModule::t('affiliate', 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton(AffiliateModule::t('affiliate', 'Reset'), ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
