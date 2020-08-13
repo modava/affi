@@ -2,11 +2,6 @@
 use modava\affiliate\AffiliateModule;
 
 return [
-    'availableLocales' => [
-        'vi' => 'Tiếng Việt',
-        'en' => 'English',
-        'jp' => 'Japan',
-    ],
     'affiliateName' => 'Affiliate',
     'affiliateVersion' => '1.0',
     'status' => [
