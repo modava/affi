@@ -17,7 +17,7 @@ class MyAurisApi
         $cache = \Yii::$app->cache;
         $cacheKey = 'redis-affiliate-dashboard-myauris-list-thao-tac';
 
-        $apiParam = \Yii::$app->controller->module->params['myauris_config'];
+        $apiParam = \Yii::$app->getModule('affiliate')->params['myauris_config'];
 
         if ($cache->exists($cacheKey)) return $cache->get($cacheKey);
 
@@ -37,7 +37,7 @@ class MyAurisApi
         $cache = \Yii::$app->cache;
         $cacheKey = 'redis-affiliate-dashboard-myauris-get-customer-info-with-id-' . $customerId;
 
-        $apiParam = \Yii::$app->controller->module->params['myauris_config'];
+        $apiParam = \Yii::$app->getModule('affiliate')->params['myauris_config'];
 
         if ($cache->exists($cacheKey)) return $cache->get($cacheKey);
 
@@ -62,7 +62,7 @@ class MyAurisApi
 
         if ($cache->exists($cacheKey)) return $cache->get($cacheKey);
 
-        $apiParam = \Yii::$app->controller->module->params['myauris_config'];
+        $apiParam = \Yii::$app->getModule('affiliate')->params['myauris_config'];
 
         $url = $apiParam['url_end_point'] . $apiParam['endpoint']['complete_customer_service'] . '?per-page=' . $apiParam['row_per_page'] . '&' . http_build_query($payload);
 

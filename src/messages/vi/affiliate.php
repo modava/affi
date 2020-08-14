@@ -96,4 +96,11 @@ return [
     'Topic' => 'Chủ đề',
     'Faq Category' => 'Chủ đề',
     'Service' => 'Dịch vụ',
+    'Select an options...' => 'Chọn một giá trị',
+    'For This System' => 'Cho hệ thống này',
+    'For Partner System' => 'Cho hệ thống Partner',
+    'Note Type' => 'Loại ghi chú',
+    'Error connection was throw, please contact to IT to check this issue' => 'Đã có lỗi kết nối với hệ thống Partner, Vui lòng liên hệ IT để kiểm tra',
+    'Completed Clinic' => 'Hoàn thành dịch vụ',
+    'Customer Status' => 'Tình trạng khách hàng',
 ];

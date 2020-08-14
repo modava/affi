@@ -159,7 +159,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'class' => 'header-100',
                                             ],
                                             'value' => function ($model) {
-                                                return Yii::$app->controller->module->params['sex'][$model->sex];
+                                                return Yii::$app->getModule('affiliate')->params['sex'][$model->sex];
+                                            }
+                                        ],
+                                        [
+                                            'attribute' => 'status',
+                                            'headerOptions' => [
+                                                'class' => 'header-100',
+                                            ],
+                                            'value' => function ($model) {
+                                                return Yii::$app->getModule('affiliate')->params['customer_status'][$model->status];
                                             }
                                         ],
                                         [

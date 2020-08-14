@@ -73,7 +73,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                     : '';
                             }
                         ],
-						'description:html',
+                        [
+                            'attribute' => 'note_type',
+                            'value' => function ($model) {
+                                return Yii::$app->getModule('affiliate')->params['note_type'][$model->note_type];
+                            }
+                        ],
+                        [
+                            'attribute' => 'partner_id',
+                            'format' => 'raw',
+                            'value' => function ($model) {
+                                return $model->partner_id ? $model->partner->title : null;
+                            },
+                        ],
 						'created_at:datetime',
 						'updated_at:datetime',
                         [

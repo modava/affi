@@ -21,7 +21,7 @@ use modava\affiliate\helpers\AffiliateDisplayHelper;
 $this->title = AffiliateModule::t('affiliate', 'Customer');
 $this->params['breadcrumbs'][] = $this->title;
 $myAuris = PartnerSearch::getRecordBySlug('dashboard-myauris');
-Yii::$app->controller->module->params['partner_id']['dashboard-myauris'] = $myAuris->primaryKey;
+Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $myAuris->primaryKey;
 
 $currentRoute = Url::toRoute(['/' . Yii::$app->requestedRoute]);
 $currentDate = date('d-m-Y');
@@ -43,12 +43,12 @@ $sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[a
         <div class="row">
             <div class="col-xl-12">
                 <form action="<?=Url::toRoute(['/affiliate/affiliate'])?>" method="get" width="100%">
+                    <input type="hidden" name="is_completed_service" value="<?=$payload['ClinicSearch[last_dieu_tri]']?>">
                 <div class="hk-sec-wrapper">
                     <div class="row">
                         <div class="col-md-4 col-sm-6 col-lg-4">
                             <div class="form-group row">
-                                <div class="col-4"><?=AffiliateModule::t('affiliate', 'Date Range')?>: </div>
-                                <div class="col-8">
+                                <div class="col-12">
                                     <input type="text" name="ClinicSearch[keyword]" class="form-control" placeholder="<?=AffiliateModule::t('affiliate', 'Full Name, Phone, Code')?>" value="<?=$payload['ClinicSearch[keyword]']?>"></div>
                             </div>
                         </div>
@@ -57,6 +57,14 @@ $sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[a
                                 <div class="col-4"><?=AffiliateModule::t('affiliate', 'Date Range')?>: </div>
                                 <div class="col-8">
                                     <input type="text" name="ClinicSearch[appointment_time]" class="form-control" placeholder="<?=AffiliateModule::t('affiliate', 'Date')?>" value="<?=$payload['ClinicSearch[appointment_time]']?>"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6 col-lg-4">
+                            <div class="form-group row">
+                                <div class="col-4"><?=AffiliateModule::t('affiliate', 'Completed Clinic')?>: </div>
+                                <div class="col-8">
+                                    <input type="checkbox" name="ClinicSearch[last_dieu_tri]" class="form-check-input"
+                                           placeholder="<?=AffiliateModule::t('affiliate', 'Completed Clinic')?>" <?= $payload['ClinicSearch[last_dieu_tri]'] ? 'checked' : ''?>></div>
                             </div>
                         </div>
 <!--                        <div class="col-md-4 col-sm-6 col-lg-4">-->
@@ -76,9 +84,9 @@ $sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[a
 <!--                        </div>-->
                         <div class="col-12">
                             <a href="<?=$currentRoute?>" type="button" class="btn-success btn"><?=AffiliateModule::t('affiliate', 'Default')?></a>
-                            <a href="<?=$oneMonthRoute?>" type="button" class="btn-info btn"><?=AffiliateModule::t('affiliate', 'Customer 1 Month')?></a>
-                            <a href="<?=$threeMonthsRoute?>" type="button" class="btn-pink btn"><?=AffiliateModule::t('affiliate', 'Customer 3 Month')?></a>
-                            <a href="<?=$sixMonthsRoute?>" type="button" class="btn-indigo btn"><?=AffiliateModule::t('affiliate', 'Customer 6 Month')?></a>
+                            <a href="<?=$oneMonthRoute?>" type="button" class="search-btn btn-info btn"><?=AffiliateModule::t('affiliate', 'Customer 1 Month')?></a>
+                            <a href="<?=$threeMonthsRoute?>" type="button" class="search-btn btn-pink btn"><?=AffiliateModule::t('affiliate', 'Customer 3 Month')?></a>
+                            <a href="<?=$sixMonthsRoute?>" type="button" class="search-btn btn-indigo btn"><?=AffiliateModule::t('affiliate', 'Customer 6 Month')?></a>
                             <button type="submit" class="btn-primary btn"><?=AffiliateModule::t('affiliate', 'Search')?></button>
                             <a href="<?=Url::toRoute(['clear-cache'])?>" class="btn btn-link btn-sm pull-right"><?=AffiliateModule::t('affiliate', 'Clear Cache')?></a>
                         </div>
@@ -171,7 +179,7 @@ $sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[a
                                                     'create-coupon' => function ($url, $model) {
                                                         if (!Utils::isReleaseObject('Coupon')) return '';
 
-                                                        if (CustomerTable::getRecordByPartnerInfoFromCache(Yii::$app->controller->module->params['partner_id']['dashboard-myauris'], $model['id'])) {
+                                                        if (CustomerTable::getRecordByPartnerInfoFromCache(Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'], $model['id'])) {
                                                             return Html::a('<i class="icon dripicons-ticket"></i>', 'javascript:;', [
                                                                 'title' => AffiliateModule::t('affiliate', 'Create Coupon'),
                                                                 'alia-label' => AffiliateModule::t('affiliate', 'Create Coupon'),
@@ -185,7 +193,7 @@ $sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[a
 
                                                     },
                                                     'create-call-note' => function ($url, $model) {
-                                                        if (CustomerTable::getRecordByPartnerInfoFromCache(Yii::$app->controller->module->params['partner_id']['dashboard-myauris'], $model['id'])) {
+                                                        if (CustomerTable::getRecordByPartnerInfoFromCache(Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'], $model['id'])) {
                                                             return Html::a('<i class="icon dripicons-to-do"></i>', 'javascript:;', [
                                                                 'title' => AffiliateModule::t('affiliate', 'Create Call Note'),
                                                                 'alia-label' => AffiliateModule::t('affiliate', 'Create Call Note'),
@@ -199,7 +207,7 @@ $sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[a
 
                                                     },
                                                     'create-customer' => function ($url, $model) {
-                                                        $record = CustomerTable::getRecordByPartnerInfoFromCache(Yii::$app->controller->module->params['partner_id']['dashboard-myauris'], $model['id']);
+                                                        $record = CustomerTable::getRecordByPartnerInfoFromCache(Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'], $model['id']);
                                                         if ($record) {
                                                             $message = AffiliateModule::t('affiliate', 'Detail');
 
@@ -230,7 +238,7 @@ $sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[a
                                                         return Html::input('hidden', 'customer_partner_info[]', json_encode($model));
                                                     },
                                                     'hidden-input-customer-info' => function ($url, $model) {
-                                                        $customer = CustomerTable::getRecordByPartnerInfoFromCache(Yii::$app->controller->module->params['partner_id']['dashboard-myauris'], $model['id']);
+                                                        $customer = CustomerTable::getRecordByPartnerInfoFromCache(Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'], $model['id']);
                                                         if ($customer) {
                                                             return Html::input('hidden', 'customer_info[]', json_encode($customer));
                                                         }
@@ -248,7 +256,7 @@ $sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[a
                                                     'list-coupon' => function ($url, $model) {
                                                         if (!Utils::isReleaseObject('Coupon')) return '';
 
-                                                        $record = CustomerTable::getRecordByPartnerInfoFromCache(Yii::$app->controller->module->params['partner_id']['dashboard-myauris'], $model['id']);
+                                                        $record = CustomerTable::getRecordByPartnerInfoFromCache(Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'], $model['id']);
                                                         if ($record) {
                                                             $count = Coupon::countByCustomer($record['id']);
 
@@ -269,7 +277,7 @@ $sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[a
                                                         return '';
                                                     },
                                                     'list-note' => function ($url, $model) {
-                                                        $record = CustomerTable::getRecordByPartnerInfoFromCache(Yii::$app->controller->module->params['partner_id']['dashboard-myauris'], $model['id']);
+                                                        $record = CustomerTable::getRecordByPartnerInfoFromCache(Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'], $model['id']);
 
                                                         if ($record) {
                                                             $count = Note::countByCustomer($record['id']);
@@ -378,6 +386,7 @@ $('.create-customer').on('click', function() {
         'Customer[province_id]' : customerInfo.province,
         'Customer[district_id]' : customerInfo.district,
         'Customer[address]' : customerInfo.address,
+        'Customer[status]' : $('[name="is_completed_service"]').val(),
         'Customer[date_accept_do_service]' : customerInfo.customer_come_date ? moment.unix(customerInfo.customer_come_date).format("YYYY-MM-DD") : '', 
         'Customer[date_checkin]' : customerInfo.time_lichhen ? moment.unix(customerInfo.time_lichhen).format("YYYY-MM-DD") : ''
     });
@@ -399,5 +408,13 @@ $('[name="ClinicSearch[appointment_time]"]').daterangepicker({
     console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
 });
 $('.customer-img-container').lightGallery();
+
+$('.search-btn').on('click', function(e) {
+    e.preventDefault();
+    let href = $(this).attr('href');
+    if ($('[name="ClinicSearch[last_dieu_tri]"]').is(':checked')) href += "&ClinicSearch[last_dieu_tri]=on";
+    
+    window.location.href = href;
+})
 JS;
 $this->registerJs($script, \yii\web\View::POS_END);

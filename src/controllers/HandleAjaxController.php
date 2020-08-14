@@ -72,11 +72,11 @@ class HandleAjaxController extends MyAffiliateController
 
                 Yii::$app->response->format = Response::FORMAT_JSON;
 
-                return [ 'success' => true];
+                return [ 'success' => true ];
             } else {
                 Yii::$app->response->format = Response::FORMAT_JSON;
 
-                return [ 'success' => true];
+                return [ 'success' => false ];
             }
         }
     }
@@ -99,7 +99,7 @@ class HandleAjaxController extends MyAffiliateController
         }
 
 
-        if (in_array($modelName, Yii::$app->controller->module->params['not_release_object'])) {
+        if (in_array($modelName, Yii::$app->getModule('affiliate')->params['not_release_object'])) {
             echo $this->renderAjax('error-modal', [
                 'errorMessage' => AffiliateModule::t('affiliate', 'Object is not released'),
             ]);

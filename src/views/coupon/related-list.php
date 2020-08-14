@@ -107,7 +107,7 @@ use yii\grid\GridView;
         [
             'attribute' => 'promotion_type',
             'value' => function ($model) {
-                return AffiliateModule::t('affiliate', Yii::$app->controller->module->params["promotion_type"][$model->promotion_type]);
+                return AffiliateModule::t('affiliate', Yii::$app->getModule('affiliate')->params["promotion_type"][$model->promotion_type]);
             }
         ],
         //'description:ntext',

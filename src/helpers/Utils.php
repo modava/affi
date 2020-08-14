@@ -8,6 +8,7 @@ namespace modava\affiliate\helpers;
  * Date:    2020-07-29
  * Purpose: Provide a Util class*/
 
+use modava\auth\models\User;
 use Yii;
 
 class Utils
@@ -46,6 +47,6 @@ class Utils
     }
 
     public static function isReleaseObject ($obj) {
-        return !in_array($obj, Yii::$app->controller->module->params['not_release_object']);
+        return !in_array($obj, Yii::$app->getModule('affiliate')->params['not_release_object']) || Yii::$app->user->can(User::DEV) || Yii::$app->user->can('admin');
     }
 }

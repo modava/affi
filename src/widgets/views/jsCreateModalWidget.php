@@ -15,21 +15,35 @@
             dataType: 'json',
             data: formModal.serialize() + '&model=<?=$modelName?>'
         }).done(res => {
-            $('.ModalContainer').modal('hide');
-            $.toast({
-                heading: 'Thông báo',
-                text: 'Tạo mới thành công',
-                position: 'top-right',
-                class: 'jq-toast-success',
-                hideAfter: 3500,
-                stack: 6,
-                showHideTransition: 'fade'
-            });
+            debugger;
+            if (res.success) {
+                $('.ModalContainer').modal('hide');
+                $.toast({
+                    heading: 'Thông báo',
+                    text: 'Tạo mới thành công',
+                    position: 'top-right',
+                    class: 'jq-toast-success',
+                    hideAfter: 3500,
+                    stack: 6,
+                    showHideTransition: 'fade'
+                });
 
-            // Trigger Event
-            const event = new Event('post-object-created');
-            document.getElementsByTagName('body')[0].dispatchEvent(event);
-
+                // Trigger Event
+                const event = new Event('post-object-created');
+                document.getElementsByTagName('body')[0].dispatchEvent(event);
+            }
+            else {
+                $('.ModalContainer').modal('hide');
+                $.toast({
+                    heading: 'Thông báo',
+                    text: 'Tạo mới thất bại',
+                    position: 'top-right',
+                    class: 'jq-toast-danger',
+                    hideAfter: 3500,
+                    stack: 6,
+                    showHideTransition: 'fade'
+                });
+            }
         }).fail(f => {
             $('.ModalContainer').modal('hide');
             $.toast({

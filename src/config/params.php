@@ -13,6 +13,10 @@ return [
         '1' => AffiliateModule::t('affiliate', 'Male'),
         '2' => AffiliateModule::t('affiliate', 'Other'),
     ],
+    'customer_status' => [
+        '0' => AffiliateModule::t('affiliate', 'Đang làm dịch vụ'),
+        '1' => AffiliateModule::t('affiliate', 'Đã hoàn thành dịch vụ'),
+    ],
     'promotion_type' => [
         '0' => AffiliateModule::t('affiliate', 'Discount Percent In Order'),
         '1' => AffiliateModule::t('affiliate', 'Discount Amount In Order'),
@@ -24,13 +28,19 @@ return [
             'complete_customer_service' => "complete-customer-service",
             'list_thao_tac' => "list-thao-tac",
             'get_customer' => "get-customer",
+            'create_note' => "save-log-cskh",
         ],
-        'header' => ['X-Api-Key: qWnUiio9_xxRpExYzqSyzCqn3Gz3ZjP6jN_pxKUX'],
+        'header' => ['X-Api-Key: qWnUiio9_xxRpExYzqSyzCqn3Gz3ZjP6jN_pxKUX'], // @todo Refactor code here: chuyển MyAurisApi vào model
+        'headers' => ['X-Api-Key' => 'qWnUiio9_xxRpExYzqSyzCqn3Gz3ZjP6jN_pxKUX'],
         'row_per_page' => 10
     ],
     'not_release_object' => [
         'Coupon',
         'CouponType',
         'Order',
+    ],
+    'note_type' => [
+        '0' => AffiliateModule::t('affiliate', 'For This System'),
+        '1' => AffiliateModule::t('affiliate', 'For Partner System'),
     ]
 ];
