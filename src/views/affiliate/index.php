@@ -174,7 +174,7 @@ $sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[a
                                             [
                                                 'class' => 'yii\grid\ActionColumn',
                                                 'header' => AffiliateModule::t('affiliate', 'Actions'),
-                                                'template' => '{create-customer} {create-coupon} {create-call-note} {hidden-input-customer-partner-info} {hidden-input-customer-info}',
+                                                'template' => '{create-customer} {create-coupon} {create-call-note} {create-feedback} {hidden-input-customer-partner-info} {hidden-input-customer-info}',
                                                 'buttons' => [
                                                     'create-coupon' => function ($url, $model) {
                                                         if (!Utils::isReleaseObject('Coupon')) return '';
@@ -200,6 +200,20 @@ $sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[a
                                                                 'data-pjax' => 0,
                                                                 'data-partner' => 'myaris',
                                                                 'class' => 'btn btn-success btn-xs create-call-note m-1'
+                                                            ]);
+                                                        }
+
+                                                        return '';
+
+                                                    },
+                                                    'create-feedback' => function ($url, $model) {
+                                                        if (CustomerTable::getRecordByPartnerInfoFromCache(Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'], $model['id'])) {
+                                                            return Html::a('<span class="material-icons" style="font-size: 12px">feedback</span>', 'javascript:;', [
+                                                                'title' => AffiliateModule::t('affiliate', 'Create Feedback'),
+                                                                'alia-label' => AffiliateModule::t('affiliate', 'Create Feedback'),
+                                                                'data-pjax' => 0,
+                                                                'data-partner' => 'myaris',
+                                                                'class' => 'btn btn-success btn-xs create-feedback m-1'
                                                             ]);
                                                         }
 
@@ -251,7 +265,7 @@ $sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[a
                                             [
                                                 'class' => 'yii\grid\ActionColumn',
                                                 'header' => AffiliateModule::t('affiliate', 'Related Record'),
-                                                'template' => '{list-coupon} {list-note}',
+                                                'template' => '{list-coupon} {list-note} {list-feedback}',
                                                 'buttons' => [
                                                     'list-coupon' => function ($url, $model) {
                                                         if (!Utils::isReleaseObject('Coupon')) return '';
@@ -297,7 +311,28 @@ $sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[a
                                                         }
 
                                                         return '';
+                                                    },
+                                                    'list-feedback' => function ($url, $model) {
+                                                        $record = CustomerTable::getRecordByPartnerInfoFromCache(Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'], $model['id']);
 
+                                                        if ($record) {
+                                                            $count = \modava\affiliate\models\Feedback::countByCustomer($record['id']);
+
+                                                            $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
+
+                                                            return Html::a('<span class="material-icons" style="font-size: 12px">feedback</span>' . $bage, Url::toRoute(['/affiliate/feedback', 'FeedbackSearch[customer_id]' => $record['id']]),[
+                                                                'title' => AffiliateModule::t('affiliate', 'List Feedback'),
+                                                                'alia-label' => AffiliateModule::t('affiliate', 'List Feedback'),
+                                                                'data-pjax' => 0,
+                                                                'class' => 'btn btn-success btn-xs list-relate-record m-1',
+                                                                'data-related-id' => $record['id'],
+                                                                'data-related-field' => 'customer_id',
+                                                                'data-model' => 'Feedback',
+                                                                'target' => '_blank'
+                                                            ]);
+                                                        }
+
+                                                        return '';
                                                     },
                                                 ],
                                                 'headerOptions' => [
@@ -366,6 +401,13 @@ $('.create-call-note').on('click', function() {
     let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_info[]"]').val());
     openCreateModal({model: 'Note', 
         'Note[customer_id]' : customerInfo.id,
+    });
+});
+
+$('.create-feedback').on('click', function() {
+    let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_info[]"]').val());
+    openCreateModal({model: 'Feedback', 
+        'Feedback[customer_id]' : customerInfo.id,
     });
 });
 

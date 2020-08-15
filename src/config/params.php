@@ -42,5 +42,9 @@ return [
     'note_type' => [
         '0' => AffiliateModule::t('affiliate', 'For This System'),
         '1' => AffiliateModule::t('affiliate', 'For Partner System'),
-    ]
+    ],
+    'feedback_type' => [
+        '0' => AffiliateModule::t('affiliate', 'Unsatisfied'),
+        '1' => AffiliateModule::t('affiliate', 'Satisfied'),
+    ],
 ];
