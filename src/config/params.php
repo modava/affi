@@ -25,14 +25,22 @@ return [
         'url_website' => "https://dashboard.myauris.vn",
         'url_end_point' => "https://dashboard.myauris.vn/api/v2/affiliate/",
         'endpoint' => [
-            'complete_customer_service' => "complete-customer-service",
-            'list_thao_tac' => "list-thao-tac",
+            'customer' => "customer",
             'get_customer' => "get-customer",
             'create_note' => "save-log-cskh",
         ],
         'header' => ['X-Api-Key: qWnUiio9_xxRpExYzqSyzCqn3Gz3ZjP6jN_pxKUX'], // @todo Refactor code here: chuyển MyAurisApi vào model
         'headers' => ['X-Api-Key' => 'qWnUiio9_xxRpExYzqSyzCqn3Gz3ZjP6jN_pxKUX'],
-        'row_per_page' => 10
+        'row_per_page' => 10,
+        'field_to_endpoint' => [
+//             'co_so' => 'co-so', // @todo
+            'permission_user' => 'nhan-vien-le-tan',
+            'customer_come_time_to' => 'status-dat-hen',
+            'directsale' => 'nhan-vien-direct-sale',
+            'nguon_online' => 'nguon-customer-online',
+            'id_dich_vu' => 'dich-vu-online',
+            'thao_tac' => 'list-thao-tac',
+        ]
     ],
     'not_release_object' => [
         'Coupon',

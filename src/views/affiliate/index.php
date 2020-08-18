@@ -14,24 +14,14 @@ use \modava\affiliate\models\Coupon;
 use \modava\affiliate\helpers\Utils;
 use modava\affiliate\helpers\AffiliateDisplayHelper;
 
-/* @var $listThaotac */
+/* @var $dropdowns */
 /* @var $dataProvider */
-/* @var $payload */
 
 $this->title = AffiliateModule::t('affiliate', 'Customer');
 $this->params['breadcrumbs'][] = $this->title;
 $myAuris = PartnerSearch::getRecordBySlug('dashboard-myauris');
 Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $myAuris->primaryKey;
 
-$currentRoute = Url::toRoute(['/' . Yii::$app->requestedRoute]);
-$currentDate = date('d-m-Y');
-$timestapmtCurrentDate = strtotime($currentDate);
-$current1Month = date("d-m-Y", strtotime("-1 month", $timestapmtCurrentDate));
-$current3Months = date("d-m-Y", strtotime("-3 month", $timestapmtCurrentDate));
-$current6Months = date("d-m-Y", strtotime("-6 month", $timestapmtCurrentDate));
-$oneMonthRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[appointment_time]' => "$current1Month - $current1Month"]);
-$threeMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[appointment_time]' => "$current3Months - $current3Months"]);
-$sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[appointment_time]' => "$current6Months - $current6Months"]);
 ?>
 
 <?= ToastrWidget::widget(['key' => 'toastr-affiliate-list']) ?>
@@ -42,57 +32,7 @@ $sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[a
         <!-- Row -->
         <div class="row">
             <div class="col-xl-12">
-                <form action="<?=Url::toRoute(['/affiliate/affiliate'])?>" method="get" width="100%">
-                    <input type="hidden" name="is_completed_service" value="<?=$payload['ClinicSearch[last_dieu_tri]']?>">
-                <div class="hk-sec-wrapper">
-                    <div class="row">
-                        <div class="col-md-4 col-sm-6 col-lg-4">
-                            <div class="form-group row">
-                                <div class="col-12">
-                                    <input type="text" name="ClinicSearch[keyword]" class="form-control" placeholder="<?=AffiliateModule::t('affiliate', 'Full Name, Phone, Code')?>" value="<?=$payload['ClinicSearch[keyword]']?>"></div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6 col-lg-4">
-                            <div class="form-group row">
-                                <div class="col-4"><?=AffiliateModule::t('affiliate', 'Date Range')?>: </div>
-                                <div class="col-8">
-                                    <input type="text" name="ClinicSearch[appointment_time]" class="form-control" placeholder="<?=AffiliateModule::t('affiliate', 'Date')?>" value="<?=$payload['ClinicSearch[appointment_time]']?>"></div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6 col-lg-4">
-                            <div class="form-group row">
-                                <div class="col-4"><?=AffiliateModule::t('affiliate', 'Completed Clinic')?>: </div>
-                                <div class="col-8">
-                                    <input type="checkbox" name="ClinicSearch[last_dieu_tri]" class="form-check-input"
-                                           placeholder="<?=AffiliateModule::t('affiliate', 'Completed Clinic')?>" <?= $payload['ClinicSearch[last_dieu_tri]'] ? 'checked' : ''?>></div>
-                            </div>
-                        </div>
-<!--                        <div class="col-md-4 col-sm-6 col-lg-4">-->
-<!--                            <div class="form-group row">-->
-<!--                                <div class="col-4">-->
-<!--                                    --><?//=AffiliateModule::t('affiliate', 'Action')?><!--:-->
-<!--                                </div>-->
-<!--                                <div class="col-6">-->
-<!--                                    <select name="ClinicSearch[thao_tac]" id="" class="form-control">-->
-<!--                                        <option value="">--><?//=AffiliateModule::t('affiliate', 'Select an action...')?><!--</option>-->
-<!--                                        --><?php //foreach($listThaotac as $id => $name): ?>
-<!--                                            <option value="--><?//=$id?><!--" --><?php //if ($payload['ClinicSearch[thao_tac]'] === (string) $id) echo 'selected';?><!-- >--><?//=$name?><!--</option>-->
-<!--                                        --><?php //endforeach;?>
-<!--                                    </select>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-                        <div class="col-12">
-                            <a href="<?=$currentRoute?>" type="button" class="btn-success btn"><?=AffiliateModule::t('affiliate', 'Default')?></a>
-                            <a href="<?=$oneMonthRoute?>" type="button" class="search-btn btn-info btn"><?=AffiliateModule::t('affiliate', 'Customer 1 Month')?></a>
-                            <a href="<?=$threeMonthsRoute?>" type="button" class="search-btn btn-pink btn"><?=AffiliateModule::t('affiliate', 'Customer 3 Month')?></a>
-                            <a href="<?=$sixMonthsRoute?>" type="button" class="search-btn btn-indigo btn"><?=AffiliateModule::t('affiliate', 'Customer 6 Month')?></a>
-                            <button type="submit" class="btn-primary btn"><?=AffiliateModule::t('affiliate', 'Search')?></button>
-                            <a href="<?=Url::toRoute(['clear-cache'])?>" class="btn btn-link btn-sm pull-right"><?=AffiliateModule::t('affiliate', 'Clear Cache')?></a>
-                        </div>
-                    </div>
-                </div>
-                </form>
+                <?=$this->render('_search', ['dropdowns' => $dropdowns, 'model' => $model]);?>
             </div>
 
             <div class="col-xl-12">
@@ -364,8 +304,8 @@ $sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[a
                                                 'format' => 'raw',
                                                 'headerOptions' => ['class' => 'header-300'],
                                                 'contentOptions' => ['class' => 'header-400'],
-                                                'value' => function ($model) use ($listThaotac) {
-                                                    return AffiliateDisplayHelper::getOrderInformation($model, $listThaotac);
+                                                'value' => function ($model) use ($dropdowns) {
+                                                    return AffiliateDisplayHelper::getOrderInformation($model, $dropdowns['thao_tac']);
                                                 }
                                             ],
                                             [
@@ -373,8 +313,8 @@ $sixMonthsRoute = Url::toRoute(['/' . Yii::$app->requestedRoute, 'ClinicSearch[a
                                                 'format' => 'raw',
                                                 'headerOptions' => ['class' => 'header-300'],
                                                 'contentOptions' => ['class' => 'header-400 pr'],
-                                                'value' => function ($model) use ($listThaotac) {
-                                                    return AffiliateDisplayHelper::getTreatmentSchedule($model, $listThaotac);
+                                                'value' => function ($model) use ($dropdowns) {
+                                                    return AffiliateDisplayHelper::getTreatmentSchedule($model, $dropdowns['thao_tac']);
                                                 }
                                             ],
                                         ],
@@ -428,7 +368,6 @@ $('.create-customer').on('click', function() {
         'Customer[province_id]' : customerInfo.province,
         'Customer[district_id]' : customerInfo.district,
         'Customer[address]' : customerInfo.address,
-        'Customer[status]' : $('[name="is_completed_service"]').val(),
         'Customer[date_accept_do_service]' : customerInfo.customer_come_date ? moment.unix(customerInfo.customer_come_date).format("YYYY-MM-DD") : '', 
         'Customer[date_checkin]' : customerInfo.time_lichhen ? moment.unix(customerInfo.time_lichhen).format("YYYY-MM-DD") : ''
     });
@@ -438,17 +377,6 @@ $('body').on('post-object-created', function() {
     window.location.reload();
 });
 
-$('[name="ClinicSearch[appointment_time]"]').daterangepicker({
-    opens: 'right',
-    cancelClass: "btn-secondary",
-    showDropdowns: true,
-    autoApply: true,
-    locale:{
-        format:'DD-MM-YYYY',
-    }
-}, function(start, end, label) {
-    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-});
 $('.customer-img-container').lightGallery();
 
 $('.search-btn').on('click', function(e) {

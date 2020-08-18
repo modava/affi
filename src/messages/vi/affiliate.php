@@ -111,4 +111,5 @@ return [
     'Unsatisfied' => 'Không hài lòng',
     'Satisfied' => 'Hài lòng',
     'Satisfied Feedback' => 'Feedback Hài lòng',
+    'Date Create' => 'Ngày tạo',
 ];

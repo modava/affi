@@ -64,7 +64,7 @@ class MyAurisApi
 
         $apiParam = \Yii::$app->getModule('affiliate')->params['myauris_config'];
 
-        $url = $apiParam['url_end_point'] . $apiParam['endpoint']['complete_customer_service'] . '?per-page=' . $apiParam['row_per_page'] . '&' . http_build_query($payload);
+        $url = $apiParam['url_end_point'] . $apiParam['endpoint']['customer'] . '?per-page=' . $apiParam['row_per_page'] . '&' . http_build_query($payload);
 
         $curlHelper = new CurlHelper($url);
         $curlHelper->setHeader($apiParam['header']);
