@@ -130,7 +130,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             }
                                         ],
 										'satisfied_feedback:raw',
-										//'description:ntext',
+										'description:raw',
                                         [
                                             'attribute' => 'created_by',
                                             'value' => 'userCreated.userProfile.fullname',

@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						'pre_total',
 						'discount',
 						'final_total',
-						'description:ntext',
+						'description:raw',
 						'created_at:datetime',
 						'updated_at:datetime',
                         [

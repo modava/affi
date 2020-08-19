@@ -86,6 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return $model->partner_id ? $model->partner->title : null;
                             },
                         ],
+                        'description:raw',
 						'created_at:datetime',
 						'updated_at:datetime',
                         [

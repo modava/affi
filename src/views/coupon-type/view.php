@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						'id',
 						'title',
 						'slug',
-						'description:html',
+						'description:raw',
 						'created_at:datetime',
 						'updated_at:datetime',
                         [

@@ -111,7 +111,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 return Yii::$app->getModule('affiliate')->params['status'][$model->status];
                                             }
                                         ],
-										'description:ntext',
+										'description:raw',
                                         [
                                             'attribute' => 'created_by',
                                             'value' => 'userCreated.userProfile.fullname',

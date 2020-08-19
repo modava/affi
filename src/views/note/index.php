@@ -129,7 +129,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     : '';
                                             }
                                         ],
-										'description:html',
+										'description:raw',
                                         [
                                             'attribute' => 'created_by',
                                             'value' => 'userCreated.userProfile.fullname',

@@ -92,7 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'userUpdated.userProfile.fullname',
                             'label' => AffiliateModule::t('affiliate', 'Updated By')
                         ],
-                        'description:html',
+                        'description:raw',
                     ],
                 ]) ?>
             </section>
