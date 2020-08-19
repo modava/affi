@@ -35,7 +35,7 @@ return [
         'field_to_endpoint' => [
 //             'co_so' => 'co-so', // @todo
             'permission_user' => 'nhan-vien-le-tan',
-            'customer_come_time_to' => 'status-dat-hen',
+            'customer_come_time_to' => 'status-customer-come',
             'directsale' => 'nhan-vien-direct-sale',
             'nguon_online' => 'nguon-customer-online',
             'id_dich_vu' => 'dich-vu-online',
