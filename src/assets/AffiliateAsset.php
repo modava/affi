@@ -9,7 +9,7 @@ use yii\web\AssetBundle;
  */
 class AffiliateAsset extends AssetBundle
 {
-    public $sourcePath = '@backendWeb';
+    public $sourcePath = '@modava-assets';
     public $css = [
         'vendors/datatables.net-dt/css/jquery.dataTables.min.css',
         'vendors/bootstrap/dist/css/bootstrap.min.css',
