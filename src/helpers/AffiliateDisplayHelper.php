@@ -51,7 +51,8 @@ class AffiliateDisplayHelper
         ]);
         $content .= Html::a('<i class="fa fa-paste"></i>', 'javascript: void(0)', [
             'class' => 'btn btn-xs btn-info copy ml-1',
-            'title' => 'Copy'
+            'title' => 'Copy',
+            'data-copy' => $model['phone']
         ]);
         return $content;
     }

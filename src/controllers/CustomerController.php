@@ -2,6 +2,8 @@
 
 namespace modava\affiliate\controllers;
 
+use modava\affiliate\models\search\CustomerPartnerSearch;
+use modava\affiliate\models\table\CustomerTable;
 use yii\db\Exception;
 use Yii;
 use yii\helpers\Html;
@@ -188,6 +190,39 @@ class CustomerController extends MyController
             if ($model->load(Yii::$app->request->post())) {
                 return ActiveForm::validate($model);
             }
+        }
+    }
+
+    public function actionGetInfo($phone = null)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        try {
+            // Check customer trong hệ thống trước
+            $customer = CustomerTable::getrecordByPhone($phone);
+            $result =  [
+                'ho_ten' => null,
+                'phu_trach' => null
+            ];
+
+            if ($customer !== null) {
+                $result =  [
+                    'ho_ten' => $customer->full_name,
+                    'phu_trach' => $customer->userCreated->userProfile->fullname
+                ];
+            } else {
+                $customer = CustomerPartnerSearch::getCustomerByPhone($phone);
+
+                if ($customer) {
+                    $result =  [
+                        'ho_ten' => $customer['full_name'],
+                        'phu_trach' => null
+                    ];
+                }
+            }
+
+            return $result;
+        } catch (\yii\base\Exception $ex) {
+            return [];
         }
     }
 

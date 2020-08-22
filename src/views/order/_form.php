@@ -37,6 +37,7 @@ use \modava\affiliate\models\table\CouponTable;
         <div class="col-12">
             <?= $form->field($model, 'description')->widget(\modava\tiny\TinyMce::class, [
                 'options' => ['rows' => 6],
+                'type' => 'content'
             ]) ?>
         </div>
     </div>

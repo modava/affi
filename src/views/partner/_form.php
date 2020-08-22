@@ -17,6 +17,7 @@ use modava\affiliate\AffiliateModule;
 
         <?= $form->field($model, 'description')->widget(\modava\tiny\TinyMce::class, [
             'options' => ['rows' => 6],
+            'type' => 'content'
         ]) ?>
 
         <div class="form-group">

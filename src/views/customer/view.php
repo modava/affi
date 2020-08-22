@@ -147,7 +147,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return $model->partner_id ? Html::a($model->partner->title, Url::toRoute(['/affiliate/partner/view', 'id' => $model->partner_id])) : '';
                             }
                         ],
-						'description:ntext',
+						'address:raw',
+						'description:raw',
 						'created_at:datetime',
 						'updated_at:datetime',
                         [

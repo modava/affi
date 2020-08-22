@@ -213,7 +213,7 @@ $datapickerAddon = '<button type="button" class="btn btn-light clear-value"><spa
             <div class="form-group row">
                 <div class="col-12">
                     <?= $form->field($model, 'id_dich_vu', $templateInput)->label(AffiliateModule::t('affiliate',
-                        'Nguồn'),)->dropDownList(
+                        'Nguồn'))->dropDownList(
                         $dropdowns['id_dich_vu'],
                         ['prompt' => '---' . AffiliateModule::t('affiliate', 'Nguồn') . '---']
                     ) ?>

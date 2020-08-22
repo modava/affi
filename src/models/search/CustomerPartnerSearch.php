@@ -12,7 +12,9 @@ use yii\data\ArrayDataProvider;
 class CustomerPartnerSearch extends Model
 {
     static $CACHE_TIME = 86400; // 1 day
+    static $CACHE_TIME_CUSTOMER_INFO = 31536000; // 1 year
     static $CACHE_MANAGE_KEY = 'redis-affiliate-dashboard-myauris-list-home-key';
+    const ID_THAO_TAC_LAP = 2;
 
     public $creation_time_from;
     public $creation_time_to;
@@ -59,8 +61,15 @@ class CustomerPartnerSearch extends Model
         ];
     }
 
-    public function search($params)
+    public function search($params, $loadDefaultSearch = false)
     {
+        if ($loadDefaultSearch) {
+            // Set default thao tac
+            if (!array_key_exists('ClinicSearch', $params) || !array_key_exists('thao_tac', $params['ClinicSearch'])) {
+                $params['ClinicSearch']['thao_tac'] = self::ID_THAO_TAC_LAP;
+            }
+        }
+
         $this->load($params);
 
         $myauris_config = \Yii::$app->getModule('affiliate')->params['myauris_config'];
@@ -114,7 +123,8 @@ class CustomerPartnerSearch extends Model
         }
     }
 
-    public function getDropdowns() {
+    public function getDropdowns()
+    {
         $apiParam = \Yii::$app->getModule('affiliate')->params['myauris_config'];
 
         $listDropdown = [];
@@ -157,6 +167,48 @@ class CustomerPartnerSearch extends Model
             return [];
         } catch (GuzzleException $exception) {
             return [];
+        }
+    }
+
+    public static function getCustomerByPhone($phone)
+    {
+        if (!$phone) return null;
+
+        $cache = Yii::$app->cache;
+        $cacheKey = "redis-affiliate-dashboard-myauris-customer-by-phone-{$phone}";
+        $params['ClinicSearch']['keyword'] = $phone;
+
+        if ($cache->exists($cacheKey)) return $cache->get($cacheKey);
+
+        $myauris_config = \Yii::$app->getModule('affiliate')->params['myauris_config'];
+
+        $url = $myauris_config['url_end_point'] . $myauris_config['endpoint']['customer'];
+
+        $client = new Client();
+
+        try {
+            $res = $client->request('GET', $url, [
+                'headers' => Yii::$app->getModule('affiliate')->params['myauris_config']['headers'],
+                'query' => $params
+            ]);
+
+            $response = \GuzzleHttp\json_decode($res->getBody(), true);
+
+            if ($res->getStatusCode() == 200) {
+                if (array_key_exists('data', $response) && count($response['data'])) {
+                    $return = $response['data'][0];
+                } else {
+                    return null;
+                }
+
+                $cache->set($cacheKey, $return, self::$CACHE_TIME_CUSTOMER_INFO);
+                self::_manageCacheKey($cacheKey);
+                return $return;
+            }
+
+            return null;
+        } catch (GuzzleException $exception) {
+            return null;
         }
     }
 
@@ -208,7 +260,8 @@ class CustomerPartnerSearch extends Model
         ]);
     }
 
-    private function _getPage() {
+    private function _getPage()
+    {
         $page = (int)\Yii::$app->request->get('page');
         return $page > 0 ? $page : 1;
     }

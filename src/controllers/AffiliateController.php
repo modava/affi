@@ -13,7 +13,7 @@ class AffiliateController extends \backend\components\MyController
     public function actionIndex()
     {
         $model = new CustomerPartnerSearch();
-        $response = $model->search(Yii::$app->request->queryParams);
+        $response = $model->search(Yii::$app->request->queryParams, true);
 
         // Get List Thao Tac
         $dropdowns = $model->getDropdowns();
@@ -24,12 +24,6 @@ class AffiliateController extends \backend\components\MyController
                 'title' => 'Thông báo',
                 'text' => 'Đã có lỗi kết nối!',
                 'type' => 'warning'
-            ]);
-
-            return $this->render('index', [
-                'dropdowns' => $dropdowns,
-                'model' => $model,
-                'dataProvider' => $response['dataProvider']
             ]);
         }
 
