@@ -1,5 +1,6 @@
 <?php
 use modava\affiliate\AffiliateModule;
+use modava\affiliate\models\Coupon;
 
 return [
     'affiliateName' => 'Affiliate',
@@ -7,6 +8,10 @@ return [
     'status' => [
         '0' => AffiliateModule::t('affiliate', 'Tạm ngưng'),
         '1' => AffiliateModule::t('affiliate', 'Hiển thị'),
+    ],
+    'active' => [
+        '0' => AffiliateModule::t('affiliate', 'Ngừng hoạt động'),
+        '1' => AffiliateModule::t('affiliate', 'Hoạt động'),
     ],
     'sex' => [
         '0' => AffiliateModule::t('affiliate', 'Female'),
@@ -18,8 +23,8 @@ return [
         '1' => AffiliateModule::t('affiliate', 'Đã hoàn thành dịch vụ'),
     ],
     'promotion_type' => [
-        '0' => AffiliateModule::t('affiliate', 'Discount Percent In Order'),
-        '1' => AffiliateModule::t('affiliate', 'Discount Amount In Order'),
+        Coupon::DISCOUNT_PERCENT => AffiliateModule::t('affiliate', 'Discount Percent In Order'),
+        Coupon::DISCOUNT_AMOUNT => AffiliateModule::t('affiliate', 'Discount Amount In Order'),
     ],
     'myauris_config' => [
         'url_website' => "https://dashboard.myauris.vn",
@@ -43,9 +48,6 @@ return [
         ]
     ],
     'not_release_object' => [
-        'Coupon',
-        'CouponType',
-        'Order',
     ],
     'note_type' => [
         '0' => AffiliateModule::t('affiliate', 'For This System'),
@@ -56,4 +58,14 @@ return [
         '1' => AffiliateModule::t('affiliate', 'Satisfied'),
         '2' => AffiliateModule::t('affiliate', 'Bình thường'),
     ],
+    'receipt_status' => [
+        '0' => AffiliateModule::t('affiliate', 'Thanh toán'),
+        '1' => AffiliateModule::t('affiliate', 'Đặt cọc'),
+        '2' => AffiliateModule::t('affiliate', 'Hoàn Cọc'),
+    ],
+    'order_status' => [
+        '0' => AffiliateModule::t('affiliate', 'Chưa hoàn thành'),
+        '1' => AffiliateModule::t('affiliate', 'Hoàn thành'),
+        '2' => AffiliateModule::t('affiliate', 'Hủy'),
+    ]
 ];

@@ -37,6 +37,10 @@ use Yii;
 class Coupon extends CouponTable
 {
     public $toastr_key = 'coupon';
+
+    const DISCOUNT_PERCENT = 0;
+    const DISCOUNT_AMOUNT = 1;
+
     public function behaviors()
     {
         return array_merge(
@@ -165,5 +169,13 @@ class Coupon extends CouponTable
         return (int) self::find()
             ->where(['customer_id' => $customerId])
             ->count();
+    }
+
+    public static function checkCoupon($code) {
+        return self::find()
+            ->where(['coupon_code' => $code])
+            ->andWhere('now() <= expired_date')
+            ->andWhere('quantity_used < quantity')
+            ->one();
     }
 }

@@ -53,12 +53,7 @@ $model->expired_date = $model->expired_date != null
             ]) ?>
         </div>
         <div class="col-6">
-            <?= $form->field($model, 'customer_id')->dropDownList(
-                ArrayHelper::map(\modava\affiliate\models\table\CustomerTable::getAllRecords(), 'id', function($model) { return $model['full_name'] . ' - ' . $model['phone']; }),
-                [ 'prompt' => AffiliateModule::t('affiliate', 'Select an option ...'),
-                    'id' => 'customer-id'
-                ]
-            ) ?>
+            <?= $form->field($model, 'customer_id')->input('text', ['readonly' => 'readonly']) ?>
         </div>
         <div class="col-6">
             <?= $form->field($model, 'coupon_type_id')->dropDownList(
@@ -96,14 +91,32 @@ $model->expired_date = $model->expired_date != null
 <?= JsCreateModalWidget::widget(['formClassName' => 'coupon_form', 'modelName' => 'Coupon']) ?>
 
 <?php
+$controllerURL = Url::toRoute(['/affiliate/coupon/generate-code']);
 $script = <<< JS
-function generateCouponCode(upperCase = false) {
-    let code = Math.random(10).toString(36).substr(2);
-    return upperCase ? code.toUpperCase() : code;
+function generateCouponCode(customerId, upperCase = false) {
+    return new Promise((resolve, reject) => {
+        $.get('$controllerURL?customer_id=' + customerId, function(result, status, xhr) {
+            debugger;
+            if (status === 'success') {
+                if (result.success) {
+                    resolve(result.data);
+                }
+            }
+            reject();
+        });
+    });
 }
 
 $('#js-generate-coupon-code').on('click', function() {
-    $('#coupon-coupon_code').val(generateCouponCode()).trigger('change');
+    debugger;
+    let customerId = $('#coupon_form').find('[name="Coupon[customer_id]"]').val();
+    if (customerId) {
+        generateCouponCode(customerId).then((data) => {
+            console.log(data);
+            $('#coupon-coupon_code').val(data).trigger('change');
+        })
+    }
+    $('#coupon-coupon_code').val('').trigger('change');
 });
 
 $('#coupon-coupon_code').on('change keyup blur', function() {

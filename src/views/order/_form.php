@@ -1,5 +1,6 @@
 <?php
 
+use dosamigos\datepicker\DatePicker;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -21,18 +22,43 @@ use \modava\affiliate\models\table\CouponTable;
         </div>
         <div class="col-6">
             <?= $form->field($model, 'coupon_id')->dropDownList(
-                    ArrayHelper::map(CouponTable::getAll(), 'id', 'coupon_code'),
-                    [ 'prompt' => AffiliateModule::t('affiliate', 'Select an option ...') ]
+                ArrayHelper::map(CouponTable::getAll(), 'id', 'coupon_code'),
+                ['prompt' => AffiliateModule::t('affiliate', 'Select an option ...')]
             ) ?>
         </div>
         <div class="col-6">
-            <?= $form->field($model, 'pre_total')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'partner_order_code')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-6">
-            <?= $form->field($model, 'discount')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'partner_customer_id')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-6">
-            <?= $form->field($model, 'final_total')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'date_create')->widget(DatePicker::class, [
+                'addon' => '<button type="button" class="btn btn-increment btn-light"><i class="ion ion-md-calendar"></i></button>',
+                'clientOptions' => [
+                    'autoclose' => true,
+                    'format' => 'dd-mm-yyyy',
+                    'todayHighlight' => true,
+                ]
+            ]) ?>
+        </div>
+        <div class="col-6">
+            <?= $form->field($model, 'status')->dropDownList(
+                Yii::$app->getModule('affiliate')->params['order_status'],
+                ['prompt' => AffiliateModule::t('affiliate', 'Select an option ...')]
+            ) ?>
+        </div>
+        <div class="col-6">
+            <?= $form->field($model, 'payment_method')->textInput() ?>
+        </div>
+        <div class="col-6">
+            <?= $form->field($model, 'pre_total')->textInput(['maxlength' => true, 'readonly' => true]) ?>
+        </div>
+        <div class="col-6">
+            <?= $form->field($model, 'discount')->textInput(['maxlength' => true, 'readonly' => true]) ?>
+        </div>
+        <div class="col-6">
+            <?= $form->field($model, 'final_total')->textInput(['maxlength' => true, 'readonly' => true]) ?>
         </div>
         <div class="col-12">
             <?= $form->field($model, 'description')->widget(\modava\tiny\TinyMce::class, [
@@ -41,9 +67,9 @@ use \modava\affiliate\models\table\CouponTable;
             ]) ?>
         </div>
     </div>
-        <div class="form-group">
-            <?= Html::submitButton(AffiliateModule::t('affiliate', 'Save'), ['class' => 'btn btn-success']) ?>
-        </div>
+    <div class="form-group">
+        <?= Html::submitButton(AffiliateModule::t('affiliate', 'Save'), ['class' => 'btn btn-success']) ?>
+    </div>
 
     <?php ActiveForm::end(); ?>
 </div>

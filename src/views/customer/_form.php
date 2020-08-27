@@ -102,7 +102,7 @@ $model->country_id = 237; // Viet Name
             <?= $form->field($model,
                 'country_id')->dropDownList(ArrayHelper::map(LocationCountryTable::getAllCountry(Yii::$app->language),
                 'id', 'CommonName'), [
-                'prompt' => AffiliateModule::t('customer', 'Chọn quốc gia...'),
+                'prompt' => AffiliateModule::t('affiliate', 'Chọn quốc gia...'),
                 'class' => 'form-control load-data-on-change',
                 'load-data-element' => '#select-province',
                 'load-data-url' => Url::toRoute(['/location/location-province/get-province-by-country']),
@@ -117,7 +117,7 @@ $model->country_id = 237; // Viet Name
                 'province_id')->dropDownList(ArrayHelper::map(LocationProvinceTable::getProvinceByCountry($model->country_id,
                 Yii::$app->language), 'id', 'name'), [
                 'id' => 'select-province',
-                'prompt' => AffiliateModule::t('customer', 'Chọn Tỉnh/Thành phố...'),
+                'prompt' => AffiliateModule::t('affiliate', 'Chọn Tỉnh/Thành phố...'),
                 'class' => 'form-control load-data-on-change',
                 'load-data-element' => '#select-district',
                 'load-data-url' => Url::toRoute(['/location/location-district/get-district-by-province']),
@@ -132,7 +132,7 @@ $model->country_id = 237; // Viet Name
                 'district_id')->dropDownList(ArrayHelper::map(LocationDistrictTable::getDistrictByProvince($model->province_id,
                 Yii::$app->language), 'id', 'name'), [
                 'id' => 'select-district',
-                'prompt' => AffiliateModule::t('customer', 'Chọn Quận/Huyện...'),
+                'prompt' => AffiliateModule::t('affiliate', 'Chọn Quận/Huyện...'),
                 'class' => 'form-control load-data-on-change',
                 'load-data-element' => '#select-ward',
                 'load-data-url' => Url::toRoute(['/location/location-ward/get-ward-by-district']),
@@ -145,7 +145,7 @@ $model->country_id = 237; // Viet Name
             <?= $form->field($model,
                 'ward_id')->dropDownList(ArrayHelper::map(LocationWardTable::getWardByDistrict($model->district_id),
                 'id', 'name'), [
-                'prompt' => AffiliateModule::t('customer', 'Chọn Phường/Xã...'),
+                'prompt' => AffiliateModule::t('affiliate', 'Chọn Phường/Xã...'),
                 'id' => 'select-ward',
             ]) ?>
         </div>

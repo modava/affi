@@ -8,10 +8,10 @@ use modava\affiliate\widgets\NavbarWidgets;
 use modava\affiliate\AffiliateModule;
 
 /* @var $this yii\web\View */
-/* @var $model modava\affiliate\models\Order */
+/* @var $model modava\affiliate\models\Receipt */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => AffiliateModule::t('affiliate', 'Orders'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => AffiliateModule::t('receipt', 'Receipts'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -22,8 +22,21 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- Title -->
     <div class="hk-pg-header">
         <h4 class="hk-pg-title"><span class="pg-title-icon"><span
-                        class="ion ion-md-apps"></span></span><?= Html::encode($this->title) ?>
+                        class="ion ion-md-apps"></span></span><?=AffiliateModule::t('receipt', 'Chi tiết'); ?>: <?= Html::encode($this->title) ?>
         </h4>
+        <p>
+            <a class="btn btn-outline-light" href="<?= Url::to(['create']); ?>"
+                title="<?= AffiliateModule::t('receipt', 'Create'); ?>">
+                <i class="fa fa-plus"></i> <?= AffiliateModule::t('receipt', 'Create'); ?></a>
+            <?= Html::a(AffiliateModule::t('receipt', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(AffiliateModule::t('receipt', 'Delete'), ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => AffiliateModule::t('receipt', 'Are you sure you want to delete this item?'),
+                    'method' => 'post',
+                ],
+            ]) ?>
+        </p>
     </div>
     <!-- /Title -->
 
@@ -36,52 +49,31 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attributes' => [
 						'title',
 						[
-						    'attribute' => 'coupon_id',
+                            'attribute' => 'order_id',
                             'format' => 'raw',
                             'value' => function ($model) {
-                                return Html::a($model->coupon->coupon_code, Url::toRoute(['coupon/view', 'id' => $model->coupon_id]), [
-                                        'target' => '_blank',
-                                        'data-pjax' => 0
-                                ]);
+                                return Html::a($model->order->title, Url::toRoute(['order/view', 'id' => $model->order_id]));
                             }
                         ],
-                        'partner_order_code',
-                        'partner_customer_id',
                         [
                             'attribute' => 'status',
                             'value' => function ($model) {
                                 if ($model->status === null) return null;
 
-                                return Yii::$app->getModule('affiliate')->params['order_status'][$model->status];
+                                return Yii::$app->getModule('affiliate')->params['receipt_status'][$model->status];
                             },
                         ],
-                        'payment_method',
-                        [
-                            'attribute' => 'date_create',
-                            'format' => 'datetime'
-                        ],
-                        [
-                            'attribute' => 'pre_total',
-                            'format' => 'currency',
-                        ],
-                        [
-                            'attribute' => 'discount',
-                            'format' => 'currency',
-                        ],
-                        [
-                            'attribute' => 'final_total',
-                            'format' => 'currency',
-                        ],
-						'description:raw',
+						'total:currency',
+						'payment_method',
 						'created_at:datetime',
 						'updated_at:datetime',
                         [
                             'attribute' => 'userCreated.userProfile.fullname',
-                            'label' => AffiliateModule::t('affiliate', 'Created By')
+                            'label' => AffiliateModule::t('receipt', 'Created By')
                         ],
                         [
                             'attribute' => 'userUpdated.userProfile.fullname',
-                            'label' => AffiliateModule::t('affiliate', 'Updated By')
+                            'label' => AffiliateModule::t('receipt', 'Updated By')
                         ],
                     ],
                 ]) ?>

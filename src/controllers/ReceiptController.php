@@ -2,9 +2,7 @@
 
 namespace modava\affiliate\controllers;
 
-use modava\affiliate\helpers\Utils;
-use modava\affiliate\models\Customer;
-use modava\affiliate\models\search\CustomerPartnerSearch;
+use backend\components\MyComponent;
 use yii\db\Exception;
 use Yii;
 use yii\helpers\Html;
@@ -12,15 +10,13 @@ use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use modava\affiliate\AffiliateModule;
 use backend\components\MyController;
-use modava\affiliate\models\Coupon;
-use modava\affiliate\models\search\CouponSearch;
-use yii\web\Response;
-use yii\widgets\ActiveForm;
+use modava\affiliate\models\Receipt;
+use modava\affiliate\models\search\ReceiptSearch;
 
 /**
- * CouponController implements the CRUD actions for Coupon model.
+ * ReceiptController implements the CRUD actions for Receipt model.
  */
-class CouponController extends MyController
+class ReceiptController extends MyController
 {
     /**
     * {@inheritdoc}
@@ -38,22 +34,25 @@ class CouponController extends MyController
     }
 
     /**
-    * Lists all Coupon models.
+    * Lists all Receipt models.
     * @return mixed
     */
     public function actionIndex()
     {
-        $searchModel = new CouponSearch();
+        $searchModel = new ReceiptSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $totalPage = $this->getTotalPage($dataProvider);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'totalPage'    => $totalPage,
         ]);
-    }
+            }
 
     /**
-    * Displays a single Coupon model.
+    * Displays a single Receipt model.
     * @param integer $id
     * @return mixed
     * @throws NotFoundHttpException if the model cannot be found
@@ -66,13 +65,13 @@ class CouponController extends MyController
     }
 
     /**
-    * Creates a new Coupon model.
+    * Creates a new Receipt model.
     * If creation is successful, the browser will be redirected to the 'view' page.
     * @return mixed
     */
     public function actionCreate()
     {
-        $model = new Coupon();
+        $model = new Receipt();
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->validate() && $model->save()) {
@@ -101,7 +100,7 @@ class CouponController extends MyController
     }
 
     /**
-    * Updates an existing Coupon model.
+    * Updates an existing Receipt model.
     * If update is successful, the browser will be redirected to the 'view' page.
     * @param integer $id
     * @return mixed
@@ -140,7 +139,7 @@ class CouponController extends MyController
     }
 
     /**
-    * Deletes an existing Coupon model.
+    * Deletes an existing Receipt model.
     * If deletion is successful, the browser will be redirected to the 'index' page.
     * @param integer $id
     * @return mixed
@@ -177,76 +176,49 @@ class CouponController extends MyController
         return $this->redirect(['index']);
     }
 
-    public function actionValidate($id = null)
+    /**
+    * @param $perpage
+    */
+    public function actionPerpage($perpage)
     {
-        if (Yii::$app->request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-
-            $model = new Coupon();
-
-            if ($id != null) $model = $this->findModel($id);
-
-            if ($model->load(Yii::$app->request->post())) {
-                return ActiveForm::validate($model);
-            }
-        }
-    }
-
-    public function actionGenerateCode () {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        $customerId = Yii::$app->request->get('customer_id');
-        $customerInfo = Customer::find()->where(['id' => $customerId])->one();
-
-        if ($customerInfo) {
-            $customerPartnerId = $customerInfo->partner_customer_id;
-            $customerInfo = CustomerPartnerSearch::getCustomerById($customerPartnerId);
-
-            if ($customerInfo) {
-                $code = $customerInfo['customer_code'] . '_' . Utils::generateRandomString();
-                return [ 'success' => true, 'data' => str_replace('-', '_', $code)];
-            }
-            else {
-                return [ 'success' => false, 'message' => AffiliateModule::t('affiliate', 'Có lỗi xảy ra')];
-            }
-        }
-
-        return [ 'success' => false, 'message' => AffiliateModule::t('affiliate', 'Không tìm thấy khách hàng')];
-    }
-
-    public function actionCheckCode () {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        $code = \Yii::$app->request->get('code');
-
-        $coupon = Coupon::checkCoupon($code);
-
-        if ($coupon) {
-            return [
-                'success' => true,
-                'message' => AffiliateModule::t('affiliate', 'Mã code do khách hàng {full_name} giới thiệu', ['full_name' => $coupon->customer->full_name])
-            ];
-        }
-
-        return [
-            'success' => false,
-            'message' => AffiliateModule::t('affiliate', 'Mã code không tồn tại hoặc đã được sử dụng')
-        ];
+        MyComponent::setCookies('pageSize', $perpage);
     }
 
     /**
-    * Finds the Coupon model based on its primary key value.
+    * @param $dataProvider
+    * @return float|int
+    */
+    public function getTotalPage($dataProvider)
+    {
+        if (MyComponent::hasCookies('pageSize')) {
+            $dataProvider->pagination->pageSize = MyComponent::getCookies('pageSize');
+        } else {
+            $dataProvider->pagination->pageSize = 10;
+        }
+
+        $pageSize   = $dataProvider->pagination->pageSize;
+        $totalCount = $dataProvider->totalCount;
+        $totalPage  = (($totalCount + $pageSize - 1) / $pageSize);
+
+        return $totalPage;
+    }
+
+    /**
+    * Finds the Receipt model based on its primary key value.
     * If the model is not found, a 404 HTTP exception will be thrown.
     * @param integer $id
-    * @return Coupon the loaded model
+    * @return Receipt the loaded model
     * @throws NotFoundHttpException if the model cannot be found
     */
 
 
     protected function findModel($id)
     {
-        if (($model = Coupon::findOne($id)) !== null) {
+        if (($model = Receipt::findOne($id)) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException(AffiliateModule::t('affiliate', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('receipt', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(AffiliateModule::t('receipt','The requested page does not exist.'));
     }
 }

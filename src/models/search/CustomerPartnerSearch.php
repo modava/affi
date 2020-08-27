@@ -212,6 +212,45 @@ class CustomerPartnerSearch extends Model
         }
     }
 
+    public static function getCustomerById($customerId) {
+        if (!$customerId) return null;
+
+        $cache = \Yii::$app->cache;
+        $cacheKey = 'redis-affiliate-dashboard-myauris-get-customer-info-with-id-' . $customerId;
+
+        if ($cache->exists($cacheKey)) return $cache->get($cacheKey);
+
+        $myauris_config = \Yii::$app->getModule('affiliate')->params['myauris_config'];
+
+        $url = $myauris_config['url_end_point'] . $myauris_config['endpoint']['get_customer'] . "?id={$customerId}";
+
+        $client = new Client();
+
+        try {
+            $res = $client->request('GET', $url, [
+                'headers' => Yii::$app->getModule('affiliate')->params['myauris_config']['headers'],
+            ]);
+
+            $response = \GuzzleHttp\json_decode($res->getBody(), true);
+
+            if ($res->getStatusCode() == 200) {
+                if (array_key_exists('data', $response) && count($response['data'])) {
+                    $return = $response['data'];
+                } else {
+                    return null;
+                }
+
+                $cache->set($cacheKey, $return, self::$CACHE_TIME_CUSTOMER_INFO);
+                self::_manageCacheKey($cacheKey);
+                return $return;
+            }
+
+            return null;
+        } catch (GuzzleException $exception) {
+            return null;
+        }
+    }
+
     private function _getCacheKey($prefix, $prefixKey = '', $params = [])
     {
         $cacheKey = $prefix;
