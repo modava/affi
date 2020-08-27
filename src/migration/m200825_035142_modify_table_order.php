@@ -17,7 +17,6 @@ class m200825_035142_modify_table_order extends Migration
         $this->addColumn('affiliate_order', 'date_create', $this->integer(11)->notNull());
         $this->addColumn('affiliate_order', 'status', $this->smallInteger(2)->comment('0: Chưa hoàn thành, 1: Hoàn Thành, 2: Hủy'));
         $this->addColumn('affiliate_order', 'payment_method', $this->string()->null());
-        $this->addForeignKey('fk_af_order_customer_id_af_customer_id', 'affiliate_order', 'customer_id', 'affiliate_customer', 'id');
     }
 
     /**
