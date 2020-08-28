@@ -4,9 +4,12 @@ namespace modava\affiliate\controllers;
 
 use modava\affiliate\AffiliateModule;
 use modava\affiliate\helpers\MyAurisApi;
+use modava\affiliate\models\Customer;
 use modava\affiliate\models\search\CustomerPartnerSearch;
+use modava\affiliate\models\table\CustomerTable;
 use Yii;
 use yii\helpers\Url;
+use yii\web\Response;
 
 class AffiliateController extends \backend\components\MyController
 {
@@ -54,5 +57,23 @@ class AffiliateController extends \backend\components\MyController
         ]);
 
         return $this->redirect(Yii::$app->request->referrer ?: Url::toRoute(['index']));
+    }
+
+    public function actionReInitCustomerCacheKey() {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $customers = CustomerTable::find()->all();
+        $cache = Yii::$app->cache;
+
+        $caches = [];
+
+        foreach ($customers as $customer) {
+            $cache->set($customer->getRecordCacheKey(), $customer->getAttributes());
+            $caches[] = $customer->getRecordCacheKey();
+        }
+
+        return [
+            'status' => 'ok',
+            'list_cache' => $caches
+        ];
     }
 }
