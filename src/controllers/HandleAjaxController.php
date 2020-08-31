@@ -5,6 +5,7 @@ namespace modava\affiliate\controllers;
 use modava\affiliate\AffiliateModule;
 use modava\affiliate\components\MyAffiliateController;
 use modava\affiliate\helpers\Utils;
+use modava\affiliate\models\search\CustomerPartnerSearch;
 use Yii;
 use yii\web\Response;
 use modava\affiliate\helpers\MyAurisApi;
@@ -153,6 +154,17 @@ class HandleAjaxController extends MyAffiliateController
         return $this->renderAjax('dashboard-myauris-customer-modal', [
             'model' => $data['data'],
             'listThaotac' => $listThaoTac
+        ]);
+    }
+
+    public function actionGetCallLogModal() {
+        $phone = Yii::$app->request->get('phone');
+
+        $callLog = CustomerPartnerSearch::getCallLog($phone);
+
+        return $this->renderAjax('call-log-modal', [
+            'data' => $callLog,
+            'phone' => $phone,
         ]);
     }
 }

@@ -5,6 +5,7 @@ namespace modava\affiliate\controllers;
 use modava\affiliate\AffiliateModule;
 use modava\affiliate\helpers\MyAurisApi;
 use modava\affiliate\models\Customer;
+use modava\affiliate\models\Feedback;
 use modava\affiliate\models\search\CustomerPartnerSearch;
 use modava\affiliate\models\table\CustomerTable;
 use Yii;
@@ -75,5 +76,23 @@ class AffiliateController extends \backend\components\MyController
             'status' => 'ok',
             'list_cache' => $caches
         ];
+    }
+
+    public function actionGetTotalConvert() {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $totalInfor = Customer::totalConvert(Yii::$app->request->get('type'));
+        return $totalInfor;
+    }
+
+    public function actionGetTotalFeedbackByTypeAndTime() {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $totalInfor = Feedback::totalFeedbackByTypeAndTime(Yii::$app->request->get('type'));
+        return $totalInfor;
+    }
+
+    public function actionGetTotalFeedbackByType() {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $totalInfor = Feedback::totalFeedbackByType(Yii::$app->request->get('type'));
+        return $totalInfor;
     }
 }

@@ -170,6 +170,33 @@ class CustomerPartnerSearch extends Model
         }
     }
 
+    public static function getCallLog($phone) {
+        if (!$phone) return [];
+
+        $apiParam = \Yii::$app->getModule('affiliate')->params['myauris_config'];
+
+        $url = $apiParam['url_end_point'] . $apiParam['endpoint']['get_call_log'];
+
+        $client = new Client();
+
+        try {
+            $res = $client->request('GET', $url, [
+                'headers' => Yii::$app->getModule('affiliate')->params['myauris_config']['headers'],
+                'query' => ['phone' => $phone]
+            ]);
+
+            $response = \GuzzleHttp\json_decode($res->getBody(), true);
+
+            if ($res->getStatusCode() == 200) {
+                return $response;
+            }
+
+            return [];
+        } catch (GuzzleException $exception) {
+            return [];
+        }
+    }
+
     public static function getCustomerByPhone($phone)
     {
         if (!$phone) return null;

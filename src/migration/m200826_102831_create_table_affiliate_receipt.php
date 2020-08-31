@@ -26,6 +26,7 @@ class m200826_102831_create_table_affiliate_receipt extends Migration
             'total' => $this->decimal(11)->notNull()->comment('Số tiền'),
             'status' => $this->smallInteger(2)->notNull()->comment('0: Thanh toán, 1: Đặt cọc, 2: Hoàn cọc'),
             'payment_method' => $this->string()->comment('Phương thức thanh toán'),
+            'partner_code' => $this->string()->null()->comment('Mã receipt hệ thống partner'),
             'created_at' => $this->integer(11)->notNull(),
             'updated_at' => $this->integer(11)->notNull(),
             'created_by' => $this->integer(11)->null(),

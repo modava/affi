@@ -25,7 +25,6 @@ use Yii;
  * @property string $description Mô tả
  * @property int $date_create Ngày tạo
  * @property int $status Tình trạng đơn hàng
- * @property int $payment_method Phương thức thanh toán
  * @property string $partner_order_code Mã code order hệ thống partner
  * @property string $partner_customer_id Mã KH hệ thống partner
  * @property int $created_at
@@ -112,10 +111,10 @@ class Order extends OrderTable
     public function rules()
     {
         return [
-            [['title', 'slug', 'coupon_id', 'pre_total', 'date_create', 'status', 'payment_method',], 'required'],
+            [['title', 'slug', 'coupon_id', 'pre_total', 'date_create', 'status',], 'required'],
             [['coupon_id', 'status',], 'integer'],
             [['pre_total', 'discount', 'final_total'], 'number'],
-            [['description', 'payment_method'], 'string'],
+            [['description',], 'string'],
             [['date_create', 'partner_order_code', 'partner_customer_id'], 'safe'],
             [['title', 'slug', 'partner_order_code'], 'string', 'max' => 255],
             [['slug'], 'unique'],
@@ -145,7 +144,6 @@ class Order extends OrderTable
             'updated_by' => AffiliateModule::t('affiliate', 'Updated By'),
             'date_create' => AffiliateModule::t('affiliate', 'Ngày đơn hàng'),
             'status' => AffiliateModule::t('affiliate', 'Tình trạng'),
-            'payment_method' => AffiliateModule::t('affiliate', 'Phương thức thanh toán'),
             'partner_order_code' => AffiliateModule::t('affiliate', 'Mã đơn hàng hệ thống partner'),
             'partner_customer_id' => AffiliateModule::t('affiliate', 'Mã KH hệ thống partner'),
         ];

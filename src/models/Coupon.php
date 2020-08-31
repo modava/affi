@@ -38,8 +38,8 @@ class Coupon extends CouponTable
 {
     public $toastr_key = 'coupon';
 
-    const DISCOUNT_PERCENT = 0;
     const DISCOUNT_AMOUNT = 1;
+    const DISCOUNT_PERCENT = 2;
 
     public function behaviors()
     {
@@ -99,9 +99,9 @@ class Coupon extends CouponTable
 			[['coupon_code'], 'unique'],
 			[['coupon_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => CouponType::class, 'targetAttribute' => ['coupon_type_id' => 'id']],
             ['promotion_value', 'compare', 'compareValue' => 100, 'operator' => '<=', 'type' => 'number', 'when' => function ($model) {
-                return $model->promotion_type == '0';
+                return $model->promotion_type == self::DISCOUNT_PERCENT;
                     }, 'whenClient' => "function (attribute, value) {
-                return $('#promotion-type').val() == '0';
+                return $('#promotion-type').val() == " . self::DISCOUNT_PERCENT . ";
             }"]
 		];
     }

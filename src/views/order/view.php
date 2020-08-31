@@ -55,7 +55,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return Yii::$app->getModule('affiliate')->params['order_status'][$model->status];
                             },
                         ],
-                        'payment_method',
                         [
                             'attribute' => 'date_create',
                             'format' => 'datetime'

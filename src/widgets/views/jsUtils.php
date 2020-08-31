@@ -93,9 +93,32 @@ $controllerURL = Url::toRoute(["/affiliate/handle-ajax"]);
         });
     }
 
+    function getCallLog(elementDOM) {
+        let modalHTML = `<div class="modal ModalContainer" tabindex="-1" role="dialog" aria-labelledby="ModalContainer" aria-hidden="true"></div>`;
+
+        if ($('.ModalContainer').length) $('.ModalContainer').remove();
+
+        $('body').append(modalHTML);
+
+        let params = {
+            phone: $(elementDOM).data('phone'),
+            model: $(elementDOM).data('model'),
+        };
+
+        $.get('<?=$controllerURL?>/get-call-log-modal', params, function(data, status, xhr) {
+            if (status === 'success') {
+                $('.ModalContainer').html(data);
+                $('.ModalContainer').modal();
+            }
+        });
+    }
+
     window.onload = function () {
         $('.copy').on('click', function () {
             copyToClipboard($(this).data('copy'));
+        });
+        $('.show-call-log').on('click', function () {
+            getCallLog($(this));
         });
     }
 

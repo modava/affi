@@ -136,7 +136,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     'class' => 'header-200'
                                                 ]
                                             ],
-                                            'payment_method',
                                             [
                                                 'attribute' => 'date_create',
                                                 'format' => 'datetime'

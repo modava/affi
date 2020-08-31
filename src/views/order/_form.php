@@ -49,9 +49,6 @@ use \modava\affiliate\models\table\CouponTable;
             ) ?>
         </div>
         <div class="col-6">
-            <?= $form->field($model, 'payment_method')->textInput() ?>
-        </div>
-        <div class="col-6">
             <?= $form->field($model, 'pre_total')->textInput(['maxlength' => true, 'readonly' => true]) ?>
         </div>
         <div class="col-6">

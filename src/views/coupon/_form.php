@@ -108,12 +108,28 @@ function generateCouponCode(customerId, upperCase = false) {
 }
 
 $('#js-generate-coupon-code').on('click', function() {
-    debugger;
     let customerId = $('#coupon_form').find('[name="Coupon[customer_id]"]').val();
+    if (!customerId) {
+        $.toast({
+            heading: 'Thông báo',
+            text: 'Không có Khách hàng được chọn',
+            position: 'top-right',
+            class: 'jq-toast-warning',
+            hideAfter: 2000,
+            stack: 6,
+            showHideTransition: 'fade'
+        });
+        return ;
+    }
+    
+    let loading = $('#coupon_form').closest('.modal-dialog').find('.refresh-container');
+    
+    loading.show();
+    
     if (customerId) {
         generateCouponCode(customerId).then((data) => {
-            console.log(data);
             $('#coupon-coupon_code').val(data).trigger('change');
+            loading.fadeOut(300);
         })
     }
     $('#coupon-coupon_code').val('').trigger('change');

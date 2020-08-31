@@ -5,11 +5,13 @@ namespace modava\affiliate\models;
 use common\models\User;
 use modava\affiliate\AffiliateModule;
 use modava\affiliate\models\table\FeedbackTable;
+use modava\affiliate\models\table\FeedbackTimeTable;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\SluggableBehavior;
 use common\helpers\MyHelper;
 use yii\db\ActiveRecord;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
 * This is the model class for table "affiliate_feedback".
@@ -168,5 +170,94 @@ class Feedback extends FeedbackTable
         return (int)self::find()
             ->where(['customer_id' => $customerId])
             ->count();
+    }
+
+    public static function totalFeedbackByTypeAndTime($type)
+    {
+        $sql = "SELECT affiliate_feedback_time.title AS af_fb_time_title, feedback_type, COUNT(*) AS count
+                FROM affiliate_feedback
+                INNER JOIN affiliate_feedback_time ON affiliate_feedback_time.id = affiliate_feedback.feedback_time_id
+                GROUP BY feedback_type, feedback_time_id
+                ORDER BY af_fb_time_title, feedback_type;";
+
+        $allRecord = \Yii::$app->db->createCommand($sql)->queryAll();
+        $feedBackTimes = FeedbackTimeTable::getAllRecords();
+        $feedBackTypes = Yii::$app->getModule('affiliate')->params['feedback_type'];
+
+        $recordForChart = [];
+        $feedBackTimesForChart = [];
+        foreach ($feedBackTimes as $feedBackTime) {
+            $feedBackTimesForChart[] = $feedBackTime->title;
+        }
+        $total = 0;
+
+        foreach ($feedBackTypes as $idType => $feedBackType) {
+            $data = [];
+            foreach ($feedBackTimes as $idTime => $feedBackTime) {
+                foreach ($allRecord as $record) {
+                    if ($record['af_fb_time_title'] === $feedBackTime->title && $record['feedback_type'] == $idType) {
+                        $data[$idTime] = $record['count'];
+                        break;
+                    } else {
+                        $data[$idTime] = 0;
+                    }
+                }
+            }
+            $recordForChart[] = [
+                'name' => $feedBackType,
+                'type' => 'bar',
+                'data' => $data
+            ];
+        }
+
+        return [
+            'total' => $total,
+            'data' => $recordForChart,
+            'color' => \Yii::$app->getModule('affiliate')->params['feedback_type_color'],
+            'xaxis_data' => $feedBackTimesForChart,
+            'legend' => $feedBackTypes
+        ];
+    }
+
+    public static function totalFeedbackByType($type)
+    {
+        $sql = "SELECT feedback_type, COUNT(*) AS count
+                FROM affiliate_feedback ";
+
+        switch ($type) {
+            case 'year':
+                $sql .= "WHERE YEAR(FROM_UNIXTIME(created_at, '%Y-%m-%d')) = YEAR(CURRENT_DATE())
+                        GROUP BY feedback_type;";
+                break;
+            case 'month':
+                $sql .= "WHERE MONTH(FROM_UNIXTIME(created_at, '%Y-%m-%d')) = MONTH(CURRENT_DATE()) 
+                            AND YEAR(FROM_UNIXTIME(created_at, '%Y-%m-%d')) = YEAR(CURRENT_DATE())
+                        GROUP BY feedback_type;";
+                break;
+            case 'week':
+                $sql .= "WHERE YEARWEEK(FROM_UNIXTIME(created_at, '%Y-%m-%d')) = YEARWEEK(CURRENT_DATE()) 
+                         GROUP BY feedback_type;";
+                break;
+            default:
+                $sql .=  "GROUP BY feedback_type;";
+        }
+
+        $allRecord = \Yii::$app->db->createCommand($sql)->queryAll();
+        $recordForChart = [];
+        $total = 0;
+
+        foreach ($allRecord as $record) {
+            $recordForChart[] = [
+                'name' => \Yii::$app->getModule('affiliate')->params['feedback_type'][$record['feedback_type']],
+                'value' => $record['count']
+            ];
+            $total += (int) $record['count'];
+        }
+
+        return [
+            'total' => $total,
+            'data' => $recordForChart,
+            'color' => \Yii::$app->getModule('affiliate')->params['feedback_type_color'],
+        ];
     }
 }

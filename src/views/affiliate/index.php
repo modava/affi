@@ -32,7 +32,7 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
         <!-- Row -->
         <div class="row">
             <div class="col-xl-12">
-                <?=$this->render('_search', ['dropdowns' => $dropdowns, 'model' => $model]);?>
+                <?= $this->render('_search', ['dropdowns' => $dropdowns, 'model' => $model]); ?>
             </div>
 
             <div class="col-xl-12">
@@ -114,8 +114,19 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
                                             [
                                                 'class' => 'yii\grid\ActionColumn',
                                                 'header' => AffiliateModule::t('affiliate', 'Actions'),
-                                                'template' => '{create-customer} {create-coupon} {create-call-note} {create-feedback} {hidden-input-customer-partner-info} {hidden-input-customer-info}',
+                                                'template' => '{dashboard-call-log} {create-customer} {create-coupon} {create-call-note} {create-feedback} {hidden-input-customer-partner-info} {hidden-input-customer-info}',
                                                 'buttons' => [
+                                                    'dashboard-call-log' => function ($url, $model) {
+                                                        return Html::a('<i class="fa fa-history"></i>', 'javascript:;', [
+                                                            'title' => AffiliateModule::t('affiliate', 'Lịch sử cuộc gọi dashboard'),
+                                                            'alia-label' => AffiliateModule::t('affiliate', 'Lịch sử cuộc gọi dashboard'),
+                                                            'data-model' => 'Customer',
+                                                            'data-pjax' => 0,
+                                                            'data-partner' => 'myaris',
+                                                            'data-phone' => $model['phone'],
+                                                            'class' => 'btn btn-info btn-xs show-call-log m-1'
+                                                        ]);
+                                                    },
                                                     'create-coupon' => function ($url, $model) {
                                                         if (!Utils::isReleaseObject('Coupon')) return '';
 
@@ -175,8 +186,7 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
                                                                     'class' => 'btn btn-primary btn-xs m-1',
                                                                     'target' => '_blank'
                                                                 ]);
-                                                        }
-                                                        else {
+                                                        } else {
                                                             $message = AffiliateModule::t('affiliate', 'Convert');
 
                                                             return Html::a('<span class="glyphicon glyphicon-arrow-right"></span>', 'javascript:;', [
@@ -216,7 +226,7 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
 
                                                             $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
 
-                                                            return Html::a('<i class="icon dripicons-ticket"></i> ' . $bage , Url::toRoute(['/affiliate/coupon', 'CouponSearch[customer_id]' => $record['id']]),[
+                                                            return Html::a('<i class="icon dripicons-ticket"></i> ' . $bage, Url::toRoute(['/affiliate/coupon', 'CouponSearch[customer_id]' => $record['id']]), [
                                                                 'title' => AffiliateModule::t('affiliate', 'List Tickets'),
                                                                 'alia-label' => AffiliateModule::t('affiliate', 'List Tickets'),
                                                                 'data-pjax' => 0,
@@ -238,7 +248,7 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
 
                                                             $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
 
-                                                            return Html::a('<i class="icon dripicons-to-do"></i>' . $bage, Url::toRoute(['/affiliate/note', 'NoteSearch[customer_id]' => $record['id']]),[
+                                                            return Html::a('<i class="icon dripicons-to-do"></i>' . $bage, Url::toRoute(['/affiliate/note', 'NoteSearch[customer_id]' => $record['id']]), [
                                                                 'title' => AffiliateModule::t('affiliate', 'List Notes'),
                                                                 'alia-label' => AffiliateModule::t('affiliate', 'List Notes'),
                                                                 'data-pjax' => 0,
@@ -260,7 +270,7 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
 
                                                             $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
 
-                                                            return Html::a('<span class="material-icons" style="font-size: 12px">feedback</span>' . $bage, Url::toRoute(['/affiliate/feedback', 'FeedbackSearch[customer_id]' => $record['id']]),[
+                                                            return Html::a('<span class="material-icons" style="font-size: 12px">feedback</span>' . $bage, Url::toRoute(['/affiliate/feedback', 'FeedbackSearch[customer_id]' => $record['id']]), [
                                                                 'title' => AffiliateModule::t('affiliate', 'List Feedback'),
                                                                 'alia-label' => AffiliateModule::t('affiliate', 'List Feedback'),
                                                                 'data-pjax' => 0,
@@ -327,7 +337,7 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
             </div>
         </div>
     </div>
-<?=JsUtils::widget()?>
+<?= JsUtils::widget() ?>
 <?php
 $script = <<< JS
 $('.create-coupon').on('click', function() {

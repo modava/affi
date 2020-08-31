@@ -55,7 +55,7 @@ class FeedbackTimeTable extends \yii\db\ActiveRecord
         $cache = Yii::$app->cache;
         $data = $cache->get(self::CACHE_KEY_GET_ALL);
         if (!$data) {
-            $data = self::find()->all();
+            $data = self::find()->orderBy(['id' => SORT_ASC])->all();
             $cache->set(self::CACHE_KEY_GET_ALL, $data, Time::SECONDS_IN_A_YEAR);
         }
         return $data;

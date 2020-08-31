@@ -17,36 +17,38 @@ use yii\db\ActiveRecord;
 use modava\affiliate\helpers\Utils;
 
 /**
-* This is the model class for table "affiliate_customer".
-*
-    * @property int $id
-    * @property string $slug
-    * @property string $full_name Họ và tên Khách hàng
-    * @property string $phone Số điện thoại - Không trùng
-    * @property string $email Email khách hàng - không quan tâm trùng
-    * @property string $face_customer Link facebook của KH
-    * @property int $partner_id Partner tích hợp affiliate
-    * @property int $partner_customer_id id Customer trên hệ thống partner
-    * @property string $description Mô tả
-    * @property int $status
-    * @property int $created_at
-    * @property int $updated_at
-    * @property int $created_by Người gọi
-    * @property int $updated_by
-    * @property int $sex
-    * @property date $birthday
-    * @property date $date_checkin
-    * @property date $date_accept_do_service
-    *
-            * @property AffiliateCoupon[] $affiliateCoupons
-            * @property User $createdBy
-            * @property User $updatedBy
-            * @property AffiliatePartner $partner
-            * @property AffiliateNote[] $affiliateNotes
-    */
+ * This is the model class for table "affiliate_customer".
+ *
+ * @property int $id
+ * @property string $slug
+ * @property string $full_name Họ và tên Khách hàng
+ * @property string $phone Số điện thoại - Không trùng
+ * @property string $email Email khách hàng - không quan tâm trùng
+ * @property string $face_customer Link facebook của KH
+ * @property int $partner_id Partner tích hợp affiliate
+ * @property int $partner_customer_id id Customer trên hệ thống partner
+ * @property string $description Mô tả
+ * @property int $status
+ * @property int $created_at
+ * @property int $updated_at
+ * @property int $created_by Người gọi
+ * @property int $updated_by
+ * @property int $sex
+ * @property date $birthday
+ * @property date $date_checkin
+ * @property date $date_accept_do_service
+ *
+ * @property Coupon[] $affiliateCoupons
+ * @property User $createdBy
+ * @property User $updatedBy
+ * @property Partner $partner
+ * @property Note[] $affiliateNotes
+ */
 class Customer extends CustomerTable
 {
     public $toastr_key = 'customer';
+    const STATUS_DANG_LAM_DICH_VU = 0;
+    const STATUS_HOAN_THANH_DICH_VU = 1;
 
     public function behaviors()
     {
@@ -109,32 +111,32 @@ class Customer extends CustomerTable
     }
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [
-			[['full_name', 'phone', 'partner_id', 'partner_customer_id', 'status'], 'required'],
-			[['partner_id', 'sex', 'partner_customer_id', 'country_id', 'province_id', 'district_id', 'ward_id'], 'integer'],
-			[['description', 'address'], 'string'],
-			[['full_name', 'email', 'face_customer'], 'string', 'max' => 255],
-			[['phone'], 'string', 'max' => 15],
-			[['slug', 'partner_customer_id', 'phone'], 'unique'],
-			[['email'], 'email'],
-			[['birthday', 'date_accept_do_service', 'date_checkin'], 'safe'],
-			[['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
-			[['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
-			[['partner_id'], 'exist', 'skipOnError' => true, 'targetClass' => Partner::class, 'targetAttribute' => ['partner_id' => 'id']],
-			[['country_id'], 'exist', 'skipOnError' => true, 'targetClass' => LocationCountry::class, 'targetAttribute' => ['country_id' => 'id']],
-			[['province_id'], 'exist', 'skipOnError' => true, 'targetClass' => LocationProvince::class, 'targetAttribute' => ['province_id' => 'id']],
-			[['district_id'], 'exist', 'skipOnError' => true, 'targetClass' => LocationDistrict::class, 'targetAttribute' => ['district_id' => 'id']],
-			[['ward_id'], 'exist', 'skipOnError' => true, 'targetClass' => LocationWard::class, 'targetAttribute' => ['ward_id' => 'id']],
-		];
+            [['full_name', 'phone', 'partner_id', 'partner_customer_id', 'status'], 'required'],
+            [['partner_id', 'sex', 'partner_customer_id', 'country_id', 'province_id', 'district_id', 'ward_id'], 'integer'],
+            [['description', 'address'], 'string'],
+            [['full_name', 'email', 'face_customer'], 'string', 'max' => 255],
+            [['phone'], 'string', 'max' => 15],
+            [['slug', 'partner_customer_id', 'phone'], 'unique'],
+            [['email'], 'email'],
+            [['birthday', 'date_accept_do_service', 'date_checkin'], 'safe'],
+            [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
+            [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
+            [['partner_id'], 'exist', 'skipOnError' => true, 'targetClass' => Partner::class, 'targetAttribute' => ['partner_id' => 'id']],
+            [['country_id'], 'exist', 'skipOnError' => true, 'targetClass' => LocationCountry::class, 'targetAttribute' => ['country_id' => 'id']],
+            [['province_id'], 'exist', 'skipOnError' => true, 'targetClass' => LocationProvince::class, 'targetAttribute' => ['province_id' => 'id']],
+            [['district_id'], 'exist', 'skipOnError' => true, 'targetClass' => LocationDistrict::class, 'targetAttribute' => ['district_id' => 'id']],
+            [['ward_id'], 'exist', 'skipOnError' => true, 'targetClass' => LocationWard::class, 'targetAttribute' => ['ward_id' => 'id']],
+        ];
     }
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function attributeLabels()
     {
         return [
@@ -161,6 +163,46 @@ class Customer extends CustomerTable
             'ward_id' => AffiliateModule::t('affiliate', 'Ward'),
             'address' => AffiliateModule::t('affiliate', 'Address'),
             'status' => AffiliateModule::t('affiliate', 'Customer Status'),
+        ];
+    }
+
+    public static function totalConvert($type)
+    {
+        $sql = "SELECT status, COUNT(*) AS count
+                FROM `affiliate_customer`";
+
+        switch ($type) {
+            case 'year':
+                $sql .= "WHERE YEAR(FROM_UNIXTIME(created_at, '%Y-%m-%d')) = YEAR(CURRENT_DATE())
+                        GROUP BY status;";
+                break;
+            case 'month':
+                $sql .= "WHERE MONTH(FROM_UNIXTIME(created_at, '%Y-%m-%d')) = MONTH(CURRENT_DATE()) 
+                            AND YEAR(FROM_UNIXTIME(created_at, '%Y-%m-%d')) = YEAR(CURRENT_DATE())
+                        GROUP BY status;";
+                break;
+            case 'week':
+                $sql .= "WHERE YEARWEEK(FROM_UNIXTIME(created_at, '%Y-%m-%d')) = YEARWEEK(CURRENT_DATE()) 
+                         GROUP BY status;";
+                break;
+        }
+
+        $allRecord = \Yii::$app->db->createCommand($sql)->queryAll();
+        $recordForChart = [];
+        $total = 0;
+
+        foreach ($allRecord as $record) {
+            $recordForChart[] = [
+                'name' => \Yii::$app->getModule('affiliate')->params['customer_status'][$record['status']],
+                'value' => $record['count']
+            ];
+            $total += (int) $record['count'];
+        }
+
+        return [
+            'total' => $total,
+            'data' => $recordForChart,
+            'color' => \Yii::$app->getModule('affiliate')->params['customer_status_color'],
         ];
     }
 }

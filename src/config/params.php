@@ -1,6 +1,7 @@
 <?php
 use modava\affiliate\AffiliateModule;
 use modava\affiliate\models\Coupon;
+use modava\affiliate\models\Customer;
 
 return [
     'affiliateName' => 'Affiliate',
@@ -19,8 +20,12 @@ return [
         '2' => AffiliateModule::t('affiliate', 'Other'),
     ],
     'customer_status' => [
-        '0' => AffiliateModule::t('affiliate', 'Đang làm dịch vụ'),
-        '1' => AffiliateModule::t('affiliate', 'Đã hoàn thành dịch vụ'),
+        Customer::STATUS_DANG_LAM_DICH_VU => AffiliateModule::t('affiliate', 'Đang làm dịch vụ'),
+        Customer::STATUS_HOAN_THANH_DICH_VU => AffiliateModule::t('affiliate', 'Đã hoàn thành dịch vụ'),
+    ],
+    'customer_status_color' => [
+        Customer::STATUS_DANG_LAM_DICH_VU => '#69c982',
+        Customer::STATUS_HOAN_THANH_DICH_VU => '#22af47',
     ],
     'promotion_type' => [
         Coupon::DISCOUNT_PERCENT => AffiliateModule::t('affiliate', 'Discount Percent In Order'),
@@ -33,6 +38,7 @@ return [
             'customer' => "customer",
             'get_customer' => "get-customer",
             'create_note' => "save-log-cskh",
+            'get_call_log' => 'get-call-log'
         ],
         'header' => ['X-Api-Key: qWnUiio9_xxRpExYzqSyzCqn3Gz3ZjP6jN_pxKUX'], // @todo Refactor code here: chuyển MyAurisApi vào model
         'headers' => ['X-Api-Key' => 'qWnUiio9_xxRpExYzqSyzCqn3Gz3ZjP6jN_pxKUX'],
@@ -57,6 +63,11 @@ return [
         '0' => AffiliateModule::t('affiliate', 'Unsatisfied'),
         '1' => AffiliateModule::t('affiliate', 'Satisfied'),
         '2' => AffiliateModule::t('affiliate', 'Bình thường'),
+    ],
+    'feedback_type_color' => [
+        '0' => '#ab26aa',
+        '1' => '#22af47',
+        '2' => '#52b5f3',
     ],
     'receipt_status' => [
         '0' => AffiliateModule::t('affiliate', 'Thanh toán'),

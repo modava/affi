@@ -69,3 +69,14 @@ textarea[readonly] {
 .lg-backdrop {
     z-index: 1050;
 }
+
+.modal-content .refresh-container{
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.5) none repeat scroll 0 0;
+    width: 100%;
+    display: none;
+}
