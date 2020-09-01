@@ -10,7 +10,7 @@ use modava\affiliate\helpers\AffiliateDisplayHelper;
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="createCouponModalLabel"><?=AffiliateModule::t('affiliate', 'More Information')?></h5>
+            <h5 class="modal-title" id="createCouponModalLabel"><?=Yii::t('backend', 'More Information')?></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -18,15 +18,15 @@ use modava\affiliate\helpers\AffiliateDisplayHelper;
         <div class="modal-body" style="height: 60vh; overflow-y: scroll">
             <div class="modal-img-container mb-4">
                 <div class="d-flex justify-content-center">
-                    <p class="mx-4" style="width: 100px; text-align: center"><?=AffiliateModule::t('affiliate', 'Before')?></p>
-                    <p class="mx-4" style="width: 100px; text-align: center"><?=AffiliateModule::t('affiliate', 'After')?></p>
+                    <p class="mx-4" style="width: 100px; text-align: center"><?=Yii::t('backend', 'Before')?></p>
+                    <p class="mx-4" style="width: 100px; text-align: center"><?=Yii::t('backend', 'After')?></p>
                 </div>
                 <?=AffiliateDisplayHelper::getImages($model, [ 'container_class' => 'd-flex justify-content-center', 'img_class' => 'mx-4' ])?>
             </div>
 
             <?php foreach ($model['don_hang'] as $donHang): $content = ''; ?>
             <div class="hk-sec-wrapper p-4">
-                <p class="px-2 text-center"><strong><?=AffiliateModule::t('affiliate', 'Order Infomation')?></strong></p>
+                <p class="px-2 text-center"><strong><?=Yii::t('backend', 'Order Infomation')?></strong></p>
                 <strong>Mã HĐ: <?=$donHang['order_code']?></strong> <i>( <?=date('d-m-Y', $donHang['ngay_tao']) ?>)</i><br/>
 
                 <?php foreach ($donHang['chi_tiet'] as $chiTietDonHang):?>

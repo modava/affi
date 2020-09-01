@@ -40,10 +40,10 @@ use yii\widgets\Pjax;
             </div>
         ',
     'pager' => [
-        'firstPageLabel' => AffiliateModule::t('affiliate', 'First'),
-        'lastPageLabel' => AffiliateModule::t('affiliate', 'Last'),
-        'prevPageLabel' => AffiliateModule::t('affiliate', 'Previous'),
-        'nextPageLabel' => AffiliateModule::t('affiliate', 'Next'),
+        'firstPageLabel' => Yii::t('backend', 'First'),
+        'lastPageLabel' => Yii::t('backend', 'Last'),
+        'prevPageLabel' => Yii::t('backend', 'Previous'),
+        'nextPageLabel' => Yii::t('backend', 'Next'),
         'maxButtonCount' => 5,
 
         'options' => [

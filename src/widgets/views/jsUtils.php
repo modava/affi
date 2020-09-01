@@ -109,6 +109,14 @@ $controllerURL = Url::toRoute(["/affiliate/handle-ajax"]);
             if (status === 'success') {
                 $('.ModalContainer').html(data);
                 $('.ModalContainer').modal();
+
+                // Pause sound when hide modal
+                $('.ModalContainer').off('hide.bs.modal');
+                $('.ModalContainer').on('hide.bs.modal', function () {
+                    $('.call-log-audio').each(function (index, item) {
+                        item.pause();
+                    });
+                });
             }
         });
     }

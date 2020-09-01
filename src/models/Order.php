@@ -130,22 +130,22 @@ class Order extends OrderTable
     public function attributeLabels()
     {
         return [
-            'id' => AffiliateModule::t('affiliate', 'ID'),
-            'title' => AffiliateModule::t('affiliate', 'Title'),
-            'slug' => AffiliateModule::t('affiliate', 'Slug'),
-            'coupon_id' => AffiliateModule::t('affiliate', 'Coupon ID'),
-            'pre_total' => AffiliateModule::t('affiliate', 'Pre Total'),
-            'discount' => AffiliateModule::t('affiliate', 'Discount'),
-            'final_total' => AffiliateModule::t('affiliate', 'Final Total'),
-            'description' => AffiliateModule::t('affiliate', 'Description'),
-            'created_at' => AffiliateModule::t('affiliate', 'Created At'),
-            'updated_at' => AffiliateModule::t('affiliate', 'Updated At'),
-            'created_by' => AffiliateModule::t('affiliate', 'Created By'),
-            'updated_by' => AffiliateModule::t('affiliate', 'Updated By'),
-            'date_create' => AffiliateModule::t('affiliate', 'Ngày đơn hàng'),
-            'status' => AffiliateModule::t('affiliate', 'Tình trạng'),
-            'partner_order_code' => AffiliateModule::t('affiliate', 'Mã đơn hàng hệ thống partner'),
-            'partner_customer_id' => AffiliateModule::t('affiliate', 'Mã KH hệ thống partner'),
+            'id' => Yii::t('backend', 'ID'),
+            'title' => Yii::t('backend', 'Title'),
+            'slug' => Yii::t('backend', 'Slug'),
+            'coupon_id' => Yii::t('backend', 'Coupon ID'),
+            'pre_total' => Yii::t('backend', 'Pre Total'),
+            'discount' => Yii::t('backend', 'Discount'),
+            'final_total' => Yii::t('backend', 'Final Total'),
+            'description' => Yii::t('backend', 'Description'),
+            'created_at' => Yii::t('backend', 'Created At'),
+            'updated_at' => Yii::t('backend', 'Updated At'),
+            'created_by' => Yii::t('backend', 'Created By'),
+            'updated_by' => Yii::t('backend', 'Updated By'),
+            'date_create' => Yii::t('backend', 'Ngày đơn hàng'),
+            'status' => Yii::t('backend', 'Tình trạng'),
+            'partner_order_code' => Yii::t('backend', 'Mã đơn hàng hệ thống partner'),
+            'partner_customer_id' => Yii::t('backend', 'Mã KH hệ thống partner'),
         ];
     }
 

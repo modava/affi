@@ -41,7 +41,7 @@ $model->recall_time = $model->recall_time != null
                             return $model['full_name'] . ' - ' . $model['phone'];
                         }),
                     [
-                        'prompt' => AffiliateModule::t('affiliate', 'Select an option ...'),
+                        'prompt' => Yii::t('backend', 'Select an option ...'),
                         'id' => 'customer-id'
                     ]
                 ) ?>
@@ -73,7 +73,7 @@ $model->recall_time = $model->recall_time != null
             <div class="col-12">
                 <?php
                 $noteTypeParams = [
-                    'prompt' => AffiliateModule::t('affiliate', 'Select an options...'),
+                    'prompt' => Yii::t('backend', 'Select an options...'),
                 ];
                 if ($model->partner_note_id) {
                     $noteTypeParams['disabled'] = 'disabled';
@@ -87,7 +87,7 @@ $model->recall_time = $model->recall_time != null
             <div class="col-6">
                 <?php
                 $partnerIdParams = [
-                    'prompt' => AffiliateModule::t('affiliate', 'Select an options...'),
+                    'prompt' => Yii::t('backend', 'Select an options...'),
                 ];
                 if ($model->partner_note_id) {
                     $partnerIdParams['disabled'] = 'disabled';
@@ -109,7 +109,7 @@ $model->recall_time = $model->recall_time != null
             </div>
         </div>
         <div class="form-group">
-            <?= Html::submitButton(AffiliateModule::t('affiliate', 'Save'), ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton(Yii::t('backend', 'Save'), ['class' => 'btn btn-success']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

@@ -28,7 +28,7 @@ $abc = \modava\affiliate\models\table\FeedbackTimeTable::getAllRecordsActive();
         <div class="col-6">
             <?= $form->field($model, 'customer_id')->dropDownList(
                 ArrayHelper::map(\modava\affiliate\models\table\CustomerTable::getAllRecords(), 'id', function($model) { return $model['full_name'] . ' - ' . $model['phone']; }),
-                [ 'prompt' => AffiliateModule::t('affiliate', 'Select an option ...'),
+                [ 'prompt' => Yii::t('backend', 'Select an option ...'),
                     'id' => 'customer-id'
                 ]
             ) ?>
@@ -36,13 +36,13 @@ $abc = \modava\affiliate\models\table\FeedbackTimeTable::getAllRecordsActive();
         <div class="col-6">
             <?= $form->field($model, 'feedback_type')->dropDownList(
                 Yii::$app->getModule('affiliate')->params['feedback_type'],
-                ['prompt' => AffiliateModule::t('affiliate', 'Select an option ...')]
+                ['prompt' => Yii::t('backend', 'Select an option ...')]
             ) ?>
         </div>
         <div class="col-6">
             <?= $form->field($model, 'feedback_time_id')->dropDownList(
                 ArrayHelper::map($abc, 'id', 'title'),
-                [ 'prompt' => AffiliateModule::t('affiliate', 'Select an option ...'),
+                [ 'prompt' => Yii::t('backend', 'Select an option ...'),
                     'id' => 'feedback-time-id'
                 ]
             ) ?>
@@ -50,7 +50,7 @@ $abc = \modava\affiliate\models\table\FeedbackTimeTable::getAllRecordsActive();
         <div class="col-12">
             <?= $form->field($model, 'unsatisfied_reason_id')->dropDownList(
                 ArrayHelper::map(\modava\affiliate\models\table\UnsatisfiedReasonTable::getAllRecordsActive(), 'id', 'title'),
-                [ 'prompt' => AffiliateModule::t('affiliate', 'Select an option ...'),
+                [ 'prompt' => Yii::t('backend', 'Select an option ...'),
                     'id' => 'unsatisfied-reason-id'
                 ]
             ) ?>
@@ -70,7 +70,7 @@ $abc = \modava\affiliate\models\table\FeedbackTimeTable::getAllRecordsActive();
     </div>
 
     <div class="form-group">
-        <?= Html::submitButton(AffiliateModule::t('affiliate', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('backend', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

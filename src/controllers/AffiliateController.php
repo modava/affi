@@ -52,8 +52,8 @@ class AffiliateController extends \backend\components\MyController
         }
 
         Yii::$app->session->setFlash('toastr-affiliate-list', [
-            'title' => AffiliateModule::t('affiliate', 'Notification'),
-            'text' => AffiliateModule::t('affiliate', 'Delete cache successfully'),
+            'title' => Yii::t('backend', 'Notification'),
+            'text' => Yii::t('backend', 'Delete cache successfully'),
             'type' => 'success'
         ]);
 

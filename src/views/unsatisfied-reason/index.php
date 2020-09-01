@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel modava\affiliate\models\search\UnsatisfiedReasonSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = AffiliateModule::t('affiliate', 'Unsatisfied Reasons');
+$this->title = Yii::t('backend', 'Unsatisfied Reasons');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container-fluid px-xxl-25 px-xl-10">
@@ -22,8 +22,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         class="ion ion-md-apps"></span></span><?= Html::encode($this->title) ?>
         </h4>
         <a class="btn btn-outline-light" href="<?= \yii\helpers\Url::to(['create']); ?>"
-           title="<?= AffiliateModule::t('affiliate', 'Create'); ?>">
-            <i class="fa fa-plus"></i> <?= AffiliateModule::t('affiliate', 'Create'); ?></a>
+           title="<?= Yii::t('backend', 'Create'); ?>">
+            <i class="fa fa-plus"></i> <?= Yii::t('backend', 'Create'); ?></a>
     </div>
 
     <!-- Row -->
@@ -60,10 +60,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                         </div>
                                     ',
                                     'pager' => [
-                                        'firstPageLabel' => AffiliateModule::t('affiliate', 'First'),
-                                        'lastPageLabel' => AffiliateModule::t('affiliate', 'Last'),
-                                        'prevPageLabel' => AffiliateModule::t('affiliate', 'Previous'),
-                                        'nextPageLabel' => AffiliateModule::t('affiliate', 'Next'),
+                                        'firstPageLabel' => Yii::t('backend', 'First'),
+                                        'lastPageLabel' => Yii::t('backend', 'Last'),
+                                        'prevPageLabel' => Yii::t('backend', 'Previous'),
+                                        'nextPageLabel' => Yii::t('backend', 'Next'),
                                         'maxButtonCount' => 5,
 
                                         'options' => [
@@ -128,22 +128,22 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ],
                                         [
                                             'class' => 'yii\grid\ActionColumn',
-                                            'header' => AffiliateModule::t('affiliate', 'Actions'),
+                                            'header' => Yii::t('backend', 'Actions'),
                                             'template' => '{update} {delete}',
                                             'buttons' => [
                                                 'update' => function ($url, $model) {
                                                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                                                        'title' => AffiliateModule::t('affiliate', 'Update'),
-                                                        'alia-label' => AffiliateModule::t('affiliate', 'Update'),
+                                                        'title' => Yii::t('backend', 'Update'),
+                                                        'alia-label' => Yii::t('backend', 'Update'),
                                                         'data-pjax' => 0,
                                                         'class' => 'btn btn-info btn-xs'
                                                     ]);
                                                 },
                                                 'delete' => function ($url, $model) {
                                                     return Html::a('<span class="glyphicon glyphicon-trash"></span>', 'javascript:;', [
-                                                        'title' => AffiliateModule::t('affiliate', 'Delete'),
+                                                        'title' => Yii::t('backend', 'Delete'),
                                                         'class' => 'btn btn-danger btn-xs btn-del',
-                                                        'data-title' => AffiliateModule::t('affiliate', 'Delete?'),
+                                                        'data-title' => Yii::t('backend', 'Delete?'),
                                                         'data-pjax' => 0,
                                                         'data-url' => $url,
                                                         'btn-success-class' => 'success-delete',

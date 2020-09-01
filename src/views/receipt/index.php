@@ -130,6 +130,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             ],
                                             'total:currency',
                                             'payment_method',
+                                            'partner_code',
                                             [
                                                 'attribute' => 'created_by',
                                                 'value' => 'userCreated.userProfile.fullname',

@@ -7,29 +7,29 @@ return [
     'affiliateName' => 'Affiliate',
     'affiliateVersion' => '1.0',
     'status' => [
-        '0' => AffiliateModule::t('affiliate', 'Tạm ngưng'),
-        '1' => AffiliateModule::t('affiliate', 'Hiển thị'),
+        '0' => Yii::t('backend', 'Tạm ngưng'),
+        '1' => Yii::t('backend', 'Hiển thị'),
     ],
     'active' => [
-        '0' => AffiliateModule::t('affiliate', 'Ngừng hoạt động'),
-        '1' => AffiliateModule::t('affiliate', 'Hoạt động'),
+        '0' => Yii::t('backend', 'Ngừng hoạt động'),
+        '1' => Yii::t('backend', 'Hoạt động'),
     ],
     'sex' => [
-        '0' => AffiliateModule::t('affiliate', 'Female'),
-        '1' => AffiliateModule::t('affiliate', 'Male'),
-        '2' => AffiliateModule::t('affiliate', 'Other'),
+        '0' => Yii::t('backend', 'Female'),
+        '1' => Yii::t('backend', 'Male'),
+        '2' => Yii::t('backend', 'Other'),
     ],
     'customer_status' => [
-        Customer::STATUS_DANG_LAM_DICH_VU => AffiliateModule::t('affiliate', 'Đang làm dịch vụ'),
-        Customer::STATUS_HOAN_THANH_DICH_VU => AffiliateModule::t('affiliate', 'Đã hoàn thành dịch vụ'),
+        Customer::STATUS_DANG_LAM_DICH_VU => Yii::t('backend', 'Đang làm dịch vụ'),
+        Customer::STATUS_HOAN_THANH_DICH_VU => Yii::t('backend', 'Đã hoàn thành dịch vụ'),
     ],
     'customer_status_color' => [
         Customer::STATUS_DANG_LAM_DICH_VU => '#69c982',
         Customer::STATUS_HOAN_THANH_DICH_VU => '#22af47',
     ],
     'promotion_type' => [
-        Coupon::DISCOUNT_PERCENT => AffiliateModule::t('affiliate', 'Discount Percent In Order'),
-        Coupon::DISCOUNT_AMOUNT => AffiliateModule::t('affiliate', 'Discount Amount In Order'),
+        Coupon::DISCOUNT_PERCENT => Yii::t('backend', 'Discount Percent In Order'),
+        Coupon::DISCOUNT_AMOUNT => Yii::t('backend', 'Discount Amount In Order'),
     ],
     'myauris_config' => [
         'url_website' => "https://dashboard.myauris.vn",
@@ -56,13 +56,13 @@ return [
     'not_release_object' => [
     ],
     'note_type' => [
-        '0' => AffiliateModule::t('affiliate', 'For This System'),
-        '1' => AffiliateModule::t('affiliate', 'For Partner System'),
+        '0' => Yii::t('backend', 'For This System'),
+        '1' => Yii::t('backend', 'For Partner System'),
     ],
     'feedback_type' => [
-        '0' => AffiliateModule::t('affiliate', 'Unsatisfied'),
-        '1' => AffiliateModule::t('affiliate', 'Satisfied'),
-        '2' => AffiliateModule::t('affiliate', 'Bình thường'),
+        '0' => Yii::t('backend', 'Unsatisfied'),
+        '1' => Yii::t('backend', 'Satisfied'),
+        '2' => Yii::t('backend', 'Bình thường'),
     ],
     'feedback_type_color' => [
         '0' => '#ab26aa',
@@ -70,13 +70,13 @@ return [
         '2' => '#52b5f3',
     ],
     'receipt_status' => [
-        '0' => AffiliateModule::t('affiliate', 'Thanh toán'),
-        '1' => AffiliateModule::t('affiliate', 'Đặt cọc'),
-        '2' => AffiliateModule::t('affiliate', 'Hoàn Cọc'),
+        '0' => Yii::t('backend', 'Thanh toán'),
+        '1' => Yii::t('backend', 'Đặt cọc'),
+        '2' => Yii::t('backend', 'Hoàn Cọc'),
     ],
     'order_status' => [
-        '0' => AffiliateModule::t('affiliate', 'Chưa hoàn thành'),
-        '1' => AffiliateModule::t('affiliate', 'Hoàn thành'),
-        '2' => AffiliateModule::t('affiliate', 'Hủy'),
+        '0' => Yii::t('backend', 'Chưa hoàn thành'),
+        '1' => Yii::t('backend', 'Hoàn thành'),
+        '2' => Yii::t('backend', 'Hủy'),
     ]
 ];

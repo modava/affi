@@ -8,8 +8,8 @@ use modava\affiliate\AffiliateModule;
 /* @var $this yii\web\View */
 /* @var $model modava\affiliate\models\Note */
 
-$this->title = AffiliateModule::t('affiliate', 'Create');
-$this->params['breadcrumbs'][] = ['label' => AffiliateModule::t('affiliate', 'Notes'), 'url' => ['index']];
+$this->title = Yii::t('backend', 'Create');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Notes'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="container-fluid px-xxl-25 px-xl-10">

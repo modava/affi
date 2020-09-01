@@ -13,7 +13,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel modava\affiliate\models\search\CustomerSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = AffiliateModule::t('affiliate', 'Customers');
+$this->title = Yii::t('backend', 'Customers');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?= ToastrWidget::widget(['key' => 'toastr-' . $searchModel->toastr_key . '-index']) ?>
@@ -26,8 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         class="ion ion-md-apps"></span></span><?= Html::encode($this->title) ?>
         </h4>
         <a class="btn btn-outline-light" href="<?= \yii\helpers\Url::to(['create']); ?>"
-           title="<?= AffiliateModule::t('affiliate', 'Create'); ?>">
-            <i class="fa fa-plus"></i> <?= AffiliateModule::t('affiliate', 'Create'); ?></a>
+           title="<?= Yii::t('backend', 'Create'); ?>">
+            <i class="fa fa-plus"></i> <?= Yii::t('backend', 'Create'); ?></a>
     </div>
 
     <!-- Row -->
@@ -64,10 +64,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                         </div>
                                     ',
                                     'pager' => [
-                                        'firstPageLabel' => AffiliateModule::t('affiliate', 'First'),
-                                        'lastPageLabel' => AffiliateModule::t('affiliate', 'Last'),
-                                        'prevPageLabel' => AffiliateModule::t('affiliate', 'Previous'),
-                                        'nextPageLabel' => AffiliateModule::t('affiliate', 'Next'),
+                                        'firstPageLabel' => Yii::t('backend', 'First'),
+                                        'lastPageLabel' => Yii::t('backend', 'Last'),
+                                        'prevPageLabel' => Yii::t('backend', 'Previous'),
+                                        'nextPageLabel' => Yii::t('backend', 'Next'),
                                         'maxButtonCount' => 5,
 
                                         'options' => [
@@ -114,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ],
                                         [
                                             'attribute' => 'phone',
-                                            'label' => AffiliateModule::t('affiliate', 'Phone'),
+                                            'label' => Yii::t('backend', 'Phone'),
                                             'format' => 'raw',
                                             'value' => function ($model) {
                                                 $content = '';
@@ -233,7 +233,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ],
                                         [
                                             'class' => 'yii\grid\ActionColumn',
-                                            'header' => AffiliateModule::t('affiliate', 'Related Record'),
+                                            'header' => Yii::t('backend', 'Related Record'),
                                             'template' => '{list-coupon} {list-note}',
                                             'buttons' => [
                                                 'list-coupon' => function ($url, $model) {
@@ -244,8 +244,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
 
                                                     return Html::a('<i class="icon dripicons-ticket"></i> ' . $bage , Url::toRoute(['/affiliate/coupon', 'CouponSearch[customer_id]' => $model->primaryKey]),[
-                                                        'title' => AffiliateModule::t('affiliate', 'List Tickets'),
-                                                        'alia-label' => AffiliateModule::t('affiliate', 'List Tickets'),
+                                                        'title' => Yii::t('backend', 'List Tickets'),
+                                                        'alia-label' => Yii::t('backend', 'List Tickets'),
                                                         'data-pjax' => 0,
                                                         'class' => 'btn btn-info btn-xs list-relate-record m-1',
                                                         'data-related-id' => $model->primaryKey,
@@ -260,8 +260,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
 
                                                     return Html::a('<i class="icon dripicons-to-do"></i>' . $bage, Url::toRoute(['/affiliate/note', 'NoteSearch[customer_id]' => $model->primaryKey]),[
-                                                        'title' => AffiliateModule::t('affiliate', 'List Notes'),
-                                                        'alia-label' => AffiliateModule::t('affiliate', 'List Notes'),
+                                                        'title' => Yii::t('backend', 'List Notes'),
+                                                        'alia-label' => Yii::t('backend', 'List Notes'),
                                                         'data-pjax' => 0,
                                                         'class' => 'btn btn-success btn-xs list-relate-record m-1',
                                                         'data-related-id' => $model->primaryKey,
@@ -277,22 +277,22 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ],
                                         [
                                             'class' => 'yii\grid\ActionColumn',
-                                            'header' => AffiliateModule::t('affiliate', 'Actions'),
+                                            'header' => Yii::t('backend', 'Actions'),
                                             'template' => '{create-coupon} {create-call-note} {hidden-input-customer-info} {update} {delete}',
                                             'buttons' => [
                                                 'update' => function ($url, $model) {
                                                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                                                        'title' => AffiliateModule::t('affiliate', 'Update'),
-                                                        'alia-label' => AffiliateModule::t('affiliate', 'Update'),
+                                                        'title' => Yii::t('backend', 'Update'),
+                                                        'alia-label' => Yii::t('backend', 'Update'),
                                                         'data-pjax' => 0,
                                                         'class' => 'btn btn-info btn-xs m-1',
                                                     ]);
                                                 },
                                                 'delete' => function ($url, $model) {
                                                     return Html::a('<span class="glyphicon glyphicon-trash"></span>', 'javascript:;', [
-                                                        'title' => AffiliateModule::t('affiliate', 'Delete'),
+                                                        'title' => Yii::t('backend', 'Delete'),
                                                         'class' => 'btn btn-danger btn-xs btn-del m-1',
-                                                        'data-title' => AffiliateModule::t('affiliate', 'Delete?'),
+                                                        'data-title' => Yii::t('backend', 'Delete?'),
                                                         'data-pjax' => 0,
                                                         'data-url' => $url,
                                                         'btn-success-class' => 'success-delete',
@@ -304,8 +304,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     if (!Utils::isReleaseObject('Coupon')) return '';
 
                                                     return Html::a('<i class="icon dripicons-ticket"></i>', 'javascript:;', [
-                                                        'title' => AffiliateModule::t('affiliate', 'Create Coupon'),
-                                                        'alia-label' => AffiliateModule::t('affiliate', 'Create Coupon'),
+                                                        'title' => Yii::t('backend', 'Create Coupon'),
+                                                        'alia-label' => Yii::t('backend', 'Create Coupon'),
                                                         'data-pjax' => 0,
                                                         'data-partner' => 'myaris',
                                                         'class' => 'btn btn-info btn-xs create-coupon m-1'
@@ -313,8 +313,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 },
                                                 'create-call-note' => function ($url, $model) {
                                                     return Html::a('<i class="icon dripicons-to-do"></i>', 'javascript:;', [
-                                                        'title' => AffiliateModule::t('affiliate', 'Create Call Note'),
-                                                        'alia-label' => AffiliateModule::t('affiliate', 'Create Call Note'),
+                                                        'title' => Yii::t('backend', 'Create Call Note'),
+                                                        'alia-label' => Yii::t('backend', 'Create Call Note'),
                                                         'data-pjax' => 0,
                                                         'data-partner' => 'myaris',
                                                         'class' => 'btn btn-success btn-xs create-call-note m-1'

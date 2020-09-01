@@ -114,19 +114,19 @@ class Feedback extends FeedbackTable
     public function attributeLabels()
     {
         return [
-            'id' => AffiliateModule::t('affiliate', 'ID'),
-            'title' => AffiliateModule::t('affiliate', 'Title'),
-            'slug' => AffiliateModule::t('affiliate', 'Slug'),
-            'customer_id' => AffiliateModule::t('affiliate', 'Customer'),
-            'unsatisfied_reason_id' => AffiliateModule::t('affiliate', 'Unsatisfied Reason'),
-            'feedback_time_id' => AffiliateModule::t('affiliate', 'Feedback Time'),
-            'feedback_type' => AffiliateModule::t('affiliate', 'Feedback Type'),
-            'description' => AffiliateModule::t('affiliate', 'Description'),
-            'created_at' => AffiliateModule::t('affiliate', 'Created At'),
-            'updated_at' => AffiliateModule::t('affiliate', 'Updated At'),
-            'created_by' => AffiliateModule::t('affiliate', 'Created By'),
-            'updated_by' => AffiliateModule::t('affiliate', 'Updated By'),
-            'satisfied_feedback' => AffiliateModule::t('affiliate', 'Satisfied Feedback'),
+            'id' => Yii::t('backend', 'ID'),
+            'title' => Yii::t('backend', 'Title'),
+            'slug' => Yii::t('backend', 'Slug'),
+            'customer_id' => Yii::t('backend', 'Customer'),
+            'unsatisfied_reason_id' => Yii::t('backend', 'Unsatisfied Reason'),
+            'feedback_time_id' => Yii::t('backend', 'Feedback Time'),
+            'feedback_type' => Yii::t('backend', 'Feedback Type'),
+            'description' => Yii::t('backend', 'Description'),
+            'created_at' => Yii::t('backend', 'Created At'),
+            'updated_at' => Yii::t('backend', 'Updated At'),
+            'created_by' => Yii::t('backend', 'Created By'),
+            'updated_by' => Yii::t('backend', 'Updated By'),
+            'satisfied_feedback' => Yii::t('backend', 'Satisfied Feedback'),
         ];
     }
 

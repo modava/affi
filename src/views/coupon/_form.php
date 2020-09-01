@@ -33,7 +33,7 @@ $model->expired_date = $model->expired_date != null
                     <?= $form->field($model, 'coupon_code')->textInput(['maxlength' => true,]) ?>
                 </div>
                 <div class="col-6">
-                    <button type="button" class="btn btn-primary" id="js-generate-coupon-code"><?=AffiliateModule::t('affiliate', 'Generate Coupon Code')?></button>
+                    <button type="button" class="btn btn-primary" id="js-generate-coupon-code"><?=Yii::t('backend', 'Generate Coupon Code')?></button>
                 </div>
             </div>
         </div>
@@ -58,13 +58,13 @@ $model->expired_date = $model->expired_date != null
         <div class="col-6">
             <?= $form->field($model, 'coupon_type_id')->dropDownList(
                     ArrayHelper::map(\modava\affiliate\models\table\CouponTypeTable::getAllRecords(), 'id', 'title'),
-                    [ 'prompt' => AffiliateModule::t('affiliate', 'Select an option ...') ]
+                    [ 'prompt' => Yii::t('backend', 'Select an option ...') ]
             ) ?>
         </div>
         <div class="col-6">
             <?= $form->field($model, 'promotion_type')->dropDownList(
                 Yii::$app->getModule('affiliate')->params["promotion_type"],
-                [ 'prompt' => AffiliateModule::t('affiliate', 'Select an option ...'),
+                [ 'prompt' => Yii::t('backend', 'Select an option ...'),
                     'id' => 'promotion-type'
                 ]
             ) ?>
@@ -82,7 +82,7 @@ $model->expired_date = $model->expired_date != null
     </div>
 
         <div class="form-group">
-            <?= Html::submitButton(AffiliateModule::t('affiliate', 'Save'), ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton(Yii::t('backend', 'Save'), ['class' => 'btn btn-success']) ?>
         </div>
 
     <?php ActiveForm::end(); ?>

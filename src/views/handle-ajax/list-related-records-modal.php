@@ -15,7 +15,7 @@ use yii\helpers\Url;
 <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="createCouponModalLabel"><?=AffiliateModule::t('affiliate', 'List'). ' ' . AffiliateModule::t('affiliate', $modelName)?></h5>
+            <h5 class="modal-title" id="createCouponModalLabel"><?=Yii::t('backend', 'List'). ' ' . Yii::t('backend', $modelName)?></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>

@@ -11,7 +11,7 @@ use modava\affiliate\AffiliateModule;
 /* @var $model modava\affiliate\models\Order */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => AffiliateModule::t('affiliate', 'Orders'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Orders'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -76,11 +76,11 @@ $this->params['breadcrumbs'][] = $this->title;
 						'updated_at:datetime',
                         [
                             'attribute' => 'userCreated.userProfile.fullname',
-                            'label' => AffiliateModule::t('affiliate', 'Created By')
+                            'label' => Yii::t('backend', 'Created By')
                         ],
                         [
                             'attribute' => 'userUpdated.userProfile.fullname',
-                            'label' => AffiliateModule::t('affiliate', 'Updated By')
+                            'label' => Yii::t('backend', 'Updated By')
                         ],
                     ],
                 ]) ?>

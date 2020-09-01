@@ -25,9 +25,12 @@ use modava\affiliate\AffiliateModule;
             <?= $form->field($model, 'total')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-6">
+            <?= $form->field($model, 'partner_code')->textInput(['maxlength' => true, 'readonly' => 'readonly']) ?>
+        </div>
+        <div class="col-6">
             <?= $form->field($model, 'status')->dropDownList(
                 Yii::$app->getModule('affiliate')->params['receipt_status'],
-                ['prompt' => AffiliateModule::t('affiliate', 'Select an option ...')]
+                ['prompt' => Yii::t('backend', 'Select an option ...')]
             ) ?>
         </div>
         <div class="col-6">

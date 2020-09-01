@@ -11,7 +11,7 @@ use modava\affiliate\AffiliateModule;
 /* @var $model modava\affiliate\models\Coupon */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => AffiliateModule::t('affiliate', 'Coupons'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Coupons'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -26,13 +26,13 @@ $this->params['breadcrumbs'][] = $this->title;
         </h4>
         <p>
             <a class="btn btn-outline-light" href="<?= Url::to(['create']); ?>"
-                title="<?= AffiliateModule::t('affiliate', 'Create'); ?>">
-                <i class="fa fa-plus"></i> <?= AffiliateModule::t('affiliate', 'Create'); ?></a>
-            <?= Html::a(AffiliateModule::t('affiliate', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a(AffiliateModule::t('affiliate', 'Delete'), ['delete', 'id' => $model->id], [
+                title="<?= Yii::t('backend', 'Create'); ?>">
+                <i class="fa fa-plus"></i> <?= Yii::t('backend', 'Create'); ?></a>
+            <?= Html::a(Yii::t('backend', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('backend', 'Delete'), ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
-                    'confirm' => AffiliateModule::t('affiliate', 'Are you sure you want to delete this item?'),
+                    'confirm' => Yii::t('backend', 'Are you sure you want to delete this item?'),
                     'method' => 'post',
                 ],
             ]) ?>
@@ -78,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute' => 'promotion_type',
                             'value' => function ($model) {
-                                return AffiliateModule::t('affiliate', Yii::$app->getModule('affiliate')->params["promotion_type"][$model->promotion_type]);
+                                return Yii::t('backend', Yii::$app->getModule('affiliate')->params["promotion_type"][$model->promotion_type]);
                             }
                         ],
 						'promotion_value',
@@ -86,11 +86,11 @@ $this->params['breadcrumbs'][] = $this->title;
 						'updated_at:datetime',
                         [
                             'attribute' => 'userCreated.userProfile.fullname',
-                            'label' => AffiliateModule::t('affiliate', 'Created By')
+                            'label' => Yii::t('backend', 'Created By')
                         ],
                         [
                             'attribute' => 'userUpdated.userProfile.fullname',
-                            'label' => AffiliateModule::t('affiliate', 'Updated By')
+                            'label' => Yii::t('backend', 'Updated By')
                         ],
                         'description:raw',
                     ],

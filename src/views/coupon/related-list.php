@@ -41,10 +41,10 @@ use yii\grid\GridView;
             </div>
         ',
     'pager' => [
-        'firstPageLabel' => AffiliateModule::t('affiliate', 'First'),
-        'lastPageLabel' => AffiliateModule::t('affiliate', 'Last'),
-        'prevPageLabel' => AffiliateModule::t('affiliate', 'Previous'),
-        'nextPageLabel' => AffiliateModule::t('affiliate', 'Next'),
+        'firstPageLabel' => Yii::t('backend', 'First'),
+        'lastPageLabel' => Yii::t('backend', 'Last'),
+        'prevPageLabel' => Yii::t('backend', 'Previous'),
+        'nextPageLabel' => Yii::t('backend', 'Next'),
         'maxButtonCount' => 5,
 
         'options' => [
@@ -107,7 +107,7 @@ use yii\grid\GridView;
         [
             'attribute' => 'promotion_type',
             'value' => function ($model) {
-                return AffiliateModule::t('affiliate', Yii::$app->getModule('affiliate')->params["promotion_type"][$model->promotion_type]);
+                return Yii::t('backend', Yii::$app->getModule('affiliate')->params["promotion_type"][$model->promotion_type]);
             }
         ],
         //'description:ntext',

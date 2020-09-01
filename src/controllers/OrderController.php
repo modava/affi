@@ -187,6 +187,6 @@ class OrderController extends MyController
             return $model;
         }
 
-        throw new NotFoundHttpException(AffiliateModule::t('affiliate', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('backend', 'The requested page does not exist.'));
     }
 }

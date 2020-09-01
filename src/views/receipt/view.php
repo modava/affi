@@ -65,6 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
 						'total:currency',
 						'payment_method',
+						'partner_code',
 						'created_at:datetime',
 						'updated_at:datetime',
                         [

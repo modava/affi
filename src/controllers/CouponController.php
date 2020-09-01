@@ -206,11 +206,11 @@ class CouponController extends MyController
                 return [ 'success' => true, 'data' => str_replace('-', '_', $code)];
             }
             else {
-                return [ 'success' => false, 'message' => AffiliateModule::t('affiliate', 'Có lỗi xảy ra')];
+                return [ 'success' => false, 'message' => Yii::t('backend', 'Có lỗi xảy ra')];
             }
         }
 
-        return [ 'success' => false, 'message' => AffiliateModule::t('affiliate', 'Không tìm thấy khách hàng')];
+        return [ 'success' => false, 'message' => Yii::t('backend', 'Không tìm thấy khách hàng')];
     }
 
     public function actionCheckCode () {
@@ -222,13 +222,13 @@ class CouponController extends MyController
         if ($coupon) {
             return [
                 'success' => true,
-                'message' => AffiliateModule::t('affiliate', 'Mã code do khách hàng {full_name} giới thiệu', ['full_name' => $coupon->customer->full_name])
+                'message' => Yii::t('backend', 'Mã code do khách hàng {full_name} giới thiệu', ['full_name' => $coupon->customer->full_name])
             ];
         }
 
         return [
             'success' => false,
-            'message' => AffiliateModule::t('affiliate', 'Mã code không tồn tại hoặc đã được sử dụng')
+            'message' => Yii::t('backend', 'Mã code không tồn tại hoặc đã được sử dụng')
         ];
     }
 
@@ -247,6 +247,6 @@ class CouponController extends MyController
             return $model;
         }
 
-        throw new NotFoundHttpException(AffiliateModule::t('affiliate', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('backend', 'The requested page does not exist.'));
     }
 }

@@ -29,7 +29,7 @@ use modava\affiliate\AffiliateModule;
         </div>
     </div>
     <div class="form-group">
-        <?= Html::submitButton(AffiliateModule::t('affiliate', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('backend', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

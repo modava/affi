@@ -45,13 +45,13 @@ $model->country_id = 237; // Viet Name
         </div>
         <div class="col-6">
             <?= $form->field($model, 'sex')->dropDownList(Yii::$app->getModule('affiliate')->params['sex'], [
-                'prompt' => AffiliateModule::t('affiliate', 'Select an option ...'),
+                'prompt' => Yii::t('backend', 'Select an option ...'),
                 'id' => 'sex'
             ]) ?>
         </div>
         <div class="col-6">
             <?= $form->field($model, 'status')->dropDownList(Yii::$app->getModule('affiliate')->params['customer_status'], [
-                'prompt' => AffiliateModule::t('affiliate', 'Select an option ...'),
+                'prompt' => Yii::t('backend', 'Select an option ...'),
                 'id' => 'status'
             ]) ?>
         </div>
@@ -93,7 +93,7 @@ $model->country_id = 237; // Viet Name
             <?= $form->field($model, 'partner_id')->dropDownList(
                 ArrayHelper::map(\modava\affiliate\models\table\PartnerTable::getAllRecords(), 'id', 'title'),
                 [
-                    'prompt' => AffiliateModule::t('affiliate', 'Select an option ...'),
+                    'prompt' => Yii::t('backend', 'Select an option ...'),
                     'id' => 'partner-id',
                 ]
             ) ?>
@@ -102,7 +102,7 @@ $model->country_id = 237; // Viet Name
             <?= $form->field($model,
                 'country_id')->dropDownList(ArrayHelper::map(LocationCountryTable::getAllCountry(Yii::$app->language),
                 'id', 'CommonName'), [
-                'prompt' => AffiliateModule::t('affiliate', 'Chọn quốc gia...'),
+                'prompt' => Yii::t('backend', 'Chọn quốc gia...'),
                 'class' => 'form-control load-data-on-change',
                 'load-data-element' => '#select-province',
                 'load-data-url' => Url::toRoute(['/location/location-province/get-province-by-country']),
@@ -117,7 +117,7 @@ $model->country_id = 237; // Viet Name
                 'province_id')->dropDownList(ArrayHelper::map(LocationProvinceTable::getProvinceByCountry($model->country_id,
                 Yii::$app->language), 'id', 'name'), [
                 'id' => 'select-province',
-                'prompt' => AffiliateModule::t('affiliate', 'Chọn Tỉnh/Thành phố...'),
+                'prompt' => Yii::t('backend', 'Chọn Tỉnh/Thành phố...'),
                 'class' => 'form-control load-data-on-change',
                 'load-data-element' => '#select-district',
                 'load-data-url' => Url::toRoute(['/location/location-district/get-district-by-province']),
@@ -132,7 +132,7 @@ $model->country_id = 237; // Viet Name
                 'district_id')->dropDownList(ArrayHelper::map(LocationDistrictTable::getDistrictByProvince($model->province_id,
                 Yii::$app->language), 'id', 'name'), [
                 'id' => 'select-district',
-                'prompt' => AffiliateModule::t('affiliate', 'Chọn Quận/Huyện...'),
+                'prompt' => Yii::t('backend', 'Chọn Quận/Huyện...'),
                 'class' => 'form-control load-data-on-change',
                 'load-data-element' => '#select-ward',
                 'load-data-url' => Url::toRoute(['/location/location-ward/get-ward-by-district']),
@@ -145,7 +145,7 @@ $model->country_id = 237; // Viet Name
             <?= $form->field($model,
                 'ward_id')->dropDownList(ArrayHelper::map(LocationWardTable::getWardByDistrict($model->district_id),
                 'id', 'name'), [
-                'prompt' => AffiliateModule::t('affiliate', 'Chọn Phường/Xã...'),
+                'prompt' => Yii::t('backend', 'Chọn Phường/Xã...'),
                 'id' => 'select-ward',
             ]) ?>
         </div>
@@ -161,7 +161,7 @@ $model->country_id = 237; // Viet Name
         </div>
 
         <div class="form-group">
-            <?= Html::submitButton(AffiliateModule::t('affiliate', 'Save'), ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton(Yii::t('backend', 'Save'), ['class' => 'btn btn-success']) ?>
         </div>
     </div>
 <?php ActiveForm::end(); ?>

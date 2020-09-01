@@ -93,18 +93,18 @@ class Receipt extends ReceiptTable
     public function attributeLabels()
     {
         return [
-            'id' => AffiliateModule::t('affiliate', 'ID'),
-            'slug' => AffiliateModule::t('affiliate', 'Slug'),
-            'title' => AffiliateModule::t('affiliate', 'Title'),
-            'order_id' => AffiliateModule::t('affiliate', 'Đơn hàng'),
-            'total' => AffiliateModule::t('affiliate', 'Số tiền'),
-            'status' => AffiliateModule::t('affiliate', 'Tình trạng'),
-            'payment_method' => AffiliateModule::t('affiliate', 'Phương thức thanh thoán'),
-            'created_at' => AffiliateModule::t('affiliate', 'Created At'),
-            'updated_at' => AffiliateModule::t('affiliate', 'Updated At'),
-            'created_by' => AffiliateModule::t('affiliate', 'Created By'),
-            'updated_by' => AffiliateModule::t('affiliate', 'Updated By'),
-            'partner_code' => AffiliateModule::t('affiliate', 'Mã phiếu thanh toán ở hệ thống tích hợp'),
+            'id' => Yii::t('backend', 'ID'),
+            'slug' => Yii::t('backend', 'Slug'),
+            'title' => Yii::t('backend', 'Title'),
+            'order_id' => Yii::t('backend', 'Đơn hàng'),
+            'total' => Yii::t('backend', 'Số tiền'),
+            'status' => Yii::t('backend', 'Tình trạng'),
+            'payment_method' => Yii::t('backend', 'Phương thức thanh thoán'),
+            'created_at' => Yii::t('backend', 'Created At'),
+            'updated_at' => Yii::t('backend', 'Updated At'),
+            'created_by' => Yii::t('backend', 'Created By'),
+            'updated_by' => Yii::t('backend', 'Updated By'),
+            'partner_code' => Yii::t('backend', 'Mã phiếu thanh toán ở hệ thống tích hợp'),
         ];
     }
 

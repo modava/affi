@@ -23,7 +23,7 @@ use \modava\affiliate\models\table\CouponTable;
         <div class="col-6">
             <?= $form->field($model, 'coupon_id')->dropDownList(
                 ArrayHelper::map(CouponTable::getAll(), 'id', 'coupon_code'),
-                ['prompt' => AffiliateModule::t('affiliate', 'Select an option ...')]
+                ['prompt' => Yii::t('backend', 'Select an option ...')]
             ) ?>
         </div>
         <div class="col-6">
@@ -45,7 +45,7 @@ use \modava\affiliate\models\table\CouponTable;
         <div class="col-6">
             <?= $form->field($model, 'status')->dropDownList(
                 Yii::$app->getModule('affiliate')->params['order_status'],
-                ['prompt' => AffiliateModule::t('affiliate', 'Select an option ...')]
+                ['prompt' => Yii::t('backend', 'Select an option ...')]
             ) ?>
         </div>
         <div class="col-6">
@@ -65,7 +65,7 @@ use \modava\affiliate\models\table\CouponTable;
         </div>
     </div>
     <div class="form-group">
-        <?= Html::submitButton(AffiliateModule::t('affiliate', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('backend', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

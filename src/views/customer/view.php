@@ -12,7 +12,7 @@ use modava\affiliate\AffiliateModule;
 /* @var $model modava\affiliate\models\Customer */
 
 $this->title = $model->full_name;
-$this->params['breadcrumbs'][] = ['label' => AffiliateModule::t('affiliate', 'Customers'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Customers'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -26,15 +26,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         class="ion ion-md-apps"></span></span><?= Html::encode($this->title) ?>
         </h4>
         <p>
-            <button class="btn btn-primary js-more-info" data-customer-id="<?=$model->partner_customer_id?>"><?=AffiliateModule::t('affiliate', 'More Information')?></button>
+            <button class="btn btn-primary js-more-info" data-customer-id="<?=$model->partner_customer_id?>"><?=Yii::t('backend', 'More Information')?></button>
             <a class="btn btn-outline-light" href="<?= Url::to(['create']); ?>"
-                title="<?= AffiliateModule::t('affiliate', 'Create'); ?>">
-                <i class="fa fa-plus"></i> <?= AffiliateModule::t('affiliate', 'Create'); ?></a>
-            <?= Html::a(AffiliateModule::t('affiliate', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a(AffiliateModule::t('affiliate', 'Delete'), ['delete', 'id' => $model->id], [
+                title="<?= Yii::t('backend', 'Create'); ?>">
+                <i class="fa fa-plus"></i> <?= Yii::t('backend', 'Create'); ?></a>
+            <?= Html::a(Yii::t('backend', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('backend', 'Delete'), ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
-                    'confirm' => AffiliateModule::t('affiliate', 'Are you sure you want to delete this item?'),
+                    'confirm' => Yii::t('backend', 'Are you sure you want to delete this item?'),
                     'method' => 'post',
                 ],
             ]) ?>
@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'model' => $model,
                     'attributes' => [
                         [
-                            'label'=> AffiliateModule::t('affiliate', 'Related Record'),
+                            'label'=> Yii::t('backend', 'Related Record'),
                             'format'=>'raw',
                             'value'=> function ($model) {
                                 $listButton = '';
@@ -61,8 +61,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                     $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
 
                                     $listButton .= Html::a('<i class="icon dripicons-ticket"></i> ' . $bage , Url::toRoute(['/affiliate/coupon', 'CouponSearch[customer_id]' => $model->primaryKey]),[
-                                        'title' => AffiliateModule::t('affiliate', 'List Tickets'),
-                                        'alia-label' => AffiliateModule::t('affiliate', 'List Tickets'),
+                                        'title' => Yii::t('backend', 'List Tickets'),
+                                        'alia-label' => Yii::t('backend', 'List Tickets'),
                                         'data-pjax' => 0,
                                         'class' => 'btn btn-info btn-xs list-relate-record m-1',
                                         'data-related-id' => $model->primaryKey,
@@ -78,8 +78,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                     $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
 
                                     $listButton .= Html::a('<i class="icon dripicons-to-do"></i>' . $bage, Url::toRoute(['/affiliate/note', 'NoteSearch[customer_id]' => $model->primaryKey]),[
-                                        'title' => AffiliateModule::t('affiliate', 'List Notes'),
-                                        'alia-label' => AffiliateModule::t('affiliate', 'List Notes'),
+                                        'title' => Yii::t('backend', 'List Notes'),
+                                        'alia-label' => Yii::t('backend', 'List Notes'),
                                         'data-pjax' => 0,
                                         'class' => 'btn btn-success btn-xs list-relate-record m-1',
                                         'data-related-id' => $model->primaryKey,
@@ -153,11 +153,11 @@ $this->params['breadcrumbs'][] = $this->title;
 						'updated_at:datetime',
                         [
                             'attribute' => 'userCreated.userProfile.fullname',
-                            'label' => AffiliateModule::t('affiliate', 'Created By')
+                            'label' => Yii::t('backend', 'Created By')
                         ],
                         [
                             'attribute' => 'userUpdated.userProfile.fullname',
-                            'label' => AffiliateModule::t('affiliate', 'Updated By')
+                            'label' => Yii::t('backend', 'Updated By')
                         ],
                     ],
                 ]) ?>

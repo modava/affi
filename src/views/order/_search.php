@@ -44,8 +44,8 @@ use modava\affiliate\AffiliateModule;
     <?php // echo $form->field($model, 'updated_by') ?>
 
     <div class="form-group">
-        <?= Html::submitButton(AffiliateModule::t('affiliate', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(AffiliateModule::t('affiliate', 'Reset'), ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton(Yii::t('backend', 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton(Yii::t('backend', 'Reset'), ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
