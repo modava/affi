@@ -82,6 +82,28 @@ class HandleAjaxController extends MyAffiliateController
         }
     }
 
+    public function actionUpdateAjax($id)
+    {
+        $model = $this->classModelName::findOne($id);
+
+        if ($model == null) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [ 'success' => false, 'message' => Yii::t('backend', 'Không tìm thấy record') ];
+        }
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate() && $model->save()) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+
+                return [ 'success' => true ];
+            } else {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+
+                return [ 'success' => false ];
+            }
+        }
+    }
+
     public function beforeAction($action)
     {
         $modelName = \Yii::$app->request->get('model');

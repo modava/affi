@@ -191,6 +191,13 @@ class NoteController extends MyController
         }
     }
 
+    public function actionGetComingNote()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $notes = Note::getComingNote();
+        return $this->renderAjax('mini-list', ['notes' => $notes]);
+    }
+
     /**
     * Finds the Note model based on its primary key value.
     * If the model is not found, a 404 HTTP exception will be thrown.

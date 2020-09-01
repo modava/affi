@@ -78,5 +78,9 @@ return [
         '0' => Yii::t('backend', 'Chưa hoàn thành'),
         '1' => Yii::t('backend', 'Hoàn thành'),
         '2' => Yii::t('backend', 'Hủy'),
+    ],
+    'note_is_recall' => [
+        '0' => Yii::t('backend', 'Chưa gọi'),
+        '1' => Yii::t('backend', 'Đã gọi')
     ]
 ];

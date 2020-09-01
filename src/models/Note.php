@@ -152,7 +152,7 @@ class Note extends NoteTable
     {
         return [
             [['title', 'slug', 'customer_id', 'call_time', 'note_type'], 'required'],
-            [['customer_id',], 'integer'],
+            [['customer_id', 'is_recall',], 'integer'],
             [
                 ['partner_id',],
                 'required',
@@ -203,6 +203,7 @@ class Note extends NoteTable
             'updated_by' => Yii::t('backend', 'Updated By'),
             'note_type' => Yii::t('backend', 'Note Type'),
             'partner_id' => Yii::t('backend', 'Partner Id'),
+            'is_recall' => Yii::t('backend', 'Đã gọi lại'),
         ];
     }
 
@@ -279,5 +280,13 @@ class Note extends NoteTable
                 'error' => $exception->getMessage()
             ];
         }
+    }
+
+    public static function getComingNote ($forAllUser = false) {
+        $query = self::find()->where('DATE(recall_time) = DATE(NOW())');
+        if (!$forAllUser) {
+            $query->andWhere(['=', 'created_by', Yii::$app->user->id]);
+        }
+        return $query->orderBy(['recall_time' => SORT_ASC])->all();
     }
 }

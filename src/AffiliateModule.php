@@ -60,6 +60,6 @@ class AffiliateModule extends Module implements BootstrapInterface
 
     public static function t($category, $message, $params = [], $language = null)
     {
-        return Yii::t('affiliate/messages/' . $category, $message, $params, $language);
+        return Yii::t('backend/messages/' . $category, $message, $params, $language);
     }*/
 }

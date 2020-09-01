@@ -98,7 +98,7 @@ $routeInfos = [
             <li class="nav-item mb-5">
                 <a class="nav-link link-icon-left<?php if (Yii::$app->controller->id == $routeInfo['controllerId']) echo ' active' ?>"
                    href="<?= Url::toRoute(["/{$routeInfo['module']}/{$routeInfo['controllerId']}"]); ?>">
-                    <?= $routeInfo['icon'] . AffiliateModule::t($routeInfo['module'], $routeInfo['label']); ?>
+                    <?= $routeInfo['icon'] . Yii::t($routeInfo['module'], $routeInfo['label']); ?>
                 </a>
             </li>
         <?php endif;

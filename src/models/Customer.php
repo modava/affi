@@ -10,6 +10,7 @@ use modava\location\models\LocationCountry;
 use modava\location\models\LocationDistrict;
 use modava\location\models\LocationProvince;
 use modava\location\models\LocationWard;
+use Yii;
 use yii\behaviors\AttributeBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\SluggableBehavior;

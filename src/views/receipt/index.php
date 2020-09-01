@@ -12,7 +12,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel modava\affiliate\models\search\ReceiptSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = AffiliateModule::t('receipt', 'Receipts');
+$this->title = Yii::t('receipt', 'Receipts');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
     <div class="container-fluid px-xxl-15 px-xl-10">
@@ -24,8 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             class="ion ion-md-apps"></span></span><?= Html::encode($this->title) ?>
             </h4>
             <a class="btn btn-outline-light btn-sm" href="<?= \yii\helpers\Url::to(['create']); ?>"
-               title="<?= AffiliateModule::t('receipt', 'Create'); ?>">
-                <i class="fa fa-plus"></i> <?= AffiliateModule::t('receipt', 'Create'); ?></a>
+               title="<?= Yii::t('receipt', 'Create'); ?>">
+                <i class="fa fa-plus"></i> <?= Yii::t('receipt', 'Create'); ?></a>
         </div>
 
         <!-- Row -->
@@ -68,10 +68,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'class' => 'summary pull-right',
                                         ],
                                         'pager' => [
-                                            'firstPageLabel' => AffiliateModule::t('receipt', 'First'),
-                                            'lastPageLabel' => AffiliateModule::t('receipt', 'Last'),
-                                            'prevPageLabel' => AffiliateModule::t('receipt', 'Previous'),
-                                            'nextPageLabel' => AffiliateModule::t('receipt', 'Next'),
+                                            'firstPageLabel' => Yii::t('receipt', 'First'),
+                                            'lastPageLabel' => Yii::t('receipt', 'Last'),
+                                            'prevPageLabel' => Yii::t('receipt', 'Previous'),
+                                            'nextPageLabel' => Yii::t('receipt', 'Next'),
                                             'maxButtonCount' => 5,
 
                                             'options' => [
@@ -147,22 +147,22 @@ $this->params['breadcrumbs'][] = $this->title;
                                             ],
                                             [
                                                 'class' => 'yii\grid\ActionColumn',
-                                                'header' => AffiliateModule::t('receipt', 'Actions'),
+                                                'header' => Yii::t('receipt', 'Actions'),
                                                 'template' => '{update} {delete}',
                                                 'buttons' => [
                                                     'update' => function ($url, $model) {
                                                         return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                                                            'title' => AffiliateModule::t('receipt', 'Update'),
-                                                            'alia-label' => AffiliateModule::t('receipt', 'Update'),
+                                                            'title' => Yii::t('receipt', 'Update'),
+                                                            'alia-label' => Yii::t('receipt', 'Update'),
                                                             'data-pjax' => 0,
                                                             'class' => 'btn btn-info btn-xs'
                                                         ]);
                                                     },
                                                     'delete' => function ($url, $model) {
                                                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', 'javascript:;', [
-                                                            'title' => AffiliateModule::t('receipt', 'Delete'),
+                                                            'title' => Yii::t('receipt', 'Delete'),
                                                             'class' => 'btn btn-danger btn-xs btn-del',
-                                                            'data-title' => AffiliateModule::t('receipt', 'Delete?'),
+                                                            'data-title' => Yii::t('receipt', 'Delete?'),
                                                             'data-pjax' => 0,
                                                             'data-url' => $url,
                                                             'btn-success-class' => 'success-delete',

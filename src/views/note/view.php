@@ -74,6 +74,12 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                         ],
                         [
+                            'attribute' => 'is_recall',
+                            'value' => function ($model) {
+                                return Yii::$app->getModule('affiliate')->params['note_is_recall'][$model->is_recall];
+                            }
+                        ],
+                        [
                             'attribute' => 'note_type',
                             'value' => function ($model) {
                                 return Yii::$app->getModule('affiliate')->params['note_type'][$model->note_type];

@@ -218,7 +218,6 @@ class ReceiptController extends MyController
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('receipt', 'The requested page does not exist.'));
-        throw new NotFoundHttpException(AffiliateModule::t('receipt','The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('backend','The requested page does not exist.'));
     }
 }

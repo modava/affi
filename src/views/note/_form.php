@@ -70,6 +70,9 @@ $model->recall_time = $model->recall_time != null
                     ]
                 ]) ?>
             </div>
+            <div class="col-6">
+                <?= $form->field($model, 'is_recall')->checkbox() ?>
+            </div>
             <div class="col-12">
                 <?php
                 $noteTypeParams = [
