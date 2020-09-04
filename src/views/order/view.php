@@ -68,6 +68,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             'format' => 'currency',
                         ],
                         [
+                            'attribute' => 'other_discount',
+                            'format' => 'currency',
+                        ],
+                        [
                             'attribute' => 'final_total',
                             'format' => 'currency',
                         ],

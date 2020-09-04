@@ -55,6 +55,9 @@ use \modava\affiliate\models\table\CouponTable;
             <?= $form->field($model, 'discount')->textInput(['maxlength' => true, 'readonly' => true]) ?>
         </div>
         <div class="col-6">
+            <?= $form->field($model, 'other_discount')->textInput(['maxlength' => true, 'readonly' => true]) ?>
+        </div>
+        <div class="col-6">
             <?= $form->field($model, 'final_total')->textInput(['maxlength' => true, 'readonly' => true]) ?>
         </div>
         <div class="col-12">

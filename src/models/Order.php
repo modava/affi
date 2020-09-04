@@ -22,6 +22,7 @@ use Yii;
  * @property string $pre_total Số tiền trên đơn hàng
  * @property string $discount Số tiền được chiết khấu
  * @property string $final_total Số tiền còn lại
+ * @property string $other_discount Số tiền còn lại
  * @property string $description Mô tả
  * @property int $date_create Ngày tạo
  * @property int $status Tình trạng đơn hàng
@@ -96,7 +97,7 @@ class Order extends OrderTable
                         ActiveRecord::EVENT_BEFORE_UPDATE => ['final_total'],
                     ],
                     'value' => function ($event) {
-                        $this->final_total = (float) $this->pre_total - (float) $this->discount;
+                        $this->final_total = (float) $this->pre_total - (float) $this->discount - (float) $this->other_discount;
 
                         return $this->final_total > 0 ? $this->final_total : 0;
                     },
@@ -113,7 +114,7 @@ class Order extends OrderTable
         return [
             [['title', 'slug', 'coupon_id', 'pre_total', 'date_create', 'status',], 'required'],
             [['coupon_id', 'status',], 'integer'],
-            [['pre_total', 'discount', 'final_total'], 'number'],
+            [['pre_total', 'discount', 'final_total', 'other_discount'], 'number'],
             [['description',], 'string'],
             [['date_create', 'partner_order_code', 'partner_customer_id'], 'safe'],
             [['title', 'slug', 'partner_order_code'], 'string', 'max' => 255],
@@ -146,6 +147,7 @@ class Order extends OrderTable
             'status' => Yii::t('backend', 'Tình trạng'),
             'partner_order_code' => Yii::t('backend', 'Mã đơn hàng hệ thống partner'),
             'partner_customer_id' => Yii::t('backend', 'Mã KH hệ thống partner'),
+            'other_discount' => Yii::t('backend', 'Giảm giá khác'),
         ];
     }
 

@@ -155,6 +155,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 ],
                                             ],
                                             [
+                                                'attribute' => 'other_discount',
+                                                'format' => 'currency',
+                                                'contentOptions' => [
+                                                    'class' => 'text-right',
+                                                ],
+                                            ],
+                                            [
                                                 'attribute' => 'final_total',
                                                 'format' => 'currency',
                                                 'contentOptions' => [
