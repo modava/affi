@@ -28,6 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <a class="btn btn-outline-light" href="<?= Url::to(['create']); ?>"
                 title="<?= Yii::t('receipt', 'Create'); ?>">
                 <i class="fa fa-plus"></i> <?= Yii::t('receipt', 'Create'); ?></a>
+
+            <?php if (!(Yii::$app->user->can('admin') || Yii::$app->user->can('develop'))):?>
             <?= Html::a(Yii::t('receipt', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             <?= Html::a(Yii::t('receipt', 'Delete'), ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
@@ -36,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'method' => 'post',
                 ],
             ]) ?>
+            <?php endif;?>
         </p>
     </div>
     <!-- /Title -->

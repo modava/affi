@@ -35,7 +35,7 @@ $templateInput = [
 ];
 $datapickerAddon = '<button type="button" class="btn btn-light clear-value"><span class="fa fa-times"></span></button><button type="button" class="btn btn-increment btn-light"><i class="ion ion-md-calendar"></i></button>';
 ?>
-<?php $form = ActiveForm::begin(['method' => 'GET', 'id' => 'affiliate-search']); ?>
+<?php $form = ActiveForm::begin(['method' => 'GET', 'id' => 'affiliate-search', 'action' => Url::toRoute(['/affiliate'])]); ?>
 <div class="hk-sec-wrapper">
     <div class="row collapse show" id="search-panel">
         <div class="col-md-5 col-sm-4 col-lg-5">
@@ -265,7 +265,6 @@ $script = <<< JS
 saveStateSearchPanel('#search-panel', '.btn-hide-search', 'show-affiliate-search-panel');
 
 $('#affiliate-search').on('submit', function () {
-    debugger;
     $(this).find('[name="page"]').val(1); // Reset page to 1 before search anything
 });
 

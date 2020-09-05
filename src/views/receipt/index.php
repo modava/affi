@@ -151,6 +151,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'template' => '{update} {delete}',
                                                 'buttons' => [
                                                     'update' => function ($url, $model) {
+                                                        if (!(Yii::$app->user->can('admin') || Yii::$app->user->can('develop'))) {
+                                                            return '';
+                                                        }
                                                         return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
                                                             'title' => Yii::t('receipt', 'Update'),
                                                             'alia-label' => Yii::t('receipt', 'Update'),
@@ -159,6 +162,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         ]);
                                                     },
                                                     'delete' => function ($url, $model) {
+                                                        if (!(Yii::$app->user->can('admin') || Yii::$app->user->can('develop'))) {
+                                                            return '';
+                                                        }
                                                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', 'javascript:;', [
                                                             'title' => Yii::t('receipt', 'Delete'),
                                                             'class' => 'btn btn-danger btn-xs btn-del',

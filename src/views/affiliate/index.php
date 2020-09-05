@@ -357,15 +357,12 @@ $('.create-call-note').on('click', function() {
 $('.create-feedback').on('click', function() {
     let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_info[]"]').val());
     openCreateModal({model: 'Feedback', 
-        'Feedback[customer_id]' : customerInfo.id,
+        'Feedback[customer_id]' : customerInfo.id
     });
 });
 
 $('.create-customer').on('click', function() {
-    let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_partner_info[]"]').val());
-    console.log('birday:', customerInfo.birthday);
-    debugger;
-    
+    let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_partner_info[]"]').val());    
     openCreateModal({
         model: 'Customer',
         'Customer[full_name]' : customerInfo.full_name,
@@ -388,13 +385,5 @@ $('body').on('post-object-created', function() {
 });
 
 $('.customer-img-container').lightGallery();
-
-$('.search-btn').on('click', function(e) {
-    e.preventDefault();
-    let href = $(this).attr('href');
-    if ($('[name="ClinicSearch[last_dieu_tri]"]').is(':checked')) href += "&ClinicSearch[last_dieu_tri]=on";
-    
-    window.location.href = href;
-})
 JS;
 $this->registerJs($script, \yii\web\View::POS_END);
