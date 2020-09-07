@@ -31,31 +31,31 @@ $model->country_id = 237; // Viet Name
     'validationUrl' => Url::toRoute(['/affiliate/customer/validate', 'id' => $model->primaryKey]),
 ]); ?>
     <div class="row">
-        <div class="col-6">
+        <div class="col-6 col-md-4 col-lg-3">
             <?= $form->field($model, 'full_name')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-6">
+        <div class="col-6 col-md-4 col-lg-3">
             <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-6">
+        <div class="col-6 col-md-4 col-lg-3">
             <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-6">
+        <div class="col-6 col-md-4 col-lg-3">
             <?= $form->field($model, 'face_customer')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="col-6">
+        <div class="col-6 col-md-4 col-lg-3">
             <?= $form->field($model, 'sex')->dropDownList(Yii::$app->getModule('affiliate')->params['sex'], [
                 'prompt' => Yii::t('backend', 'Select an option ...'),
                 'id' => 'sex'
             ]) ?>
         </div>
-        <div class="col-6">
+        <div class="col-6 col-md-4 col-lg-3">
             <?= $form->field($model, 'status')->dropDownList(Yii::$app->getModule('affiliate')->params['customer_status'], [
                 'prompt' => Yii::t('backend', 'Select an option ...'),
                 'id' => 'status'
             ]) ?>
         </div>
-        <div class="col-6">
+        <div class="col-6 col-md-4 col-lg-3">
             <?= $form->field($model, 'birthday')->widget(DatePicker::class, [
                 'addon' => '<button type="button" class="btn btn-increment btn-light"><i class="ion ion-md-calendar"></i></button>',
                 'clientOptions' => [
@@ -66,7 +66,7 @@ $model->country_id = 237; // Viet Name
                 ]
             ]) ?>
         </div>
-        <div class="col-6">
+        <div class="col-6 col-md-4 col-lg-3">
             <?= $form->field($model, 'date_accept_do_service')->widget(DatePicker::class, [
                 'addon' => '<button type="button" class="btn btn-increment btn-light"><i class="ion ion-md-calendar"></i></button>',
                 'clientOptions' => [
@@ -76,7 +76,7 @@ $model->country_id = 237; // Viet Name
                 ]
             ]) ?>
         </div>
-        <div class="col-6">
+        <div class="col-6 col-md-4 col-lg-3">
             <?= $form->field($model, 'date_checkin')->widget(DatePicker::class, [
                 'addon' => '<button type="button" class="btn btn-increment btn-light"><i class="ion ion-md-calendar"></i></button>',
                 'clientOptions' => [
@@ -86,10 +86,10 @@ $model->country_id = 237; // Viet Name
                 ]
             ]) ?>
         </div>
-        <div class="col-6">
+        <div class="col-6 col-md-4 col-lg-3">
             <?= $form->field($model, 'partner_customer_id')->textInput(['maxlength' => true, 'readonly' => 'true']) ?>
         </div>
-        <div class="col-6">
+        <div class="col-6 col-md-4 col-lg-3">
             <?= $form->field($model, 'partner_id')->dropDownList(
                 ArrayHelper::map(\modava\affiliate\models\table\PartnerTable::getAllRecords(), 'id', 'title'),
                 [
@@ -98,7 +98,7 @@ $model->country_id = 237; // Viet Name
                 ]
             ) ?>
         </div>
-        <div class="col-6">
+        <div class="col-6 col-md-4 col-lg-3">
             <?= $form->field($model,
                 'country_id')->dropDownList(ArrayHelper::map(LocationCountryTable::getAllCountry(Yii::$app->language),
                 'id', 'CommonName'), [
@@ -112,7 +112,7 @@ $model->country_id = 237; // Viet Name
                 'load-data-callback' => '$("#select-district, #select-ward").find("option[value!=\'\']").remove();',
             ]) ?>
         </div>
-        <div class="col-6">
+        <div class="col-6 col-md-4 col-lg-3">
             <?= $form->field($model,
                 'province_id')->dropDownList(ArrayHelper::map(LocationProvinceTable::getProvinceByCountry($model->country_id,
                 Yii::$app->language), 'id', 'name'), [
@@ -127,7 +127,7 @@ $model->country_id = 237; // Viet Name
                 'load-data-callback' => '$("#select-ward").find("option[value!=\'\']").remove();'
             ]) ?>
         </div>
-        <div class="col-6">
+        <div class="col-6 col-md-4 col-lg-3">
             <?= $form->field($model,
                 'district_id')->dropDownList(ArrayHelper::map(LocationDistrictTable::getDistrictByProvince($model->province_id,
                 Yii::$app->language), 'id', 'name'), [
@@ -141,7 +141,7 @@ $model->country_id = 237; // Viet Name
                 'load-data-method' => 'GET',
             ]) ?>
         </div>
-        <div class="col-6">
+        <div class="col-6 col-md-4 col-lg-3">
             <?= $form->field($model,
                 'ward_id')->dropDownList(ArrayHelper::map(LocationWardTable::getWardByDistrict($model->district_id),
                 'id', 'name'), [
@@ -150,12 +150,12 @@ $model->country_id = 237; // Viet Name
             ]) ?>
         </div>
 
-        <div class="col-12">
-            <?= $form->field($model, 'address')->textarea(['rows' => 2]) ?>
+        <div class="col-6 col-md-4 col-lg-3">
+            <?= $form->field($model, 'address')->textInput() ?>
         </div>
         <div class="col-12">
             <?= $form->field($model, 'description')->widget(\modava\tiny\TinyMce::class, [
-                'options' => ['rows' => 6],
+                'options' => ['rows' => 20],
                 'type' => 'content'
             ]) ?>
         </div>

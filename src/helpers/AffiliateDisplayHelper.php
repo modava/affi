@@ -98,8 +98,10 @@ class AffiliateDisplayHelper
                     $content1 = '';
                     $arrThaoTac = [];
 
-                    foreach ($lichDieuTriInfo['thao_tac'] as $thaotac) {
-                        $arrThaoTac[] = $listThaotac[$thaotac];
+                    if (array_key_exists('thao_tac', $lichDieuTriInfo) && $lichDieuTriInfo['thao_tac'] !== null) {
+                        foreach ($lichDieuTriInfo['thao_tac'] as $thaotac) {
+                            $arrThaoTac[] = $listThaotac[$thaotac];
+                        }
                     }
 
                     $content1 = "<strong>Mã HĐ: {$donhang['order_code']}</strong> <i>(" . date('d-m-Y', $donhang['ngay_tao']) . ")</i><br/>";

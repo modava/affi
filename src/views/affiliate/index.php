@@ -114,7 +114,10 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
                                             [
                                                 'class' => 'yii\grid\ActionColumn',
                                                 'header' => Yii::t('backend', 'Actions'),
-                                                'template' => '{dashboard-call-log} {create-customer} {create-coupon} {create-call-note} {create-feedback} {hidden-input-customer-partner-info} {hidden-input-customer-info}',
+                                                'template' => '<div>{dashboard-call-log} {create-customer}</div><div> {create-coupon} {create-call-note} {create-feedback} {hidden-input-customer-partner-info}</div> {hidden-input-customer-info}',
+                                                'headerOptions' => [
+                                                    'class' => 'header-200',
+                                                ],
                                                 'buttons' => [
                                                     'dashboard-call-log' => function ($url, $model) {
                                                         return Html::a('<i class="fa fa-history"></i>', 'javascript:;', [
@@ -207,9 +210,6 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
                                                             return Html::input('hidden', 'customer_info[]', json_encode($customer));
                                                         }
                                                     }
-                                                ],
-                                                'headerOptions' => [
-                                                    'width' => 250,
                                                 ],
                                             ],
                                             [

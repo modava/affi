@@ -57,13 +57,13 @@ $abc = \modava\affiliate\models\table\FeedbackTimeTable::getAllRecordsActive();
         </div>
         <div class="col-12">
             <?= $form->field($model, 'satisfied_feedback')->widget(\modava\tiny\TinyMce::class, [
-                'options' => ['rows' => 6],
+                'options' => ['rows' => 12],
                 'type' => 'content'
             ]) ?>
         </div>
         <div class="col-12">
             <?= $form->field($model, 'description')->widget(\modava\tiny\TinyMce::class, [
-                'options' => ['rows' => 6],
+                'options' => ['rows' => 20],
                 'type' => 'content'
             ]) ?>
         </div>
