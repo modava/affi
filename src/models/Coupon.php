@@ -215,13 +215,16 @@ class Coupon extends CouponTable
 
         $myauris_config = \Yii::$app->getModule('affiliate')->params['myauris_config'];
         $url = $myauris_config['url_end_point'] . $myauris_config['endpoint']['send_sms_coupon'];
+
+        $arrayName = explode(' ', $this->customer->full_name);
+
         $client = new Client();
         $params = [
             'phone' => $this->customer->phone,
             'promotions_code' => $this->coupon_code,
             'promotions_name' => $this->title,
             'promotions_expired' => Yii::$app->formatter->asDatetime($this->expired_date),
-            'name' => $this->customer->full_name,
+            'name' => array_pop($arrayName),
             'promotions_qty' => $this->quantity,
         ];
 
