@@ -1,48 +1,3 @@
-function initSendSMS () {
-    $('.send-sms-to-customer').popover({
-        html: true,
-        content: function () {
-            let id = $(this).data('id');
-            return $(`<div><button class="btn btn-success btn-sm save" data-id="` + id + `">Xác nhận</button><button class="ml-2 btn btn-secondary btn-sm cancel">Hủy</button></div>`);
-        }
-    }).on('shown.bs.popover', function () {
-        debugger;
-        var popup = $('#' + $(this).attr('aria-describedby'));
-        popup.find('button.cancel').click(function (e) {
-            popup.popover('hide');
-        });
-        popup.find('button.save').click(function (e) {
-            popup.myLoading({size: 'sm'});
-            $.get('$urlSendSMS', {id: $(this).data('id')}, function(response) {
-                popup.popover('hide');
-                popup.myUnloading({size: 'sm'});
-                if (response.success) {
-                    $.toast({
-                        heading: 'Thông báo',
-                        text: response.message,
-                        position: 'top-right',
-                        class: 'jq-toast-success',
-                        hideAfter: 2000,
-                        stack: 6,
-                        showHideTransition: 'fade'
-                    });
-                    $.pjax.reload({container:'#coupon-gridview', url: window.location.href});
-                } else {
-                    $.toast({
-                        heading: 'Thông báo',
-                        text: response.message,
-                        position: 'top-right',
-                        class: 'jq-toast-warning',
-                        hideAfter: 2000,
-                        stack: 6,
-                        showHideTransition: 'fade'
-                    });
-                }
-            })
-        });
-    });
-}
-
 $(function () {
     "use strict";
 
@@ -158,9 +113,4 @@ $(function () {
             console.log('Load data fail');
         });
     });
-
-    initSendSMS();
-    $(document).on('pjax:complete', function() {
-        initSendSMS()
-    })
 });

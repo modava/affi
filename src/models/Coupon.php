@@ -102,6 +102,7 @@ class Coupon extends CouponTable
             [['description'], 'string'],
             [['promotion_value', 'min_discount', 'max_discount'], 'number'],
             [['title', 'slug', 'coupon_code'], 'string', 'max' => 255],
+            [['title'], 'string', 'max' => 10],
             [['slug'], 'unique'],
             [['coupon_code'], 'unique'],
             [['coupon_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => CouponType::class, 'targetAttribute' => ['coupon_type_id' => 'id']],
@@ -110,12 +111,12 @@ class Coupon extends CouponTable
                 return $model->promotion_type == self::DISCOUNT_PERCENT;
             }, 'whenClient' => "function (attribute, value) {
                 return $('#promotion-type').val() == " . self::DISCOUNT_PERCENT . ";
-            }"],
+            }", 'message' => Yii::t('backend', '"Giá trị chiếu khấu" phải nhỏ hơn hoặc bằng "Chiết khấu tối đa"')],
             ['promotion_value', 'compare', 'compareAttribute' => 'min_discount', 'operator' => '>=', 'type' => 'number', 'when' => function ($model) {
                 return $model->promotion_type == self::DISCOUNT_PERCENT;
             }, 'whenClient' => "function (attribute, value) {
                 return $('#promotion-type').val() == " . self::DISCOUNT_PERCENT . ";
-            }"]
+            }", 'message' => Yii::t('backend', '"Giá trị chiếu khấu" phải lớn hơn hoặc bằng "Chiết khấu tối thiểu"')]
         ];
     }
 
