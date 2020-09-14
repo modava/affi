@@ -20,6 +20,7 @@ $model->expired_date = $model->expired_date != null
 if ($model->primaryKey === null) {
     $model->max_discount = KeyValueTable::getValueByKey('MAX_PROMO_PERCENT_VALUE');
     $model->min_discount = KeyValueTable::getValueByKey('MIN_PROMO_PERCENT_VALUE');
+    $model->expired_date = date('d-m-Y H:i', strtotime(date('Y-m-d 23:59') . ' +30 days'));
 }
 ?>
 <?= ToastrWidget::widget(['key' => 'toastr-' . $model->toastr_key . '-form']) ?>
@@ -38,18 +39,18 @@ if ($model->primaryKey === null) {
                     <?php if ($model->primaryKey): ?>
                         <?= $form->field($model, 'coupon_code')->textInput(['maxlength' => true, 'readonly' => 'readonly']) ?>
                     <?php else: ?>
-                        <div class="col-6">
+                        <div class="col-8">
                             <?= $form->field($model, 'coupon_code')->textInput(['maxlength' => true,]) ?>
                         </div>
-                        <div class="col-6">
-                            <button type="button" class="btn btn-primary"
+                        <div class="col-4">
+                            <button type="button" class="btn btn-primary btn-sm"
                                     id="js-generate-coupon-code"><?= Yii::t('backend', 'Generate Coupon Code') ?></button>
                         </div>
                     <?php endif; ?>
                 </div>
             </div>
             <div class="col-6">
-                <?= $form->field($model, 'quantity')->textInput() ?>
+                <?= $form->field($model, 'quantity')->input('number') ?>
             </div>
             <div class="col-6">
                 <?= $form->field($model, 'expired_date')->widget(DateTimePicker::class, [
