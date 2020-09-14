@@ -2,28 +2,24 @@
 
 namespace modava\affiliate\controllers;
 
-use modava\affiliate\models\search\CustomerPartnerSearch;
-use modava\affiliate\models\table\CustomerTable;
+use backend\components\MyComponent;
 use yii\db\Exception;
 use Yii;
 use yii\helpers\Html;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
-use modava\affiliate\AffiliateModule;
 use backend\components\MyController;
-use modava\affiliate\models\Customer;
-use modava\affiliate\models\search\CustomerSearch;
-use yii\web\Response;
-use yii\widgets\ActiveForm;
+use modava\affiliate\models\Payment;
+use modava\affiliate\models\search\PaymentSearch;
 
 /**
- * CustomerController implements the CRUD actions for Customer model.
+ * PaymentController implements the CRUD actions for Payment model.
  */
-class CustomerController extends MyController
+class PaymentController extends MyController
 {
     /**
-     * {@inheritdoc}
-     */
+    * {@inheritdoc}
+    */
     public function behaviors()
     {
         return [
@@ -37,27 +33,29 @@ class CustomerController extends MyController
     }
 
     /**
-     * Lists all Customer models.
-     * @return mixed
-     */
+    * Lists all Payment models.
+    * @return mixed
+    */
     public function actionIndex()
     {
-        $searchModel = new CustomerSearch();
+        $searchModel = new PaymentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $totalPage = $this->getTotalPage($dataProvider);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'totalPage'    => $totalPage,
         ]);
-    }
-
+            }
 
     /**
-     * Displays a single Customer model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+    * Displays a single Payment model.
+    * @param integer $id
+    * @return mixed
+    * @throws NotFoundHttpException if the model cannot be found
+    */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -66,13 +64,13 @@ class CustomerController extends MyController
     }
 
     /**
-     * Creates a new Customer model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
+    * Creates a new Payment model.
+    * If creation is successful, the browser will be redirected to the 'view' page.
+    * @return mixed
+    */
     public function actionCreate()
     {
-        $model = new Customer();
+        $model = new Payment();
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->validate() && $model->save()) {
@@ -101,18 +99,18 @@ class CustomerController extends MyController
     }
 
     /**
-     * Updates an existing Customer model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+    * Updates an existing Payment model.
+    * If update is successful, the browser will be redirected to the 'view' page.
+    * @param integer $id
+    * @return mixed
+    * @throws NotFoundHttpException if the model cannot be found
+    */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            if ($model->validate()) {
+            if($model->validate()) {
                 if ($model->save()) {
                     Yii::$app->session->setFlash('toastr-' . $model->toastr_key . '-view', [
                         'title' => 'Thông báo',
@@ -140,12 +138,12 @@ class CustomerController extends MyController
     }
 
     /**
-     * Deletes an existing Customer model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+    * Deletes an existing Payment model.
+    * If deletion is successful, the browser will be redirected to the 'index' page.
+    * @param integer $id
+    * @return mixed
+    * @throws NotFoundHttpException if the model cannot be found
+    */
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
@@ -177,81 +175,49 @@ class CustomerController extends MyController
         return $this->redirect(['index']);
     }
 
-    public function actionValidate($id = null)
+    /**
+    * @param $perpage
+    */
+    public function actionPerpage($perpage)
     {
-        if (Yii::$app->request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-
-            $model = new Customer();
-
-            if ($id != null) $model = $this->findModel($id);
-
-            if ($model->load(Yii::$app->request->post())) {
-                return ActiveForm::validate($model);
-            }
-        }
-    }
-
-    public function actionGetInfo($phone = null)
-    {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        try {
-            // Check customer trong hệ thống trước
-            $customer = CustomerTable::getrecordByPhone($phone);
-            $result = [
-                'ho_ten' => null,
-                'phu_trach' => null
-            ];
-
-            if ($customer !== null) {
-                $result = [
-                    'ho_ten' => $customer->full_name,
-                    'phu_trach' => $customer->userCreated->userProfile->fullname
-                ];
-            } else {
-                $customer = CustomerPartnerSearch::getCustomerByPhone($phone);
-
-                if ($customer) {
-                    $result = [
-                        'ho_ten' => $customer['full_name'],
-                        'phu_trach' => null
-                    ];
-                }
-            }
-
-            return $result;
-        } catch (\yii\base\Exception $ex) {
-            return [];
-        }
-    }
-
-    public function actionGetCustomerByKeyWord($q = null, $id = null)
-    {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        $out = ['results' => ['id' => '', 'text' => '']];
-        if (!is_null($q)) {
-            $out = Customer::getCustomerByKeyWord($q);
-        } elseif ($id > 0) {
-            $out['results'] = ['id' => $id, 'text' => Customer::findOne($id)->fullname];
-        }
-        return $out;
+        MyComponent::setCookies('pageSize', $perpage);
     }
 
     /**
-     * Finds the Customer model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Customer the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+    * @param $dataProvider
+    * @return float|int
+    */
+    public function getTotalPage($dataProvider)
+    {
+        if (MyComponent::hasCookies('pageSize')) {
+            $dataProvider->pagination->pageSize = MyComponent::getCookies('pageSize');
+        } else {
+            $dataProvider->pagination->pageSize = 10;
+        }
+
+        $pageSize   = $dataProvider->pagination->pageSize;
+        $totalCount = $dataProvider->totalCount;
+        $totalPage  = (($totalCount + $pageSize - 1) / $pageSize);
+
+        return $totalPage;
+    }
+
+    /**
+    * Finds the Payment model based on its primary key value.
+    * If the model is not found, a 404 HTTP exception will be thrown.
+    * @param integer $id
+    * @return Payment the loaded model
+    * @throws NotFoundHttpException if the model cannot be found
+    */
 
 
     protected function findModel($id)
     {
-        if (($model = Customer::findOne($id)) !== null) {
+        if (($model = Payment::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException(Yii::t('backend', 'The requested page does not exist.'));
+        // throw new NotFoundHttpException(BackendModule::t('backend','The requested page does not exist.'));
     }
 }

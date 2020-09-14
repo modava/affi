@@ -1,7 +1,8 @@
 <?php
-use modava\affiliate\AffiliateModule;
 use modava\affiliate\models\Coupon;
 use modava\affiliate\models\Customer;
+use modava\affiliate\models\Order;
+use modava\affiliate\models\Payment;
 
 return [
     'affiliateName' => 'Affiliate',
@@ -33,24 +34,25 @@ return [
     ],
     'myauris_config' => [
         'url_website' => "https://dashboard.myauris.vn",
-        'url_end_point' => "https://dashboard.myauris.vn/api/v2/affiliate/",
+        'url_end_point' => "https://dashboard.myauris.vn/api/v2/",
         'endpoint' => [
-            'customer' => "customer",
-            'get_customer' => "get-customer",
-            'create_note' => "save-log-cskh",
-            'get_call_log' => 'get-call-log'
+            'customer' => "affiliate/customer",
+            'get_customer' => "affiliate/get-customer",
+            'create_note' => "affiliate/save-log-cskh",
+            'get_call_log' => 'affiliate/get-call-log',
+            'send_sms_coupon' => 'sms/send-sms-promotions'
         ],
         'header' => ['X-Api-Key: qWnUiio9_xxRpExYzqSyzCqn3Gz3ZjP6jN_pxKUX'], // @todo Refactor code here: chuyển MyAurisApi vào model
         'headers' => ['X-Api-Key' => 'qWnUiio9_xxRpExYzqSyzCqn3Gz3ZjP6jN_pxKUX'],
         'row_per_page' => 10,
         'field_to_endpoint' => [
 //             'co_so' => 'co-so', // @todo
-            'permission_user' => 'nhan-vien-le-tan',
-            'customer_come_time_to' => 'status-customer-come',
-            'directsale' => 'nhan-vien-direct-sale',
-            'nguon_online' => 'nguon-customer-online',
-            'id_dich_vu' => 'dich-vu-online',
-            'thao_tac' => 'list-thao-tac',
+            'permission_user' => 'affiliate/nhan-vien-le-tan',
+            'customer_come_time_to' => 'affiliate/status-customer-come',
+            'directsale' => 'affiliate/nhan-vien-direct-sale',
+            'nguon_online' => 'affiliate/nguon-customer-online',
+            'id_dich_vu' => 'affiliate/dich-vu-online',
+            'thao_tac' => 'affiliate/list-thao-tac',
         ]
     ],
     'not_release_object' => [
@@ -75,12 +77,17 @@ return [
         '2' => Yii::t('backend', 'Hoàn Cọc'),
     ],
     'order_status' => [
-        '0' => Yii::t('backend', 'Chưa hoàn thành'),
-        '1' => Yii::t('backend', 'Hoàn thành'),
-        '2' => Yii::t('backend', 'Hủy'),
+        Order::CHUA_HOAN_THANH => Yii::t('backend', 'Chưa hoàn thành'),
+        Order::HOAN_THANH => Yii::t('backend', 'Hoàn thành'),
+        Order::HUY => Yii::t('backend', 'Hủy'),
+        Order::KE_TOAN_DUYET => Yii::t('backend', 'Kế toán đã duyệt')
     ],
     'note_is_recall' => [
         '0' => Yii::t('backend', 'Chưa gọi'),
         '1' => Yii::t('backend', 'Đã gọi')
+    ],
+    'payment_status' => [
+        Payment::STATUS_DRAFT => Yii::t('backend', 'Tạo nháp'),
+        Payment::STATUS_PAID => Yii::t('backend', 'Đã chi'),
     ]
 ];

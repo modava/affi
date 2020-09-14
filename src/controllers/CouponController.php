@@ -23,8 +23,8 @@ use yii\widgets\ActiveForm;
 class CouponController extends MyController
 {
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [
@@ -38,9 +38,9 @@ class CouponController extends MyController
     }
 
     /**
-    * Lists all Coupon models.
-    * @return mixed
-    */
+     * Lists all Coupon models.
+     * @return mixed
+     */
     public function actionIndex()
     {
         $searchModel = new CouponSearch();
@@ -53,11 +53,11 @@ class CouponController extends MyController
     }
 
     /**
-    * Displays a single Coupon model.
-    * @param integer $id
-    * @return mixed
-    * @throws NotFoundHttpException if the model cannot be found
-    */
+     * Displays a single Coupon model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -66,10 +66,10 @@ class CouponController extends MyController
     }
 
     /**
-    * Creates a new Coupon model.
-    * If creation is successful, the browser will be redirected to the 'view' page.
-    * @return mixed
-    */
+     * Creates a new Coupon model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
     public function actionCreate()
     {
         $model = new Coupon();
@@ -101,18 +101,18 @@ class CouponController extends MyController
     }
 
     /**
-    * Updates an existing Coupon model.
-    * If update is successful, the browser will be redirected to the 'view' page.
-    * @param integer $id
-    * @return mixed
-    * @throws NotFoundHttpException if the model cannot be found
-    */
+     * Updates an existing Coupon model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            if($model->validate()) {
+            if ($model->validate()) {
                 if ($model->save()) {
                     Yii::$app->session->setFlash('toastr-' . $model->toastr_key . '-view', [
                         'title' => 'Thông báo',
@@ -140,12 +140,12 @@ class CouponController extends MyController
     }
 
     /**
-    * Deletes an existing Coupon model.
-    * If deletion is successful, the browser will be redirected to the 'index' page.
-    * @param integer $id
-    * @return mixed
-    * @throws NotFoundHttpException if the model cannot be found
-    */
+     * Deletes an existing Coupon model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
@@ -192,7 +192,8 @@ class CouponController extends MyController
         }
     }
 
-    public function actionGenerateCode () {
+    public function actionGenerateCode()
+    {
         Yii::$app->response->format = Response::FORMAT_JSON;
         $customerId = Yii::$app->request->get('customer_id');
         $customerInfo = Customer::find()->where(['id' => $customerId])->one();
@@ -203,17 +204,17 @@ class CouponController extends MyController
 
             if ($customerInfo) {
                 $code = $customerInfo['customer_code'] . '_' . Utils::generateRandomString();
-                return [ 'success' => true, 'data' => str_replace('-', '_', $code)];
-            }
-            else {
-                return [ 'success' => false, 'message' => Yii::t('backend', 'Có lỗi xảy ra')];
+                return ['success' => true, 'data' => str_replace('-', '_', $code)];
+            } else {
+                return ['success' => false, 'message' => Yii::t('backend', 'Có lỗi xảy ra')];
             }
         }
 
-        return [ 'success' => false, 'message' => Yii::t('backend', 'Không tìm thấy khách hàng')];
+        return ['success' => false, 'message' => Yii::t('backend', 'Không tìm thấy khách hàng')];
     }
 
-    public function actionCheckCode () {
+    public function actionCheckCode()
+    {
         Yii::$app->response->format = Response::FORMAT_JSON;
         $code = \Yii::$app->request->get('code');
 
@@ -232,13 +233,42 @@ class CouponController extends MyController
         ];
     }
 
+    public function actionSendSmsToCustomer($id)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = Coupon::findOne($id);
+
+        if ($model === null) {
+            return [
+                'success' => false,
+                'message' => Yii::t('backend', 'Coupon không tồn tại')
+            ];
+        }
+
+        if ($model->sendSmsToCustomer()) {
+            return [
+                'success' => true,
+                'message' => Yii::t('backend', 'Gửi thành công')
+            ];
+        } else {
+            $errors = Html::tag('p', Yii::t('backend', 'Gửi thất bại'));
+            foreach ($model->getErrors() as $error) {
+                $errors .= Html::tag('p', $error[0]);
+            }
+            return [
+                'success' => false,
+                'message' => $errors
+            ];
+        }
+    }
+
     /**
-    * Finds the Coupon model based on its primary key value.
-    * If the model is not found, a 404 HTTP exception will be thrown.
-    * @param integer $id
-    * @return Coupon the loaded model
-    * @throws NotFoundHttpException if the model cannot be found
-    */
+     * Finds the Coupon model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Coupon the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
 
 
     protected function findModel($id)

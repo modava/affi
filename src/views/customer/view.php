@@ -26,13 +26,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         class="ion ion-md-apps"></span></span><?= Html::encode($this->title) ?>
         </h4>
         <p>
-            <button class="btn btn-primary js-more-info" data-customer-id="<?=$model->partner_customer_id?>"><?=Yii::t('backend', 'More Information')?></button>
-            <a class="btn btn-outline-light" href="<?= Url::to(['create']); ?>"
+            <button class="btn btn-primary js-more-info btn-sm" data-customer-id="<?=$model->partner_customer_id?>"><?=Yii::t('backend', 'More Information')?></button>
+            <a class="btn btn-outline-light btn-sm" href="<?= Url::to(['create']); ?>"
                 title="<?= Yii::t('backend', 'Create'); ?>">
                 <i class="fa fa-plus"></i> <?= Yii::t('backend', 'Create'); ?></a>
-            <?= Html::a(Yii::t('backend', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('backend', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-sm']) ?>
             <?= Html::a(Yii::t('backend', 'Delete'), ['delete', 'id' => $model->id], [
-                'class' => 'btn btn-danger',
+                'class' => 'btn btn-danger btn-sm',
                 'data' => [
                     'confirm' => Yii::t('backend', 'Are you sure you want to delete this item?'),
                     'method' => 'post',
@@ -116,6 +116,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         'date_accept_do_service:date',
                         'date_checkin:date',
+                        'total_commission:currency',
+                        'total_commission_paid:currency',
+                        'total_commission_remain:currency',
                         [
                             'attribute' => 'country_id',
                             'value' => function ($model) {
@@ -148,6 +151,9 @@ $this->params['breadcrumbs'][] = $this->title;
                             }
                         ],
 						'address:raw',
+                        'bank_name',
+                        'bank_branch',
+                        'bank_customer_id',
 						'description:raw',
 						'created_at:datetime',
 						'updated_at:datetime',

@@ -16,32 +16,32 @@ $this->title = Yii::t('backend', 'Coupon');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?= ToastrWidget::widget(['key' => 'toastr-' . $searchModel->toastr_key . '-index']) ?>
-<div class="container-fluid px-xxl-25 px-xl-10">
-    <?= NavbarWidgets::widget(); ?>
+    <div class="container-fluid px-xxl-25 px-xl-10">
+        <?= NavbarWidgets::widget(); ?>
 
-    <!-- Title -->
-    <div class="hk-pg-header">
-        <h4 class="hk-pg-title"><span class="pg-title-icon"><span
-                        class="ion ion-md-apps"></span></span><?= Html::encode($this->title) ?>
-        </h4>
-        <a class="btn btn-outline-light" href="<?= \yii\helpers\Url::to(['create']); ?>"
-           title="<?= Yii::t('backend', 'Create'); ?>">
-            <i class="fa fa-plus"></i> <?= Yii::t('backend', 'Create'); ?></a>
-    </div>
+        <!-- Title -->
+        <div class="hk-pg-header">
+            <h4 class="hk-pg-title"><span class="pg-title-icon"><span
+                            class="ion ion-md-apps"></span></span><?= Html::encode($this->title) ?>
+            </h4>
+            <a class="btn btn-outline-light" href="<?= \yii\helpers\Url::to(['create']); ?>"
+               title="<?= Yii::t('backend', 'Create'); ?>">
+                <i class="fa fa-plus"></i> <?= Yii::t('backend', 'Create'); ?></a>
+        </div>
 
-    <!-- Row -->
-    <div class="row">
-        <div class="col-xl-12">
-            <section class="hk-sec-wrapper">
+        <!-- Row -->
+        <div class="row">
+            <div class="col-xl-12">
+                <section class="hk-sec-wrapper">
 
-                <?php Pjax::begin(); ?>
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="table-wrap">
-                            <div class="dataTables_wrapper dt-bootstrap4">
-                                <?= GridView::widget([
-                                    'dataProvider' => $dataProvider,
-                                    'layout' => '
+                    <?php Pjax::begin(['id' => 'coupon-gridview']); ?>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="table-wrap">
+                                <div class="dataTables_wrapper dt-bootstrap4 table-responsive">
+                                    <?= GridView::widget([
+                                        'dataProvider' => $dataProvider,
+                                        'layout' => '
                                         {errors}
                                         <div class="row">
                                             <div class="col-sm-12">
@@ -61,137 +61,241 @@ $this->params['breadcrumbs'][] = $this->title;
                                             </div>
                                         </div>
                                     ',
-                                    'pager' => [
-                                        'firstPageLabel' => Yii::t('backend', 'First'),
-                                        'lastPageLabel' => Yii::t('backend', 'Last'),
-                                        'prevPageLabel' => Yii::t('backend', 'Previous'),
-                                        'nextPageLabel' => Yii::t('backend', 'Next'),
-                                        'maxButtonCount' => 5,
+                                        'pager' => [
+                                            'firstPageLabel' => Yii::t('backend', 'First'),
+                                            'lastPageLabel' => Yii::t('backend', 'Last'),
+                                            'prevPageLabel' => Yii::t('backend', 'Previous'),
+                                            'nextPageLabel' => Yii::t('backend', 'Next'),
+                                            'maxButtonCount' => 5,
 
-                                        'options' => [
-                                            'tag' => 'ul',
-                                            'class' => 'pagination',
-                                        ],
+                                            'options' => [
+                                                'tag' => 'ul',
+                                                'class' => 'pagination',
+                                            ],
 
-                                        // Customzing CSS class for pager link
-                                        'linkOptions' => ['class' => 'page-link'],
-                                        'activePageCssClass' => 'active',
-                                        'disabledPageCssClass' => 'disabled page-disabled',
-                                        'pageCssClass' => 'page-item',
+                                            // Customzing CSS class for pager link
+                                            'linkOptions' => ['class' => 'page-link'],
+                                            'activePageCssClass' => 'active',
+                                            'disabledPageCssClass' => 'disabled page-disabled',
+                                            'pageCssClass' => 'page-item',
 
-                                        // Customzing CSS class for navigating link
-                                        'prevPageCssClass' => 'paginate_button page-item',
-                                        'nextPageCssClass' => 'paginate_button page-item',
-                                        'firstPageCssClass' => 'paginate_button page-item',
-                                        'lastPageCssClass' => 'paginate_button page-item',
-                                    ],
-                                    'columns' => [
-                                        [
-                                            'class' => 'yii\grid\SerialColumn',
-                                            'header' => 'STT',
-                                            'headerOptions' => [
-                                                'width' => 60,
-                                                'rowspan' => 2
+                                            // Customzing CSS class for navigating link
+                                            'prevPageCssClass' => 'paginate_button page-item',
+                                            'nextPageCssClass' => 'paginate_button page-item',
+                                            'firstPageCssClass' => 'paginate_button page-item',
+                                            'lastPageCssClass' => 'paginate_button page-item',
+                                        ],
+                                        'columns' => [
+                                            [
+                                                'class' => 'yii\grid\SerialColumn',
+                                                'header' => 'STT',
+                                                'headerOptions' => [
+                                                    'width' => 60,
+                                                    'rowspan' => 2
+                                                ],
+                                                'filterOptions' => [
+                                                    'class' => 'd-none',
+                                                ],
                                             ],
-                                            'filterOptions' => [
-                                                'class' => 'd-none',
+                                            [
+                                                'class' => 'yii\grid\ActionColumn',
+                                                'header' => Yii::t('backend', 'Actions'),
+                                                'template' => '{send-sms-to-customer} {update} {delete}',
+                                                'headerOptions' => [
+                                                    'class' => 'header-200',
+                                                ],
+                                                'buttons' => [
+                                                    'send-sms-to-customer' => function ($url, $model) {
+                                                        if (!$model->couponCanUse() || $model->count_sms_sent >= 3) return '';
+
+                                                        return Html::a('<i class="glyphicon glyphicon-send"></i>', 'javascript:;', [
+                                                            'title' => Yii::t('backend', 'Gửi cho KH'),
+                                                            'alia-label' => Yii::t('backend', 'Gửi cho KH'),
+                                                            'data-pjax' => 0,
+                                                            'class' => 'btn btn-success btn-xs send-sms-to-customer',
+                                                            'data-id' => $model->primaryKey,
+                                                        ]);
+                                                    },
+                                                    'update' => function ($url, $model) {
+                                                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                                            'title' => Yii::t('backend', 'Update'),
+                                                            'alia-label' => Yii::t('backend', 'Update'),
+                                                            'data-pjax' => 0,
+                                                            'class' => 'btn btn-info btn-xs'
+                                                        ]);
+                                                    },
+                                                    'delete' => function ($url, $model) {
+                                                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', 'javascript:;', [
+                                                            'title' => Yii::t('backend', 'Delete'),
+                                                            'class' => 'btn btn-danger btn-xs btn-del',
+                                                            'data-title' => Yii::t('backend', 'Delete?'),
+                                                            'data-pjax' => 0,
+                                                            'data-url' => $url,
+                                                            'btn-success-class' => 'success-delete',
+                                                            'btn-cancel-class' => 'cancel-delete',
+                                                            'data-placement' => 'top'
+                                                        ]);
+                                                    }
+                                                ],
                                             ],
-                                        ],
-                                         [
-                                            'attribute' => 'title',
-                                            'format' => 'raw',
-                                            'value' => function ($model) {
-                                                return Html::a($model->title, ['view', 'id' => $model->id], [
-                                                    'title' => $model->title,
-                                                    'data-pjax' => 0,
-                                                ]);
-                                            }
-                                        ],
-										'coupon_code',
-                                        [
-                                            'attribute' => 'customer_id',
-                                            'format' => 'raw',
-                                            'value' => function ($model) {
-                                                return $model->customer_id ? Html::a($model->customer->full_name, Url::toRoute(['/affiliate/customer/view', 'id' => $model->customer_id])) : '';
-                                            }
-                                        ],
-										'quantity',
-                                        'quantity_used',
-                                        [
-                                            'attribute' => 'expired_date',
-                                            'value' => function ($model) {
-                                                return $model->expired_date
-                                                    ? date('d-m-Y H:i', strtotime($model->expired_date))
-                                                    : '';
-                                            }
-                                        ],
-                                        [
-                                            'attribute' => 'promotion_type',
-                                            'value' => function ($model) {
-                                                return Yii::t('backend', Yii::$app->getModule('affiliate')->params["promotion_type"][$model->promotion_type]);
-                                            }
-                                        ],
-										//'description:ntext',
-										//'coupon_type_id',
-										//'promotion_type',
-										//'promotion_value',
-                                        [
-                                            'attribute' => 'created_by',
-                                            'value' => 'userCreated.userProfile.fullname',
-                                            'headerOptions' => [
-                                                'width' => 150,
-                                            ],
-                                        ],
-                                        [
-                                            'attribute' => 'created_at',
-                                            'format' => 'datetime',
-                                            'headerOptions' => [
-                                                'width' => 150,
-                                            ],
-                                        ],
-                                        [
-                                            'class' => 'yii\grid\ActionColumn',
-                                            'header' => Yii::t('backend', 'Actions'),
-                                            'template' => '{update} {delete}',
-                                            'buttons' => [
-                                                'update' => function ($url, $model) {
-                                                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                                                        'title' => Yii::t('backend', 'Update'),
-                                                        'alia-label' => Yii::t('backend', 'Update'),
+                                            [
+                                                'attribute' => 'title',
+                                                'format' => 'raw',
+                                                'value' => function ($model) {
+                                                    return Html::a($model->title, ['view', 'id' => $model->id], [
+                                                        'title' => $model->title,
                                                         'data-pjax' => 0,
-                                                        'class' => 'btn btn-info btn-xs'
                                                     ]);
                                                 },
-                                                'delete' => function ($url, $model) {
-                                                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', 'javascript:;', [
-                                                        'title' => Yii::t('backend', 'Delete'),
-                                                        'class' => 'btn btn-danger btn-xs btn-del',
-                                                        'data-title' => Yii::t('backend', 'Delete?'),
-                                                        'data-pjax' => 0,
-                                                        'data-url' => $url,
-                                                        'btn-success-class' => 'success-delete',
-                                                        'btn-cancel-class' => 'cancel-delete',
-                                                        'data-placement' => 'top'
-                                                    ]);
+                                                'headerOptions' => [
+                                                    'class' => 'header-200',
+                                                ],
+                                            ],
+                                            'coupon_code',
+                                            [
+                                                'attribute' => 'count_sms_sent',
+                                                'contentOptions' => [
+                                                    'class' => 'text-right'
+                                                ]
+                                            ],
+                                            [
+                                                'attribute' => 'customer_id',
+                                                'format' => 'raw',
+                                                'value' => function ($model) {
+                                                    return $model->customer_id ? Html::a($model->customer->full_name, Url::toRoute(['/affiliate/customer/view', 'id' => $model->customer_id])) : '';
+                                                },
+                                                'headerOptions' => [
+                                                    'class' => 'header-200',
+                                                ],
+                                            ],
+                                            [
+                                                'attribute' => 'quantity',
+                                                'contentOptions' => [
+                                                    'class' => 'text-right'
+                                                ]
+                                            ],
+                                            [
+                                                'attribute' => 'quantity_used',
+                                                'contentOptions' => [
+                                                    'class' => 'text-right'
+                                                ]
+                                            ],
+                                            [
+                                                'attribute' => 'expired_date',
+                                                'value' => function ($model) {
+                                                    return $model->expired_date
+                                                        ? date('d-m-Y H:i', strtotime($model->expired_date))
+                                                        : '';
                                                 }
                                             ],
-                                            'headerOptions' => [
-                                                'width' => 150,
+                                            [
+                                                'attribute' => 'promotion_type',
+                                                'value' => function ($model) {
+                                                    return Yii::t('backend', Yii::$app->getModule('affiliate')->params["promotion_type"][$model->promotion_type]);
+                                                },
+                                                'headerOptions' => [
+                                                    'class' => 'header-200',
+                                                ],
+                                            ],
+                                            [
+                                                'attribute' => 'min_discount',
+                                                'contentOptions' => [
+                                                    'class' => 'text-right'
+                                                ]
+                                            ],
+                                            [
+                                                'attribute' => 'max_discount',
+                                                'contentOptions' => [
+                                                    'class' => 'text-right'
+                                                ]
+                                            ],
+                                            [
+                                                'attribute' => 'promotion_value',
+                                                'contentOptions' => [
+                                                    'class' => 'text-right'
+                                                ]
+                                            ],
+                                            [
+                                                'attribute' => 'commission_for_owner',
+                                                'contentOptions' => [
+                                                    'class' => 'text-right'
+                                                ]
+                                            ],
+                                            [
+                                                'attribute' => 'created_by',
+                                                'value' => 'userCreated.userProfile.fullname',
+                                                'headerOptions' => [
+                                                    'class' => 'header-200',
+                                                ],
+                                            ],
+                                            [
+                                                'attribute' => 'created_at',
+                                                'format' => 'date',
+                                                'headerOptions' => [
+                                                    'class' => 'header-200',
+                                                ],
                                             ],
                                         ],
-                                    ],
-                                ]); ?>
-                                                            </div>
+                                    ]); ?>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <?php Pjax::end(); ?>
-            </section>
+                    <?php Pjax::end(); ?>
+                </section>
+            </div>
         </div>
     </div>
-</div>
 <?php
+$urlSendSMS = Url::toRoute(['/affiliate/coupon/send-sms-to-customer']);
 $script = <<< JS
+function initSendSMS () {
+    $('.send-sms-to-customer').popover({
+        html: true,
+        content: function () {
+            let id = $(this).data('id');
+            return $(`<div><button class="btn btn-success btn-sm save" data-id="` + id + `">Xác nhận</button><button class="ml-2 btn btn-secondary btn-sm cancel">Hủy</button></div>`);
+        }
+    }).on('shown.bs.popover', function () {
+        var popup = $('#' + $(this).attr('aria-describedby'));
+        popup.find('button.cancel').click(function (e) {
+            popup.popover('hide');
+        });
+        popup.find('button.save').click(function (e) {
+            popup.myLoading({size: 'sm'});
+             $.get('$urlSendSMS', {id: $(this).data('id')}, function(response) {
+                   popup.popover('hide');
+                   popup.myUnloading({size: 'sm'});
+                   if (response.success) {
+                       $.toast({
+                           heading: 'Thông báo',
+                           text: response.message,
+                           position: 'top-right',
+                           class: 'jq-toast-success',
+                           hideAfter: 2000,
+                           stack: 6,
+                           showHideTransition: 'fade'
+                       });
+                       $.pjax.reload({container:'#coupon-gridview', url: window.location.href});
+                   } else {
+                       $.toast({
+                           heading: 'Thông báo',
+                           text: response.message,
+                           position: 'top-right',
+                           class: 'jq-toast-warning',
+                           hideAfter: 2000,
+                           stack: 6,
+                           showHideTransition: 'fade'
+                       });
+                   }
+               })
+        });
+    });
+}
+initSendSMS();
+$(document).on('pjax:complete', function() {
+  initSendSMS()
+})
 $('body').on('click', '.success-delete', function(e){
     e.preventDefault();
     var url = $(this).attr('href') || null;

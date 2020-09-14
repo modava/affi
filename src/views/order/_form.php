@@ -60,6 +60,9 @@ use \modava\affiliate\models\table\CouponTable;
         <div class="col-6">
             <?= $form->field($model, 'final_total')->textInput(['maxlength' => true, 'readonly' => true]) ?>
         </div>
+        <div class="col-6">
+            <?= $form->field($model, 'commision_for_coupon_owner')->textInput(['maxlength' => true, 'readonly' => true]) ?>
+        </div>
         <div class="col-12">
             <?= $form->field($model, 'description')->widget(\modava\tiny\TinyMce::class, [
                 'options' => ['rows' => 6],

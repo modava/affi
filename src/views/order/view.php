@@ -68,6 +68,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             'format' => 'currency',
                         ],
                         [
+                            'attribute' => 'commision_for_coupon_owner',
+                            'format' => 'currency',
+                        ],
+                        [
                             'attribute' => 'other_discount',
                             'format' => 'currency',
                         ],

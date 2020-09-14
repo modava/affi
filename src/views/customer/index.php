@@ -100,182 +100,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                             ],
                                         ],
                                         [
-                                            'attribute' => 'full_name',
-                                            'format' => 'raw',
-                                            'headerOptions' => [
-                                                'class' => 'header-300',
-                                            ],
-                                            'value' => function ($model) {
-                                                return Html::a($model->full_name, ['view', 'id' => $model->id], [
-                                                    'title' => $model->full_name,
-                                                    'data-pjax' => 0,
-                                                ]);
-                                            }
-                                        ],
-                                        [
-                                            'attribute' => 'phone',
-                                            'label' => Yii::t('backend', 'Phone'),
-                                            'format' => 'raw',
-                                            'value' => function ($model) {
-                                                $content = '';
-                                                if (class_exists('modava\voip24h\CallCenter')) $content .= Html::a('<i class="fa fa-phone"></i>', 'javascript: void(0)', [
-                                                    'class' => 'btn btn-xs btn-success call-to',
-                                                    'title' => 'Gọi',
-                                                    'data-uri' => $model['phone']
-                                                ]);
-                                                $content .= Html::a('<i class="fa fa-paste"></i>', 'javascript: void(0)', [
-                                                    'class' => 'btn btn-xs btn-info copy ml-1',
-                                                    'title' => 'Copy'
-                                                ]);
-                                                return $content;
-                                            }
-                                        ],
-                                        [
-                                            'attribute' => 'email',
-                                            'format' => 'email',
-                                            'headerOptions' => [
-                                                'class' => 'header-100',
-                                            ],
-                                        ],
-                                        [
-                                            'attribute' => 'face_customer',
-                                            'headerOptions' => [
-                                                'class' => 'header-100',
-                                            ],
-                                        ],
-                                        [
-                                            'attribute' => 'partner_id',
-                                            'format' => 'raw',
-                                            'value' => function ($model) {
-                                                return $model->partner_id ? Html::a($model->partner->title, Url::toRoute(['/affiliate/partner/view', 'id' => $model->partner_id])) : '';
-                                            },
-                                            'headerOptions' => [
-                                                'class' => 'header-100',
-                                            ],
-                                        ],
-                                        [
-                                            'attribute' => 'sex',
-                                            'headerOptions' => [
-                                                'class' => 'header-100',
-                                            ],
-                                            'value' => function ($model) {
-                                                return Yii::$app->getModule('affiliate')->params['sex'][$model->sex];
-                                            }
-                                        ],
-                                        [
-                                            'attribute' => 'status',
-                                            'headerOptions' => [
-                                                'class' => 'header-100',
-                                            ],
-                                            'value' => function ($model) {
-                                                return Yii::$app->getModule('affiliate')->params['customer_status'][$model->status];
-                                            }
-                                        ],
-                                        [
-                                            'attribute' => 'birthday',
-                                            'format' => 'date',
-                                            'headerOptions' => [
-                                                'class' => 'header-100',
-                                            ],
-                                        ],
-                                        [
-                                            'attribute' => 'date_accept_do_service',
-                                            'format' => 'date',
-                                            'headerOptions' => [
-                                                'class' => 'header-100',
-                                            ],
-                                        ],
-                                        [
-                                            'attribute' => 'date_checkin',
-                                            'format' => 'date',
-                                            'headerOptions' => [
-                                                'class' => 'header-100',
-                                            ],
-                                        ],
-                                        [
-                                            'attribute' => 'country_id',
-                                            'value' => function ($model) {
-                                                return $model->country_id ? $model->country->CommonName : null;
-                                            }
-                                        ],
-                                        [
-                                            'attribute' => 'province_id',
-                                            'value' => function ($model) {
-                                                return $model->province_id ? $model->province->name : null;
-                                            }
-                                        ],
-                                        [
-                                            'attribute' => 'district_id',
-                                            'value' => function ($model) {
-                                                return $model->district_id ? $model->district->name : null;
-                                            }
-                                        ],
-                                        [
-                                            'attribute' => 'ward_id',
-                                            'value' => function ($model) {
-                                                return $model->ward_id ? $model->ward->name : null;
-                                            }
-                                        ],
-                                        //'description:ntext',
-                                        [
-                                            'attribute' => 'created_by',
-                                            'value' => 'userCreated.userProfile.fullname',
-                                            'headerOptions' => [
-                                                'class' => 'header-100',
-                                            ],
-                                        ],
-                                        [
-                                            'attribute' => 'created_at',
-                                            'format' => 'datetime',
-                                            'headerOptions' => [
-                                                'class' => 'header-100',
-                                            ],
-                                        ],
-                                        [
-                                            'class' => 'yii\grid\ActionColumn',
-                                            'header' => Yii::t('backend', 'Related Record'),
-                                            'template' => '{list-coupon} {list-note}',
-                                            'buttons' => [
-                                                'list-coupon' => function ($url, $model) {
-                                                    if (!Utils::isReleaseObject('Coupon')) return '';
-
-                                                    $count = count($model->coupons);
-
-                                                    $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
-
-                                                    return Html::a('<i class="icon dripicons-ticket"></i> ' . $bage , Url::toRoute(['/affiliate/coupon', 'CouponSearch[customer_id]' => $model->primaryKey]),[
-                                                        'title' => Yii::t('backend', 'List Tickets'),
-                                                        'alia-label' => Yii::t('backend', 'List Tickets'),
-                                                        'data-pjax' => 0,
-                                                        'class' => 'btn btn-info btn-xs list-relate-record m-1',
-                                                        'data-related-id' => $model->primaryKey,
-                                                        'data-related-field' => 'customer_id',
-                                                        'data-model' => 'Coupon',
-                                                        'target' => '_blank'
-                                                    ]);
-                                                },
-                                                'list-note' => function ($url, $model) {
-                                                    $count = count($model->notes);
-
-                                                    $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
-
-                                                    return Html::a('<i class="icon dripicons-to-do"></i>' . $bage, Url::toRoute(['/affiliate/note', 'NoteSearch[customer_id]' => $model->primaryKey]),[
-                                                        'title' => Yii::t('backend', 'List Notes'),
-                                                        'alia-label' => Yii::t('backend', 'List Notes'),
-                                                        'data-pjax' => 0,
-                                                        'class' => 'btn btn-success btn-xs list-relate-record m-1',
-                                                        'data-related-id' => $model->primaryKey,
-                                                        'data-related-field' => 'customer_id',
-                                                        'data-model' => 'Note',
-                                                        'target' => '_blank'
-                                                    ]);
-                                                },
-                                            ],
-                                            'headerOptions' => [
-                                                'width' => 150,
-                                            ],
-                                        ],
-                                        [
                                             'class' => 'yii\grid\ActionColumn',
                                             'header' => Yii::t('backend', 'Actions'),
                                             'template' => '{create-coupon} {create-call-note} {hidden-input-customer-info} {update} {delete}',
@@ -326,6 +150,188 @@ $this->params['breadcrumbs'][] = $this->title;
                                             ],
                                             'headerOptions' => [
                                                 'class' => 'header-200',
+                                            ],
+                                        ],
+                                        [
+                                            'class' => 'yii\grid\ActionColumn',
+                                            'header' => Yii::t('backend', 'Related Record'),
+                                            'template' => '{list-coupon} {list-note}',
+                                            'buttons' => [
+                                                'list-coupon' => function ($url, $model) {
+                                                    if (!Utils::isReleaseObject('Coupon')) return '';
+
+                                                    $count = count($model->coupons);
+
+                                                    $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
+
+                                                    return Html::a('<i class="icon dripicons-ticket"></i> ' . $bage , Url::toRoute(['/affiliate/coupon', 'CouponSearch[customer_id]' => $model->primaryKey]),[
+                                                        'title' => Yii::t('backend', 'List Tickets'),
+                                                        'alia-label' => Yii::t('backend', 'List Tickets'),
+                                                        'data-pjax' => 0,
+                                                        'class' => 'btn btn-info btn-xs list-relate-record m-1',
+                                                        'data-related-id' => $model->primaryKey,
+                                                        'data-related-field' => 'customer_id',
+                                                        'data-model' => 'Coupon',
+                                                        'target' => '_blank'
+                                                    ]);
+                                                },
+                                                'list-note' => function ($url, $model) {
+                                                    $count = count($model->notes);
+
+                                                    $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
+
+                                                    return Html::a('<i class="icon dripicons-to-do"></i>' . $bage, Url::toRoute(['/affiliate/note', 'NoteSearch[customer_id]' => $model->primaryKey]),[
+                                                        'title' => Yii::t('backend', 'List Notes'),
+                                                        'alia-label' => Yii::t('backend', 'List Notes'),
+                                                        'data-pjax' => 0,
+                                                        'class' => 'btn btn-success btn-xs list-relate-record m-1',
+                                                        'data-related-id' => $model->primaryKey,
+                                                        'data-related-field' => 'customer_id',
+                                                        'data-model' => 'Note',
+                                                        'target' => '_blank'
+                                                    ]);
+                                                },
+                                            ],
+                                            'headerOptions' => [
+                                                'width' => 150,
+                                            ],
+                                        ],
+                                        [
+                                            'attribute' => 'full_name',
+                                            'format' => 'raw',
+                                            'headerOptions' => [
+                                                'class' => 'header-200',
+                                            ],
+                                            'value' => function ($model) {
+                                                return Html::a($model->full_name, ['view', 'id' => $model->id], [
+                                                    'title' => $model->full_name,
+                                                    'data-pjax' => 0,
+                                                ]);
+                                            }
+                                        ],
+                                        [
+                                            'attribute' => 'phone',
+                                            'label' => Yii::t('backend', 'Phone'),
+                                            'format' => 'raw',
+                                            'headerOptions' => [
+                                                'class' => 'header-100',
+                                            ],
+                                            'value' => function ($model) {
+                                                $content = '';
+                                                if (class_exists('modava\voip24h\CallCenter')) $content .= Html::a('<i class="fa fa-phone"></i>', 'javascript: void(0)', [
+                                                    'class' => 'btn btn-xs btn-success call-to',
+                                                    'title' => 'Gọi',
+                                                    'data-uri' => $model['phone']
+                                                ]);
+                                                $content .= Html::a('<i class="fa fa-paste"></i>', 'javascript: void(0)', [
+                                                    'class' => 'btn btn-xs btn-info copy ml-1',
+                                                    'title' => 'Copy'
+                                                ]);
+                                                return $content;
+                                            }
+                                        ],
+                                        [
+                                            'attribute' => 'email',
+                                            'format' => 'email',
+                                            'headerOptions' => [
+                                                'class' => 'header-200',
+                                            ],
+                                        ],
+                                        [
+                                            'attribute' => 'face_customer',
+                                            'headerOptions' => [
+                                                'class' => 'header-200',
+                                            ],
+                                        ],
+                                        [
+                                            'attribute' => 'sex',
+                                            'headerOptions' => [
+                                                'class' => 'header-100',
+                                            ],
+                                            'value' => function ($model) {
+                                                return Yii::$app->getModule('affiliate')->params['sex'][$model->sex];
+                                            }
+                                        ],
+                                        [
+                                            'attribute' => 'status',
+                                            'headerOptions' => [
+                                                'class' => 'header-100',
+                                            ],
+                                            'value' => function ($model) {
+                                                return Yii::$app->getModule('affiliate')->params['customer_status'][$model->status];
+                                            }
+                                        ],
+                                        [
+                                            'attribute' => 'partner_id',
+                                            'format' => 'raw',
+                                            'value' => function ($model) {
+                                                return $model->partner_id ? Html::a($model->partner->title, Url::toRoute(['/affiliate/partner/view', 'id' => $model->partner_id])) : '';
+                                            },
+                                            'headerOptions' => [
+                                                'class' => 'header-100',
+                                            ],
+                                        ],
+                                        [
+                                            'attribute' => 'birthday',
+                                            'format' => 'date',
+                                            'headerOptions' => [
+                                                'class' => 'header-100',
+                                            ],
+                                        ],
+                                        [
+                                            'attribute' => 'date_accept_do_service',
+                                            'format' => 'date',
+                                            'headerOptions' => [
+                                                'class' => 'header-100',
+                                            ],
+                                        ],
+                                        [
+                                            'attribute' => 'date_checkin',
+                                            'format' => 'date',
+                                            'headerOptions' => [
+                                                'class' => 'header-100',
+                                            ],
+                                        ],
+                                        [
+                                            'attribute' => 'country_id',
+                                            'value' => function ($model) {
+                                                return $model->country_id ? $model->country->CommonName : null;
+                                            }
+                                        ],
+                                        [
+                                            'attribute' => 'province_id',
+                                            'value' => function ($model) {
+                                                return $model->province_id ? $model->province->name : null;
+                                            }
+                                        ],
+                                        [
+                                            'attribute' => 'district_id',
+                                            'value' => function ($model) {
+                                                return $model->district_id ? $model->district->name : null;
+                                            }
+                                        ],
+                                        [
+                                            'attribute' => 'ward_id',
+                                            'value' => function ($model) {
+                                                return $model->ward_id ? $model->ward->name : null;
+                                            }
+                                        ],
+                                        'bank_name',
+                                        'bank_branch',
+                                        'bank_customer_id',
+                                        //'description:ntext',
+                                        [
+                                            'attribute' => 'created_by',
+                                            'value' => 'userCreated.userProfile.fullname',
+                                            'headerOptions' => [
+                                                'class' => 'header-100',
+                                            ],
+                                        ],
+                                        [
+                                            'attribute' => 'created_at',
+                                            'format' => 'datetime',
+                                            'headerOptions' => [
+                                                'class' => 'header-100',
                                             ],
                                         ],
                                     ],

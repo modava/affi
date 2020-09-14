@@ -47,9 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
-						'id',
 						'title',
-						'slug',
 						'coupon_code',
 						'quantity',
                         'quantity_used',
@@ -81,7 +79,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return Yii::t('backend', Yii::$app->getModule('affiliate')->params["promotion_type"][$model->promotion_type]);
                             }
                         ],
-						'promotion_value',
+						'min_discount',
+						'max_discount',
+                        'promotion_value',
+						'commission_for_owner',
+                        'count_sms_sent',
 						'created_at:datetime',
 						'updated_at:datetime',
                         [

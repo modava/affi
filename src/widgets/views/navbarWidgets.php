@@ -85,6 +85,13 @@ $routeInfos = [
     ],
     [
         'module' => 'affiliate',
+        'controllerId' => 'payment',
+        'model' => 'Payment',
+        'label' => Yii::t('backend', 'Phiếu chi'),
+        'icon' => '<span class="material-icons">face</span>',
+    ],
+    [
+        'module' => 'affiliate',
         'controllerId' => 'phonebook',
         'model' => 'Receipt',
         'label' => Yii::t('backend', 'Danh bạ'),
