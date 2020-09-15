@@ -247,4 +247,18 @@ class Customer extends CustomerTable
     {
         return self::find()->where('total_commission_remain > 0')->all();
     }
+
+    // Tổng hoa hồng
+    public static function getTotalRevenueByCustomer($customerId)
+    {
+        $sql = "SELECT SUM(afo.final_total) AS revenue, FROM_UNIXTIME(afo.created_at, '%Y-%m') AS created_at_y_m
+                FROM affiliate_order afo
+                INNER JOIN affiliate_coupon afcp ON afo.coupon_id = afcp.id
+                WHERE afo.status = 3 AND afcp.customer_id = :id
+                GROUP BY created_at_y_m;";
+
+        $data = Yii::$app->db->createCommand($sql, [':id' => $customerId])->queryAll();
+
+        return $data;
+    }
 }

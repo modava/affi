@@ -237,6 +237,24 @@ class CustomerController extends MyController
         return $out;
     }
 
+    public function actionTotalCommission($id)
+    {
+        $data = Customer::getTotalRevenueByCustomer($id);
+        $x_axis = array_map(function ($item) {
+            return $item['created_at_y_m'];
+        }, $data);
+        $series = array_map(function ($item) {
+            return $item['revenue'];
+        }, $data);
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        return [
+            'x_axis' => $x_axis,
+            'series' => $series
+        ];
+    }
+
     /**
      * Finds the Customer model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
