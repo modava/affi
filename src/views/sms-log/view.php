@@ -5,13 +5,12 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use backend\widgets\ToastrWidget;
 use modava\affiliate\widgets\NavbarWidgets;
-use modava\affiliate\AffiliateModule;
 
 /* @var $this yii\web\View */
-/* @var $model modava\affiliate\models\Coupon */
+/* @var $model modava\affiliate\models\SmsLog */
 
-$this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Coupons'), 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Sms Logs'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -22,11 +21,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- Title -->
     <div class="hk-pg-header">
         <h4 class="hk-pg-title"><span class="pg-title-icon"><span
-                        class="ion ion-md-apps"></span></span><?= Html::encode($this->title) ?>
+                        class="ion ion-md-apps"></span></span><?= Yii::t('backend', 'Chi tiết'); ?>
+            : <?= Html::encode($this->title) ?>
         </h4>
         <p>
             <a class="btn btn-outline-light" href="<?= Url::to(['create']); ?>"
-                title="<?= Yii::t('backend', 'Create'); ?>">
+               title="<?= Yii::t('backend', 'Create'); ?>">
                 <i class="fa fa-plus"></i> <?= Yii::t('backend', 'Create'); ?></a>
             <?= Html::a(Yii::t('backend', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             <?= Html::a(Yii::t('backend', 'Delete'), ['delete', 'id' => $model->id], [
@@ -47,54 +47,28 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= DetailView::widget([
                     'model' => $model,
                     'attributes' => [
-						'title',
-						'coupon_code',
-						'quantity',
-                        'quantity_used',
-						[
-						    'attribute' => 'expired_date',
-                            'value' => function ($model) {
-                                return $model->expired_date
-                                    ? date('d-m-Y', strtotime($model->expired_date))
-                                    : '';
-                            }
-                        ],
+                        'message:ntext',
+                        'to_number',
                         [
                             'attribute' => 'customer_id',
                             'format' => 'raw',
                             'value' => function ($model) {
-                                return $model->customer_id ? Html::a($model->customer->full_name, Url::toRoute(['/affiliate/customer/view', 'id' => $model->customer_id])) : '';
-                            }
-                        ],
-						[
-						    'attribute'   => 'coupon_type_id',
-                            'format' => 'raw',
-                            'value' => function ($model) {
-                                return $model->coupon_type_id ? Html::a($model->couponType->title, Url::toRoute(['/affiliate/coupon-type/view', 'id' => $model->coupon_type_id])) : '';
+                                return Html::a($model->customer->full_name, Url::toRoute(['/affiliate/customer/view', 'id' => $model->customer_id]));
                             }
                         ],
                         [
-                            'attribute' => 'promotion_type',
+                            'attribute' => 'status',
                             'value' => function ($model) {
-                                return Yii::t('backend', Yii::$app->getModule('affiliate')->params["promotion_type"][$model->promotion_type]);
+                                return Yii::$app->getModule('affiliate')->params['sms_log_status'][$model->status];
                             }
                         ],
-						'min_discount',
-						'max_discount',
-                        'promotion_value',
-						'commission_for_owner',
-                        'count_sms_sent',
-						'created_at:datetime',
-						'updated_at:datetime',
+                        'response_log:ntext',
+                        'request_log:ntext',
+                        'created_at:datetime',
                         [
                             'attribute' => 'userCreated.userProfile.fullname',
                             'label' => Yii::t('backend', 'Created By')
                         ],
-                        [
-                            'attribute' => 'userUpdated.userProfile.fullname',
-                            'label' => Yii::t('backend', 'Updated By')
-                        ],
-                        'description:raw',
                     ],
                 ]) ?>
             </section>

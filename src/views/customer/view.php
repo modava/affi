@@ -2,6 +2,7 @@
 
 use modava\affiliate\helpers\Utils;
 use modava\affiliate\models\Coupon;
+use modava\chart\MiniList;
 use yii\data\ActiveDataProvider;
 use yii\grid\GridView;
 use modava\charts\BarChart;
@@ -69,7 +70,7 @@ $dataProvider = new ActiveDataProvider([
                 <div class="tab-content">
                     <div class="tab-pane active" id="menu1">
                         <div class="row">
-                            <div class="col-12 my-3">
+                            <div class="col-6 my-3">
                                 <?= BarChart::widget([
                                     'id' => 'tong_hoa_hong_theo_kh',
                                     'url_get_data' => Url::toRoute(['/affiliate/customer/total-commission', 'id' => $model->primaryKey]),
@@ -78,6 +79,18 @@ $dataProvider = new ActiveDataProvider([
                                     'options' => [
                                         'color' => ['#69c982']
                                     ]
+                                ]) ?>
+                            </div>
+                            <div class="col-6 my-3">
+                                <?= MiniList::widget([
+                                    'title' => Yii::t('backend', 'Danh sách SMS đã gửi'),
+                                    'columns' => [
+                                        'Nội dung',
+                                        'Người gửi',
+                                        'Tình trạng',
+                                        'Ngày gửi',
+                                    ],
+                                    'url_get_data' => Url::toRoute(["/affiliate/sms-log/get-sms-by-customer", 'customer_id' => $model->primaryKey]),
                                 ]) ?>
                             </div>
                         </div>

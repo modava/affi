@@ -3,6 +3,7 @@ use modava\affiliate\models\Coupon;
 use modava\affiliate\models\Customer;
 use modava\affiliate\models\Order;
 use modava\affiliate\models\Payment;
+use modava\affiliate\models\SmsLog;
 
 return [
     'affiliateName' => 'Affiliate',
@@ -89,5 +90,9 @@ return [
     'payment_status' => [
         Payment::STATUS_DRAFT => Yii::t('backend', 'Tạo nháp'),
         Payment::STATUS_PAID => Yii::t('backend', 'Đã chi'),
+    ],
+    'sms_log_status' => [
+        SmsLog::STATUS_SUCCESS => Yii::t('backend', 'Thành công'),
+        SmsLog::STATUS_FAIL => Yii::t('backend', 'Thất bại'),
     ]
 ];

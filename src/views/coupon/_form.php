@@ -14,13 +14,13 @@ use yii\helpers\ArrayHelper;
 /* @var $model modava\affiliate\models\Coupon */
 /* @var $form yii\widgets\ActiveForm */
 $model->expired_date = $model->expired_date != null
-    ? date('d-m-Y H:i', strtotime($model->expired_date))
+    ? date('d-m-Y', strtotime($model->expired_date))
     : '';
 
 if ($model->primaryKey === null) {
     $model->max_discount = KeyValueTable::getValueByKey('MAX_PROMO_PERCENT_VALUE');
     $model->min_discount = KeyValueTable::getValueByKey('MIN_PROMO_PERCENT_VALUE');
-    $model->expired_date = date('d-m-Y H:i', strtotime(date('Y-m-d 23:59') . ' +30 days'));
+    $model->expired_date = date('d-m-Y', strtotime(date('Y-m-d') . ' +30 days'));
 }
 ?>
 <?= ToastrWidget::widget(['key' => 'toastr-' . $model->toastr_key . '-form']) ?>
@@ -59,7 +59,7 @@ if ($model->primaryKey === null) {
                     'pickIconContent' => Html::tag('span', '', ['class' => 'glyphicon glyphicon-th']),
                     'clientOptions' => [
                         'autoclose' => true,
-                        'format' => 'dd-mm-yyyy hh:ii',
+                        'format' => 'dd-mm-yyyy',
                         'todayHighLight' => true,
                     ]
                 ]) ?>

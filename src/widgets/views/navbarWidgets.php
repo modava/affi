@@ -97,6 +97,13 @@ $routeInfos = [
         'label' => Yii::t('backend', 'Danh bạ'),
         'icon' => '<span class="material-icons">contact_phone</span>',
     ],
+    [
+        'module' => 'affiliate',
+        'controllerId' => 'sms-log',
+        'model' => 'Receipt',
+        'label' => Yii::t('backend', 'Log SMS'),
+        'icon' => '<span class="material-icons">contact_phone</span>',
+    ],
 ];
 ?>
 <ul class="nav nav-tabs nav-sm nav-light mb-10">
