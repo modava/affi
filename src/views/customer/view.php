@@ -59,16 +59,16 @@ $dataProvider = new ActiveDataProvider([
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#menu1"><?= Yii::t('backend', 'Tổng quan') ?></a>
+                        <a class="nav-link " data-toggle="tab" href="#menu1"><?= Yii::t('backend', 'Tổng quan') ?></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " data-toggle="tab" href="#detail"><?= Yii::t('backend', 'Chi tiết') ?></a>
+                        <a class="nav-link active" data-toggle="tab" href="#detail"><?= Yii::t('backend', 'Chi tiết') ?></a>
                     </li>
                 </ul>
 
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div class="tab-pane active" id="menu1">
+                    <div class="tab-pane fade" id="menu1">
                         <div class="row">
                             <div class="col-6 my-3">
                                 <?= BarChart::widget([
@@ -95,7 +95,7 @@ $dataProvider = new ActiveDataProvider([
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="detail">
+                    <div class="tab-pane active" id="detail">
                         <section class="hk-sec-wrapper">
                             <?= DetailView::widget([
                                 'model' => $model,
