@@ -1,18 +1,18 @@
 <?php
 
 use backend\widgets\ToastrWidget;
-use modava\affiliate\AffiliateModule;
-use modava\affiliate\widgets\NavbarWidgets;
+use common\grid\MyGridView;
+use modava\affiliate\helpers\AffiliateDisplayHelper;
+use modava\affiliate\helpers\Utils;
+use modava\affiliate\models\Coupon;
+use modava\affiliate\models\Note;
+use modava\affiliate\models\search\PartnerSearch;
+use modava\affiliate\models\table\CustomerTable;
 use modava\affiliate\widgets\JsUtils;
-use yii\grid\GridView;
+use modava\affiliate\widgets\NavbarWidgets;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use modava\affiliate\models\search\PartnerSearch;
-use \modava\affiliate\models\table\CustomerTable;
-use modava\affiliate\models\Note;
-use \modava\affiliate\models\Coupon;
-use \modava\affiliate\helpers\Utils;
-use modava\affiliate\helpers\AffiliateDisplayHelper;
+use yii\widgets\Pjax;
 
 /* @var $dropdowns */
 /* @var $dataProvider */
@@ -36,55 +36,45 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
             </div>
 
             <div class="col-xl-12">
-                <section class="hk-sec-wrapper">
+                <section class="hk-sec-wrapper index">
+                    <?php Pjax::begin(['id' => 'dt-pjax', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'GET']]); ?>
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-wrap">
                                 <div class="dataTables_wrapper dt-bootstrap4 ">
-                                    <?= GridView::widget([
+                                    <?= MyGridView::widget([
                                         'dataProvider' => $dataProvider,
                                         'layout' => '
-                                        {errors}
-                                        <div class="row mb-2">
-                                            <div class="col-sm-12 col-md-5">
-                                                <div class="dataTables_info" role="status" aria-live="polite">
-                                                    {pager}
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-12 col-md-7">
-                                                <div class="dataTables_paginate paging_simple_numbers">
-                                                    {summary}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-12 table-responsive">
+                                            {errors}
+                                            <div class="pane-single-table">
                                                 {items}
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-12 col-md-5">
-                                                <div class="dataTables_info" role="status" aria-live="polite">
-                                                    {pager}
-                                                </div>
+                                            <div class="pager-wrap clearfix">
+                                                {summary}
+                                                {pager}
                                             </div>
-                                            <div class="col-sm-12 col-md-7">
-                                                <div class="dataTables_paginate paging_simple_numbers">
-                                                    {summary}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ',
+                                        ',
+                                        'tableOptions' => [
+                                            'id' => 'dataTable',
+                                            'class' => 'dt-grid dt-widget pane-hScroll',
+                                        ],
+                                        'myOptions' => [
+                                            'class' => 'dt-grid-content my-content pane-vScroll',
+                                            'data-minus' => '{"0":95,"1":".hk-navbar","2":".nav-tabs","3":".hk-pg-header","4":".hk-footer-wrap","5":"#affiliate-search"}'
+                                        ],
+                                        'summaryOptions' => [
+                                            'class' => 'summary pull-right',
+                                        ],
                                         'pager' => [
-                                            'firstPageLabel' => Yii::t('backend', 'First'),
-                                            'lastPageLabel' => Yii::t('backend', 'Last'),
-                                            'prevPageLabel' => Yii::t('backend', 'Previous'),
-                                            'nextPageLabel' => Yii::t('backend', 'Next'),
+                                            'firstPageLabel' => Yii::t('receipt', 'First'),
+                                            'lastPageLabel' => Yii::t('receipt', 'Last'),
+                                            'prevPageLabel' => Yii::t('receipt', 'Previous'),
+                                            'nextPageLabel' => Yii::t('receipt', 'Next'),
                                             'maxButtonCount' => 5,
 
                                             'options' => [
                                                 'tag' => 'ul',
-                                                'class' => 'pagination',
+                                                'class' => 'pagination pull-left',
                                             ],
 
                                             // Customzing CSS class for pager link
@@ -94,10 +84,10 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
                                             'pageCssClass' => 'page-item',
 
                                             // Customzing CSS class for navigating link
-                                            'prevPageCssClass' => 'paginate_button page-item',
-                                            'nextPageCssClass' => 'paginate_button page-item',
-                                            'firstPageCssClass' => 'paginate_button page-item',
-                                            'lastPageCssClass' => 'paginate_button page-item',
+                                            'prevPageCssClass' => 'paginate_button page-item prev',
+                                            'nextPageCssClass' => 'paginate_button page-item next',
+                                            'firstPageCssClass' => 'paginate_button page-item first',
+                                            'lastPageCssClass' => 'paginate_button page-item last',
                                         ],
                                         'columns' => [
                                             [
@@ -116,7 +106,7 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
                                                 'header' => Yii::t('backend', 'Actions'),
                                                 'template' => '<div>{dashboard-call-log} {create-customer}</div><div> {create-coupon} {create-call-note} {create-feedback} {hidden-input-customer-partner-info}</div> {hidden-input-customer-info}',
                                                 'headerOptions' => [
-                                                    'class' => 'header-200',
+                                                    'width' => 100,
                                                 ],
                                                 'buttons' => [
                                                     'dashboard-call-log' => function ($url, $model) {
@@ -293,7 +283,7 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
                                                 'label' => Yii::t('backend', 'Customer Infomation'),
                                                 'format' => 'raw',
                                                 'headerOptions' => [
-                                                    'class' => 'header-300'
+                                                    'width' => '300'
                                                 ],
                                                 'value' => function ($model) {
                                                     return AffiliateDisplayHelper::getCustomerInformation($model);
@@ -303,7 +293,7 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
                                                 'label' => Yii::t('backend', 'Images Before/After'),
                                                 'format' => 'raw',
                                                 'headerOptions' => [
-                                                    'class' => 'header-300'
+                                                    'width' => 300
                                                 ],
                                                 'value' => function ($model) {
                                                     return AffiliateDisplayHelper::getImages($model);
@@ -312,8 +302,9 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
                                             [
                                                 'label' => Yii::t('backend', 'Order Infomation'),
                                                 'format' => 'raw',
-                                                'headerOptions' => ['class' => 'header-300'],
-                                                'contentOptions' => ['class' => 'header-400'],
+                                                'headerOptions' => [
+                                                    'width' => 400
+                                                ],
                                                 'value' => function ($model) use ($dropdowns) {
                                                     return AffiliateDisplayHelper::getOrderInformation($model, $dropdowns['thao_tac']);
                                                 }
@@ -333,6 +324,7 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
                             </div>
                         </div>
                     </div>
+                    <?php Pjax::end() ?>
                 </section>
             </div>
         </div>
@@ -340,6 +332,11 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
 <?= JsUtils::widget() ?>
 <?php
 $script = <<< JS
+var customPjax = new myGridView();
+    customPjax.init({
+    pjaxId: '#dt-pjax',
+});
+
 $('.create-coupon').on('click', function() {
     let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_info[]"]').val());
     openCreateModal({model: 'Coupon', 

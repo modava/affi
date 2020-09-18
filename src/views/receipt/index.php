@@ -41,20 +41,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <?= MyGridView::widget([
                                         'dataProvider' => $dataProvider,
                                         'layout' => '
-                                        {errors}
-                                        <div class="pane-single-table">
-                                            {items}
-                                        </div>
-                                        <div class="pager-wrap clearfix">
-                                            {summary}' .
-                                            Yii::$app->controller->renderPartial('@backend/views/layouts/my-gridview/_pageTo', [
-                                                'totalPage' => $totalPage,
-                                                'currentPage' => Yii::$app->request->get($dataProvider->getPagination()->pageParam)
-                                            ]) .
-                                            Yii::$app->controller->renderPartial('@backend/views/layouts/my-gridview/_pageSize') .
-                                            '{pager}
-                                        </div>
-                                    ',
+                                            {errors}
+                                            <div class="pane-single-table">
+                                                {items}
+                                            </div>
+                                            <div class="pager-wrap clearfix">
+                                                {summary}' .
+                                                Yii::$app->controller->renderPartial('@backend/views/layouts/my-gridview/_pageTo', [
+                                                    'totalPage' => $totalPage,
+                                                    'currentPage' => Yii::$app->request->get($dataProvider->getPagination()->pageParam)
+                                                ]) .
+                                                Yii::$app->controller->renderPartial('@backend/views/layouts/my-gridview/_pageSize') .
+                                                '{pager}
+                                            </div>
+                                        ',
                                         'tableOptions' => [
                                             'id' => 'dataTable',
                                             'class' => 'dt-grid dt-widget pane-hScroll',

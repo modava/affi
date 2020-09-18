@@ -12,6 +12,7 @@ use modava\affiliate\models\Customer;
  */
 class CustomerSearch extends Customer
 {
+    public $keyword;
     /**
      * @inheritdoc
      */
@@ -19,7 +20,7 @@ class CustomerSearch extends Customer
     {
         return [
             [['id', 'partner_id', 'created_at', 'updated_at', 'created_by', 'updated_by', ], 'integer'],
-            [['slug', 'full_name', 'phone', 'email', 'face_customer', 'description', 'sex', 'birthday', 'phone'], 'safe'],
+            [['slug', 'full_name', 'phone', 'email', 'face_customer', 'description', 'sex', 'birthday', 'phone', 'keyword'], 'safe'],
         ];
     }
 
@@ -58,7 +59,14 @@ class CustomerSearch extends Customer
             return $dataProvider;
         }
 
+
         // grid filtering conditions
+        $query->andFilterWhere([
+            'OR',
+            ['like', 'full_name', $this->keyword],
+            ['like', 'phone', $this->keyword]
+        ]);
+
         $query->andFilterWhere([
             'id' => $this->id,
             'partner_id' => $this->partner_id,
@@ -69,8 +77,6 @@ class CustomerSearch extends Customer
         ]);
 
         $query->andFilterWhere(['like', 'slug', $this->slug])
-            ->andFilterWhere(['like', 'full_name', $this->full_name])
-            ->andFilterWhere(['like', 'phone', $this->phone])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'face_customer', $this->face_customer])
             ->andFilterWhere(['like', 'description', $this->description]);

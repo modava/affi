@@ -34,6 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <!-- Row -->
         <div class="row">
             <div class="col-xl-12">
+                <?= $this->render('_search', ['model' => $searchModel]); ?>
+
                 <section class="hk-sec-wrapper">
 
                     <?php //Pjax::begin(['enablePushState' => false, 'id' => 'customer-index']); ?>
@@ -249,12 +251,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 }
                                             ],
                                             [
-                                                'attribute' => 'status',
+                                                'attribute' => 'partner_id',
                                                 'headerOptions' => [
                                                     'class' => 'header-100',
                                                 ],
+                                                'format' => 'raw',
                                                 'value' => function ($model) {
-                                                    return Yii::$app->getModule('affiliate')->params['customer_status'][$model->status];
+                                                    return Html::a($model->partner->title, Url::toRoute(['/affiliate/partner/view', 'id' => $model->partner_id]));
                                                 }
                                             ],
                                             [
