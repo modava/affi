@@ -1,9 +1,9 @@
 <?php
 
+use backend\widgets\ToastrWidget;
+use common\grid\MyGridView;
 use modava\affiliate\widgets\NavbarWidgets;
 use yii\helpers\Html;
-use common\grid\MyGridView;
-use backend\widgets\ToastrWidget;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 
@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ],
                                         'myOptions' => [
                                             'class' => 'dt-grid-content my-content pane-vScroll',
-                                            'data-minus' => '{"0":95,"1":".hk-navbar","2":".nav-tabs","3":".hk-pg-header","4":".hk-footer-wrap"}'
+                                            'data-minus' => '{"0":105,"1":".hk-navbar","2":".nav-tabs","3":".hk-pg-header","4":".hk-footer-wrap"}'
                                         ],
                                         'summaryOptions' => [
                                             'class' => 'summary pull-right',

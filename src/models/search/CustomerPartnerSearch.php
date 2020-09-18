@@ -268,7 +268,7 @@ class CustomerPartnerSearch extends Model
                 }
 
                 $cache->set($cacheKey, $return, self::$CACHE_TIME_CUSTOMER_INFO);
-                self::_manageCacheKey($cacheKey);
+                // self::_manageCacheKey($cacheKey); // No need to delete cache in this action
                 return $return;
             }
 

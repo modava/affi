@@ -154,10 +154,9 @@ class Payment extends PaymentTable
      * */
     public function updateCommissionPaidForCustomer()
     {
-        $total = (new \yii\db\Query())
+        $total = self::find()
             ->select('amount')
-            ->from('affiliate_payment')
-            ->where('status = :status', [':status' => self::STATUS_PAID])
+            ->where('status = :status AND customer_id = :customer_id', [':status' => self::STATUS_PAID, 'customer_id' => $this->customer_id])
             ->sum('amount');
 
         $customer = Customer::findOne($this->customer_id);

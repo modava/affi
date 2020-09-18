@@ -4,6 +4,7 @@ namespace modava\affiliate\models\table;
 
 use cheatsheet\Time;
 use modava\affiliate\models\Coupon;
+use modava\affiliate\models\Feedback;
 use modava\affiliate\models\Note;
 use modava\affiliate\models\Partner;
 use modava\location\models\LocationCountry;
@@ -112,6 +113,10 @@ class CustomerTable extends \yii\db\ActiveRecord
 
     public function getNotes() {
         return $this->hasMany(Note::class, ['customer_id' => 'id']);
+    }
+
+    public function getFeedbacks() {
+        return $this->hasMany(Feedback::class, ['customer_id' => 'id']);
     }
 
     public function getCoupons() {

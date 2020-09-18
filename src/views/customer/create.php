@@ -26,11 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- Row -->
     <div class="row">
         <div class="col-xl-12">
-            <section class="hk-sec-wrapper">
-                <?= $this->render('_form', [
-                    'model' => $model,
-                ]) ?>
-            </section>
+            <?= $this->render('_form', [
+                'model' => $model,
+            ]) ?>
         </div>
     </div>
 

@@ -15,6 +15,8 @@ use modava\affiliate\models\Customer;
 use modava\affiliate\models\search\CustomerSearch;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /**
  * CustomerController implements the CRUD actions for Customer model.
@@ -235,6 +237,26 @@ class CustomerController extends MyController
             $out['results'] = ['id' => $id, 'text' => Customer::findOne($id)->fullname];
         }
         return $out;
+    }
+
+        public function actionImportKols()
+    {
+        $path = Yii::getAlias('@modava/affiliate/templates/kols-export.xlsx');
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($path);
+        $data = $spreadsheet->getActiveSheet()->toArray();
+
+        for ($i = 1; $i < count($data)-1; $i++) {
+            $model = new Customer();
+            $model->full_name = $data[$i][1];
+            $model->description = "Code: " . $data[$i][2] . "\nĐường dẫn: " . $data[$i][3];
+            $model->phone = 9999999000 + $i . '';
+            $model->status = Customer::STATUS_HOAN_THANH_DICH_VU;
+            $model->partner_id = 2;
+            $model->save();
+        }
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return 'Done';
     }
 
     public function actionTotalCommission($id)

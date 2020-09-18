@@ -5,6 +5,7 @@ namespace modava\affiliate\models;
 use common\helpers\MyHelper;
 use common\models\User;
 use modava\affiliate\AffiliateModule;
+use modava\affiliate\models\search\PartnerSearch;
 use modava\affiliate\models\table\CustomerTable;
 use modava\location\models\LocationCountry;
 use modava\location\models\LocationDistrict;
@@ -132,14 +133,37 @@ class Customer extends CustomerTable
      */
     public function rules()
     {
+        $myAurisPartner = PartnerSearch::getRecordBySlug('dashboard-myauris');
+
+        $vallidatePartnerCustomerId = [
+            'when' => function () use($myAurisPartner) {
+                return $this->partner_id == $myAurisPartner->id;
+            },
+            'whenClient' => "function() {
+			    return $('#partner-id').val() === '{$myAurisPartner->id}';
+			}"
+        ];
+
         return [
-            [['full_name', 'phone', 'partner_id', 'partner_customer_id', 'status'], 'required'],
+            [['full_name', 'phone', 'partner_id', 'status'], 'required'],
             [['partner_id', 'sex', 'partner_customer_id', 'country_id', 'province_id', 'district_id', 'ward_id'], 'integer'],
             [['description', 'address'], 'string'],
             [['full_name', 'email', 'face_customer', 'bank_customer_id', 'bank_branch', 'bank_name'], 'string', 'max' => 255],
             [['phone'], 'string', 'max' => 15],
+            [
+                ['partner_customer_id',],
+                'unique',
+                'when' => $vallidatePartnerCustomerId['when'],
+                'whenClient' => $vallidatePartnerCustomerId['whenClient']
+            ],
+            [
+                ['partner_customer_id',],
+                'required',
+                'when' => $vallidatePartnerCustomerId['when'],
+                'whenClient' => $vallidatePartnerCustomerId['whenClient']
+            ],
             [['bank_customer_id'], 'string', 'max' => 35],
-            [['slug', 'partner_customer_id', 'phone'], 'unique'],
+            [['slug', 'phone'], 'unique'],
             [['email'], 'email'],
             [['total_commission', 'total_commission_paid', 'total_commission_remain'], 'number'],
             [['birthday', 'date_accept_do_service', 'date_checkin'], 'safe'],
@@ -165,7 +189,7 @@ class Customer extends CustomerTable
             'phone' => Yii::t('backend', 'Phone'),
             'email' => Yii::t('backend', 'Email'),
             'face_customer' => Yii::t('backend', 'Face Customer'),
-            'partner_id' => Yii::t('backend', 'Partner ID'),
+            'partner_id' => Yii::t('backend', 'Đối tác'),
             'description' => Yii::t('backend', 'Description'),
             'created_at' => Yii::t('backend', 'Created At'),
             'updated_at' => Yii::t('backend', 'Updated At'),
@@ -173,7 +197,7 @@ class Customer extends CustomerTable
             'updated_by' => Yii::t('backend', 'Updated By'),
             'birthday' => Yii::t('backend', 'Birthday'),
             'sex' => Yii::t('backend', 'Sex'),
-            'partner_customer_id' => Yii::t('backend', 'Partner Customer Id'),
+            'partner_customer_id' => Yii::t('backend', 'Id KH (Đối tác)'),
             'date_accept_do_service' => Yii::t('backend', 'Date Accept Do Service'),
             'date_checkin' => Yii::t('backend', 'Date Checkin'),
             'country_id' => Yii::t('backend', 'Country'),
@@ -230,7 +254,6 @@ class Customer extends CustomerTable
             'color' => \Yii::$app->getModule('affiliate')->params['customer_status_color'],
         ];
     }
-
 
     public static function getCustomerByKeyWord($keyWord)
     {

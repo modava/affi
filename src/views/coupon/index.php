@@ -1,10 +1,9 @@
 <?php
 
-use modava\affiliate\AffiliateModule;
+use backend\widgets\ToastrWidget;
+use common\grid\MyGridView;
 use modava\affiliate\widgets\NavbarWidgets;
 use yii\helpers\Html;
-use yii\grid\GridView;
-use backend\widgets\ToastrWidget;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 
@@ -32,45 +31,51 @@ $this->params['breadcrumbs'][] = $this->title;
         <!-- Row -->
         <div class="row">
             <div class="col-xl-12">
-                <section class="hk-sec-wrapper">
+                <section class="hk-sec-wrapper index">
 
                     <?php Pjax::begin(['id' => 'coupon-gridview']); ?>
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-wrap">
                                 <div class="dataTables_wrapper dt-bootstrap4 table-responsive">
-                                    <?= GridView::widget([
+                                    <?= MyGridView::widget([
                                         'dataProvider' => $dataProvider,
                                         'layout' => '
                                         {errors}
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                {items}
-                                            </div>
+                                        <div class="pane-single-table">
+                                            {items}
                                         </div>
-                                        <div class="row">
-                                            <div class="col-sm-12 col-md-5">
-                                                <div class="dataTables_info" role="status" aria-live="polite">
-                                                    {pager}
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-12 col-md-7">
-                                                <div class="dataTables_paginate paging_simple_numbers">
-                                                    {summary}
-                                                </div>
-                                            </div>
+                                        <div class="pager-wrap clearfix">
+                                            {summary}' .
+                                            Yii::$app->controller->renderPartial('@backend/views/layouts/my-gridview/_pageTo', [
+                                                'totalPage' => $totalPage,
+                                                'currentPage' => Yii::$app->request->get($dataProvider->getPagination()->pageParam)
+                                            ]) .
+                                            Yii::$app->controller->renderPartial('@backend/views/layouts/my-gridview/_pageSize') .
+                                            '{pager}
                                         </div>
                                     ',
+                                        'tableOptions' => [
+                                            'id' => 'dataTable',
+                                            'class' => 'dt-grid dt-widget pane-hScroll',
+                                        ],
+                                        'myOptions' => [
+                                            'class' => 'dt-grid-content my-content pane-vScroll',
+                                            'data-minus' => '{"0":95,"1":".hk-navbar","2":".nav-tabs","3":".hk-pg-header","4":".hk-footer-wrap"}'
+                                        ],
+                                        'summaryOptions' => [
+                                            'class' => 'summary pull-right',
+                                        ],
                                         'pager' => [
-                                            'firstPageLabel' => Yii::t('backend', 'First'),
-                                            'lastPageLabel' => Yii::t('backend', 'Last'),
-                                            'prevPageLabel' => Yii::t('backend', 'Previous'),
-                                            'nextPageLabel' => Yii::t('backend', 'Next'),
+                                            'firstPageLabel' => Yii::t('receipt', 'First'),
+                                            'lastPageLabel' => Yii::t('receipt', 'Last'),
+                                            'prevPageLabel' => Yii::t('receipt', 'Previous'),
+                                            'nextPageLabel' => Yii::t('receipt', 'Next'),
                                             'maxButtonCount' => 5,
 
                                             'options' => [
                                                 'tag' => 'ul',
-                                                'class' => 'pagination',
+                                                'class' => 'pagination pull-left',
                                             ],
 
                                             // Customzing CSS class for pager link
@@ -80,10 +85,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'pageCssClass' => 'page-item',
 
                                             // Customzing CSS class for navigating link
-                                            'prevPageCssClass' => 'paginate_button page-item',
-                                            'nextPageCssClass' => 'paginate_button page-item',
-                                            'firstPageCssClass' => 'paginate_button page-item',
-                                            'lastPageCssClass' => 'paginate_button page-item',
+                                            'prevPageCssClass' => 'paginate_button page-item prev',
+                                            'nextPageCssClass' => 'paginate_button page-item next',
+                                            'firstPageCssClass' => 'paginate_button page-item first',
+                                            'lastPageCssClass' => 'paginate_button page-item last',
                                         ],
                                         'columns' => [
                                             [
@@ -247,6 +252,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 <?php
+$urlChangePageSize = \yii\helpers\Url::toRoute(['perpage']);
 $urlSendSMS = Url::toRoute(['/affiliate/coupon/send-sms-to-customer']);
 $script = <<< JS
 function initSendSMS () {
@@ -306,6 +312,11 @@ $('body').on('click', '.success-delete', function(e){
         $.post(url);
     }
     return false;
+});
+var customPjax = new myGridView();
+customPjax.init({
+pjaxId: '#coupon-gridview',
+urlChangePageSize: '$urlChangePageSize',
 });
 JS;
 $this->registerJs($script, \yii\web\View::POS_END);

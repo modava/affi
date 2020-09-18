@@ -8,6 +8,8 @@ use yii\helpers\Url;
 $saveUrl = Url::toRoute(["/affiliate/handle-ajax/update-ajax"]);
 ?>
 
+<?php if (!count($notes)) echo '<tr><td colspan="7">Không có dữ liệu được tìm thấy</td></tr>'?>
+
 <?php foreach ($notes as $note): ?>
     <tr data-record-id="<?= $note->primaryKey ?>">
         <td class="w-sm" title="<?= $note->title ?>"><?= $note->title ?></td>

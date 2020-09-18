@@ -3,15 +3,14 @@
 namespace modava\affiliate\controllers;
 
 use backend\components\MyComponent;
-use yii\db\Exception;
-use Yii;
-use yii\helpers\Html;
-use yii\filters\VerbFilter;
-use yii\web\NotFoundHttpException;
-use modava\affiliate\AffiliateModule;
 use backend\components\MyController;
 use modava\affiliate\models\Receipt;
 use modava\affiliate\models\search\ReceiptSearch;
+use Yii;
+use yii\db\Exception;
+use yii\filters\VerbFilter;
+use yii\helpers\Html;
+use yii\web\NotFoundHttpException;
 
 /**
  * ReceiptController implements the CRUD actions for Receipt model.
@@ -19,8 +18,8 @@ use modava\affiliate\models\search\ReceiptSearch;
 class ReceiptController extends MyController
 {
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [
@@ -34,9 +33,9 @@ class ReceiptController extends MyController
     }
 
     /**
-    * Lists all Receipt models.
-    * @return mixed
-    */
+     * Lists all Receipt models.
+     * @return mixed
+     */
     public function actionIndex()
     {
         $searchModel = new ReceiptSearch();
@@ -47,16 +46,16 @@ class ReceiptController extends MyController
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'totalPage'    => $totalPage,
+            'totalPage' => $totalPage,
         ]);
-            }
+    }
 
     /**
-    * Displays a single Receipt model.
-    * @param integer $id
-    * @return mixed
-    * @throws NotFoundHttpException if the model cannot be found
-    */
+     * Displays a single Receipt model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -65,10 +64,10 @@ class ReceiptController extends MyController
     }
 
     /**
-    * Creates a new Receipt model.
-    * If creation is successful, the browser will be redirected to the 'view' page.
-    * @return mixed
-    */
+     * Creates a new Receipt model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
     public function actionCreate()
     {
         $model = new Receipt();
@@ -100,18 +99,18 @@ class ReceiptController extends MyController
     }
 
     /**
-    * Updates an existing Receipt model.
-    * If update is successful, the browser will be redirected to the 'view' page.
-    * @param integer $id
-    * @return mixed
-    * @throws NotFoundHttpException if the model cannot be found
-    */
+     * Updates an existing Receipt model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            if($model->validate()) {
+            if ($model->validate()) {
                 if ($model->save()) {
                     Yii::$app->session->setFlash('toastr-' . $model->toastr_key . '-view', [
                         'title' => 'Thông báo',
@@ -139,12 +138,12 @@ class ReceiptController extends MyController
     }
 
     /**
-    * Deletes an existing Receipt model.
-    * If deletion is successful, the browser will be redirected to the 'index' page.
-    * @param integer $id
-    * @return mixed
-    * @throws NotFoundHttpException if the model cannot be found
-    */
+     * Deletes an existing Receipt model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
@@ -177,17 +176,17 @@ class ReceiptController extends MyController
     }
 
     /**
-    * @param $perpage
-    */
+     * @param $perpage
+     */
     public function actionPerpage($perpage)
     {
         MyComponent::setCookies('pageSize', $perpage);
     }
 
     /**
-    * @param $dataProvider
-    * @return float|int
-    */
+     * @param $dataProvider
+     * @return float|int
+     */
     public function getTotalPage($dataProvider)
     {
         if (MyComponent::hasCookies('pageSize')) {
@@ -196,20 +195,20 @@ class ReceiptController extends MyController
             $dataProvider->pagination->pageSize = 10;
         }
 
-        $pageSize   = $dataProvider->pagination->pageSize;
+        $pageSize = $dataProvider->pagination->pageSize;
         $totalCount = $dataProvider->totalCount;
-        $totalPage  = (($totalCount + $pageSize - 1) / $pageSize);
+        $totalPage = (($totalCount + $pageSize - 1) / $pageSize);
 
         return $totalPage;
     }
 
     /**
-    * Finds the Receipt model based on its primary key value.
-    * If the model is not found, a 404 HTTP exception will be thrown.
-    * @param integer $id
-    * @return Receipt the loaded model
-    * @throws NotFoundHttpException if the model cannot be found
-    */
+     * Finds the Receipt model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Receipt the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
 
 
     protected function findModel($id)
@@ -218,6 +217,6 @@ class ReceiptController extends MyController
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('backend','The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('backend', 'The requested page does not exist.'));
     }
 }

@@ -2,15 +2,15 @@
 
 namespace modava\affiliate\controllers;
 
-use yii\db\Exception;
-use Yii;
-use yii\helpers\Html;
-use yii\filters\VerbFilter;
-use yii\web\NotFoundHttpException;
-use modava\affiliate\AffiliateModule;
+use backend\components\MyComponent;
 use backend\components\MyController;
-use modava\affiliate\models\UnsatisfiedReason;
 use modava\affiliate\models\search\UnsatisfiedReasonSearch;
+use modava\affiliate\models\UnsatisfiedReason;
+use Yii;
+use yii\db\Exception;
+use yii\filters\VerbFilter;
+use yii\helpers\Html;
+use yii\web\NotFoundHttpException;
 
 /**
  * UnsatisfiedReasonController implements the CRUD actions for UnsatisfiedReason model.
@@ -18,8 +18,8 @@ use modava\affiliate\models\search\UnsatisfiedReasonSearch;
 class UnsatisfiedReasonController extends MyController
 {
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [
@@ -33,28 +33,30 @@ class UnsatisfiedReasonController extends MyController
     }
 
     /**
-    * Lists all UnsatisfiedReason models.
-    * @return mixed
-    */
+     * Lists all UnsatisfiedReason models.
+     * @return mixed
+     */
     public function actionIndex()
     {
         $searchModel = new UnsatisfiedReasonSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $totalPage = $this->getTotalPage($dataProvider);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'totalPage' => $totalPage,
         ]);
-            }
-
+    }
 
 
     /**
-    * Displays a single UnsatisfiedReason model.
-    * @param integer $id
-    * @return mixed
-    * @throws NotFoundHttpException if the model cannot be found
-    */
+     * Displays a single UnsatisfiedReason model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -63,10 +65,10 @@ class UnsatisfiedReasonController extends MyController
     }
 
     /**
-    * Creates a new UnsatisfiedReason model.
-    * If creation is successful, the browser will be redirected to the 'view' page.
-    * @return mixed
-    */
+     * Creates a new UnsatisfiedReason model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
     public function actionCreate()
     {
         $model = new UnsatisfiedReason();
@@ -98,18 +100,18 @@ class UnsatisfiedReasonController extends MyController
     }
 
     /**
-    * Updates an existing UnsatisfiedReason model.
-    * If update is successful, the browser will be redirected to the 'view' page.
-    * @param integer $id
-    * @return mixed
-    * @throws NotFoundHttpException if the model cannot be found
-    */
+     * Updates an existing UnsatisfiedReason model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            if($model->validate()) {
+            if ($model->validate()) {
                 if ($model->save()) {
                     Yii::$app->session->setFlash('toastr-' . $model->toastr_key . '-view', [
                         'title' => 'Thông báo',
@@ -137,12 +139,12 @@ class UnsatisfiedReasonController extends MyController
     }
 
     /**
-    * Deletes an existing UnsatisfiedReason model.
-    * If deletion is successful, the browser will be redirected to the 'index' page.
-    * @param integer $id
-    * @return mixed
-    * @throws NotFoundHttpException if the model cannot be found
-    */
+     * Deletes an existing UnsatisfiedReason model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
@@ -175,12 +177,39 @@ class UnsatisfiedReasonController extends MyController
     }
 
     /**
-    * Finds the UnsatisfiedReason model based on its primary key value.
-    * If the model is not found, a 404 HTTP exception will be thrown.
-    * @param integer $id
-    * @return UnsatisfiedReason the loaded model
-    * @throws NotFoundHttpException if the model cannot be found
-    */
+     * @param $perpage
+     */
+    public function actionPerpage($perpage)
+    {
+        MyComponent::setCookies('pageSize', $perpage);
+    }
+
+    /**
+     * @param $dataProvider
+     * @return float|int
+     */
+    public function getTotalPage($dataProvider)
+    {
+        if (MyComponent::hasCookies('pageSize')) {
+            $dataProvider->pagination->pageSize = MyComponent::getCookies('pageSize');
+        } else {
+            $dataProvider->pagination->pageSize = 10;
+        }
+
+        $pageSize = $dataProvider->pagination->pageSize;
+        $totalCount = $dataProvider->totalCount;
+        $totalPage = (($totalCount + $pageSize - 1) / $pageSize);
+
+        return $totalPage;
+    }
+
+    /**
+     * Finds the UnsatisfiedReason model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return UnsatisfiedReason the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
 
 
     protected function findModel($id)
@@ -189,6 +218,6 @@ class UnsatisfiedReasonController extends MyController
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('backend','The requested page does not exist.'));
+        throw new NotFoundHttpException(Yii::t('backend', 'The requested page does not exist.'));
     }
 }

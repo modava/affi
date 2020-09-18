@@ -102,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             [
                                                 'class' => 'yii\grid\ActionColumn',
                                                 'header' => Yii::t('backend', 'Actions'),
-                                                'template' => '{create-coupon} {create-call-note} {hidden-input-customer-info} {update} {delete}',
+                                                'template' => '{create-coupon} {create-call-note} {hidden-input-customer-info} {create-feedback} {update} {delete}',
                                                 'buttons' => [
                                                     'update' => function ($url, $model) {
                                                         return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
@@ -144,6 +144,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                                             'class' => 'btn btn-success btn-xs create-call-note m-1'
                                                         ]);
                                                     },
+                                                    'create-feedback' => function ($url, $model) {
+                                                        return Html::a('<span class="material-icons" style="font-size: 12px">feedback</span>', 'javascript:;', [
+                                                            'title' => Yii::t('backend', 'Create Feedback'),
+                                                            'alia-label' => Yii::t('backend', 'Create Feedback'),
+                                                            'data-pjax' => 0,
+                                                            'data-partner' => 'myaris',
+                                                            'class' => 'btn btn-success btn-xs create-feedback m-1'
+                                                        ]);
+
+                                                    },
                                                     'hidden-input-customer-info' => function ($url, $model) {
                                                         return Html::input('hidden', 'customer_info[]', json_encode($model->getAttributes()));
                                                     }
@@ -155,7 +165,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             [
                                                 'class' => 'yii\grid\ActionColumn',
                                                 'header' => Yii::t('backend', 'Related Record'),
-                                                'template' => '{list-coupon} {list-note}',
+                                                'template' => '{list-coupon} {list-note} {list-feedback}',
                                                 'buttons' => [
                                                     'list-coupon' => function ($url, $model) {
                                                         if (!Utils::isReleaseObject('Coupon')) return '';
@@ -191,6 +201,22 @@ $this->params['breadcrumbs'][] = $this->title;
                                                             'target' => '_blank'
                                                         ]);
                                                     },
+                                                    'list-feedback' => function ($url, $model) {
+                                                        $count = count($model->feedbacks);
+
+                                                        $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
+
+                                                        return Html::a('<span class="material-icons" style="font-size: 12px">feedback</span>' . $bage, Url::toRoute(['/affiliate/feedback', 'FeedbackSearch[customer_id]' => $model->primaryKey]), [
+                                                            'title' => Yii::t('backend', 'List Feedback'),
+                                                            'alia-label' => Yii::t('backend', 'List Feedback'),
+                                                            'data-pjax' => 0,
+                                                            'class' => 'btn btn-success btn-xs list-relate-record m-1',
+                                                            'data-related-id' => $model->primaryKey,
+                                                            'data-related-field' => 'customer_id',
+                                                            'data-model' => 'Feedback',
+                                                            'target' => '_blank'
+                                                        ]);
+                                                    }
                                                 ],
                                                 'headerOptions' => [
                                                     'width' => 150,
@@ -208,7 +234,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                                             'data-pjax' => 0,
                                                         ]) . '<br/>';
 
-                                                    $content .= "<strong>Giới tính: </strong>" . Yii::$app->getModule('affiliate')->params['sex'][$model->sex] . '<br/>';
+                                                    $gender = $model->sex ? Yii::$app->getModule('affiliate')->params['sex'][$model->sex] : '';
+                                                    $content .= "<strong>Giới tính: </strong>" . $gender . '<br/>';
                                                     if (class_exists('modava\voip24h\CallCenter')) $content .= Html::a('<i class="fa fa-phone"></i>', 'javascript: void(0)', [
                                                         'class' => 'btn btn-xs btn-success call-to',
                                                         'title' => 'Gọi',
@@ -285,6 +312,12 @@ $('.create-call-note').on('click', function() {
     let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_info[]"]').val());
     openCreateModal({model: 'Note', 
         'Note[customer_id]' : customerInfo.id,
+    });
+});
+$('.create-feedback').on('click', function() {
+    let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_info[]"]').val());
+    openCreateModal({model: 'Feedback', 
+        'Feedback[customer_id]' : customerInfo.id
     });
 });
 JS;

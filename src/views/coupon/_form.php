@@ -1,10 +1,13 @@
 <?php
 
+use kartik\select2\Select2;
+use modava\affiliate\models\Customer;
 use modava\affiliate\widgets\JsCreateModalWidget;
 use modava\datetime\DateTimePicker;
 use modava\website\models\table\KeyValueTable;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\JsExpression;
 use yii\widgets\ActiveForm;
 use backend\widgets\ToastrWidget;
 use modava\affiliate\AffiliateModule;
@@ -65,7 +68,34 @@ if ($model->primaryKey === null) {
                 ]) ?>
             </div>
             <div class="col-6">
-                <?= $form->field($model, 'customer_id')->input('text', ['readonly' => 'readonly']) ?>
+                <?php
+                $initValueText = '';
+                if ($model->customer_id) {
+                    $customerModel = Customer::findOne($model->customer_id);
+                    $initValueText = $customerModel->full_name . ' - ' . $customerModel->phone;
+                }
+                ?>
+
+                <?= $form->field($model, 'customer_id')->widget(Select2::class, [
+                    'value' => $model->customer_id,
+                    'initValueText' => $initValueText,
+                    'options' => ['placeholder' => Yii::t('backend', 'Chọn một giá trị ...')],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'minimumInputLength' => 3,
+                        'language' => [
+                            'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
+                        ],
+                        'ajax' => [
+                            'url' => Url::toRoute(['/affiliate/customer/get-customer-by-key-word']),
+                            'dataType' => 'json',
+                            'data' => new JsExpression('function(params) { return {q:params.term}; }')
+                        ],
+                        'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                        'templateResult' => new JsExpression('function(model) { return model.text; }'),
+                        'templateSelection' => new JsExpression('function (model) { return model.text; }'),
+                    ],
+                ]); ?>
             </div>
             <div class="col-6">
                 <?= $form->field($model, 'coupon_type_id')->dropDownList(
@@ -130,8 +160,14 @@ function generateCouponCode(customerId, upperCase = false) {
     });
 }
 
+function generateCouponCodeRandom(upperCase = false) {
+    let code = Math.random(10).toString(36).substring(2,12);
+    return upperCase ? code.toUpperCase() : code;
+}
+
 $('#coupon_form #js-generate-coupon-code').on('click', function() {
-    let customerId = $('#coupon_form').find('[name="Coupon[customer_id]"]').val();
+    /* Comment because change logic for short code*/
+    /*let customerId = $('#coupon_form').find('[name="Coupon[customer_id]"]').val();
     if (!customerId) {
         $.toast({
             heading: 'Thông báo',
@@ -154,8 +190,8 @@ $('#coupon_form #js-generate-coupon-code').on('click', function() {
             $('#coupon-coupon_code').val(data).trigger('change');
             loading.fadeOut(300);
         })
-    }
-    $('#coupon-coupon_code').val('').trigger('change');
+    }*/
+    $('#coupon-coupon_code').val(generateCouponCodeRandom(true)).trigger('change');
 });
 
 $('#coupon_form #coupon-coupon_code').on('change keyup blur', function() {

@@ -2,15 +2,15 @@
 
 namespace modava\affiliate\models;
 
+use common\helpers\MyHelper;
 use common\models\User;
-use modava\affiliate\AffiliateModule;
+use modava\affiliate\models\search\CustomerPartnerSearch;
 use modava\affiliate\models\table\OrderTable;
+use Yii;
 use yii\behaviors\AttributeBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\SluggableBehavior;
-use common\helpers\MyHelper;
 use yii\db\ActiveRecord;
-use Yii;
 
 /**
  * This is the model class for table "affiliate_order".
@@ -222,6 +222,7 @@ class Order extends OrderTable
     {
         $this->updateCouponUses();
         $this->updateCommissionForCustomer();
+        $this->initCustomerPartnerForCache();
         parent::afterSave($insert, $changedAttributes);
     }
 
@@ -238,9 +239,7 @@ class Order extends OrderTable
      */
     public function updateCouponUses()
     {
-        $countOrder = (new \yii\db\Query())
-            ->select('COUNT(*)')
-            ->from('affiliate_order')
+        $countOrder = self::find()
             ->where(['coupon_id' => $this->coupon_id, 'status' => [self::CHUA_HOAN_THANH, self::HOAN_THANH, self::KE_TOAN_DUYET]])
             ->count();
 
@@ -255,14 +254,21 @@ class Order extends OrderTable
      * */
     public function updateCommissionForCustomer()
     {
-        $sumCommission = (new \yii\db\Query())
-            ->select('commision_for_coupon_owner')
-            ->from('affiliate_order')
-            ->where('status = :status', [':status' => self::KE_TOAN_DUYET])
-            ->sum('commision_for_coupon_owner');
+        $sumCommission = self::find()
+            ->select([self::tableName() . '.commision_for_coupon_owner'])
+            ->joinWith(['coupon'])
+            ->where([
+                'status' => self::KE_TOAN_DUYET,
+                Coupon::tableName() . '.customer_id' => $this->coupon->customer_id
+            ])->sum('commision_for_coupon_owner');
 
         $customer = Customer::findOne($this->coupon->customer_id);
         $customer->total_commission = $sumCommission;
         $customer->save();
+    }
+
+    public function initCustomerPartnerForCache()
+    {
+        CustomerPartnerSearch::getCustomerById($this->partner_customer_id);
     }
 }

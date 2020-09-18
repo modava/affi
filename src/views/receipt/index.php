@@ -1,10 +1,9 @@
 <?php
 
-use modava\affiliate\AffiliateModule;
+use backend\widgets\ToastrWidget;
+use common\grid\MyGridView;
 use modava\affiliate\widgets\NavbarWidgets;
 use yii\helpers\Html;
-use common\grid\MyGridView;
-use backend\widgets\ToastrWidget;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 
@@ -31,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <!-- Row -->
         <div class="row">
             <div class="col-xl-12">
-                <section class="hk-sec-wrapper">
+                <section class="hk-sec-wrapper index">
 
                     <?php Pjax::begin(['id' => 'dt-pjax', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'GET']]); ?>
                     <?= ToastrWidget::widget(['key' => 'toastr-' . $searchModel->toastr_key . '-index']) ?>
