@@ -119,7 +119,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                             'class' => 'btn-success btn-sm fs-12'
                                                         ]
                                                     ]) . DropdownWidget::widget([
-                                                        'title' => Yii::t('t', 'Danh sách liên quan'),
+                                                        'title' => Yii::t('t', 'DS liên quan'),
                                                         'dropdowns' => [
                                                             '{list-coupon}',
                                                             '{list-note}',

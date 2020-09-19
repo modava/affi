@@ -2,10 +2,12 @@
 
 namespace modava\affiliate\models\search;
 
-use Yii;
-use yii\base\Model;
-use yii\data\ActiveDataProvider;
 use modava\affiliate\models\Coupon;
+use modava\affiliate\models\Customer;
+use yii\base\Model;
+use yii\behaviors\AttributeBehavior;
+use yii\data\ActiveDataProvider;
+use yii\db\ActiveRecord;
 
 /**
  * CouponSearch represents the model behind the search form of `modava\affiliate\models\Coupon`.
@@ -18,11 +20,26 @@ class CouponSearch extends Coupon
     public function rules()
     {
         return [
-            [['id', 'quantity', 'customer_id', 'coupon_type_id', 'quantity_used', 'promotion_type', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['title', 'slug', 'coupon_code', 'expired_date', 'description'], 'safe'],
+            [['id', 'quantity', 'customer_id', 'coupon_type_id', 'quantity_used', 'partner_id', 'promotion_type', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['title', 'slug', 'coupon_code', 'expired_date', 'description', 'created_at'], 'safe'],
             [['promotion_value'], 'number'],
         ];
     }
+
+//    public function behaviors()
+//    {
+//        return array_merge(parent::behaviors(), [
+//            [
+//                'class' => AttributeBehavior::class,
+//                'attributes' => [
+//                    ActiveRecord::EVENT_BEFORE_VALIDATE => ['created_at']
+//                ],
+//                'value' => function ($event) {
+//                    return strtotime($this->created_at);
+//                },
+//            ],
+//        ]);
+//    }
 
     /**
      * @inheritdoc
@@ -59,26 +76,34 @@ class CouponSearch extends Coupon
             return $dataProvider;
         }
 
+        $query->joinWith('customer');
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'quantity' => $this->quantity,
-            'expired_date' => $this->expired_date,
-            'customer_id' => $this->customer_id,
-            'coupon_type_id' => $this->coupon_type_id,
-            'quantity_used' => $this->quantity_used,
-            'promotion_type' => $this->promotion_type,
-            'promotion_value' => $this->promotion_value,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'created_by' => $this->created_by,
-            'updated_by' => $this->updated_by,
+            self::tableName() . '.quantity' => $this->quantity,
+            self::tableName() . '.expired_date' => $this->expired_date,
+            self::tableName() . '.customer_id' => $this->customer_id,
+            self::tableName() . '.coupon_type_id' => $this->coupon_type_id,
+            self::tableName() . '.quantity_used' => $this->quantity_used,
+            self::tableName() . '.promotion_type' => $this->promotion_type,
+            self::tableName() . '.promotion_value' => $this->promotion_value,
+            self::tableName() . '.updated_at' => $this->updated_at,
+            self::tableName() . '.created_by' => $this->created_by,
+            self::tableName() . '.updated_by' => $this->updated_by,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'slug', $this->slug])
-            ->andFilterWhere(['like', 'coupon_code', $this->coupon_code])
-            ->andFilterWhere(['like', 'description', $this->description]);
+        if ($this->created_at) {
+            $query->andWhere('FROM_UNIXTIME(' . self::tableName() . '.created_at' . ', "%d-%m-%Y" ) = :created_at', [
+                ':created_at' => $this->created_at
+            ]);
+        }
+
+        $query->andFilterWhere(['like', self::tableName() . '.title', $this->title])
+            ->andFilterWhere(['like', self::tableName() . '.slug', $this->slug])
+            ->andFilterWhere(['like', self::tableName() . '.coupon_code', $this->coupon_code])
+            ->andFilterWhere(['like', Customer::tableName() . '.partner_id', $this->partner_id])
+            ->andFilterWhere(['like', self::tableName() . '.description', $this->description]);
 
         return $dataProvider;
     }

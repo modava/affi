@@ -5,6 +5,7 @@ namespace modava\affiliate\controllers;
 use backend\components\MyComponent;
 use modava\affiliate\helpers\Utils;
 use modava\affiliate\models\Customer;
+use modava\affiliate\models\KolsFanForm;
 use modava\affiliate\models\search\CustomerPartnerSearch;
 use yii\db\Exception;
 use Yii;
@@ -47,12 +48,15 @@ class CouponController extends MyController
         $searchModel = new CouponSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $kolsFanForm = new KolsFanForm();
+
         $totalPage = $this->getTotalPage($dataProvider);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'totalPage' => $totalPage,
+            'kolsFanForm' => $kolsFanForm
         ]);
     }
 
@@ -257,6 +261,62 @@ class CouponController extends MyController
         } else {
             $errors = Html::tag('p', Yii::t('backend', 'Gửi thất bại'));
             foreach ($model->getErrors() as $error) {
+                $errors .= Html::tag('p', $error[0]);
+            }
+            return [
+                'success' => false,
+                'message' => $errors
+            ];
+        }
+    }
+
+    public function actionGetContentSmsCoupon() {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $coupon = Coupon::findOne(Yii::$app->request->get('coupon_id'));
+
+        if ($coupon === null) {
+            return [
+                'success' => false,
+                'message' => Yii::t('backend', 'Coupon không tìm thấy')
+            ];
+        }
+
+        return $coupon->getContentSmsCoupon('{ten}');
+    }
+
+    public function actionSendSmsCouponToFan() {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $model = new KolsFanForm();
+        $model->load(Yii::$app->request->post());
+
+        $coupon = Coupon::findOne($model->coupon_id);
+
+        if (!$model->validate()) {
+            $errors = Html::tag('p', Yii::t('backend', 'Gửi thất bại'));
+            foreach ($model->getErrors() as $error) {
+                $errors .= Html::tag('p', $error[0]);
+            }
+            return [
+                'success' => false,
+                'message' => $errors
+            ];
+        }
+
+        if ($coupon === null) {
+            return [
+                'success' => false,
+                'message' => Yii::t('backend', 'Coupon không tồn tại')
+            ];
+        }
+
+        if ($coupon->sendSmsToFan($model->name, $model->phone)) {
+            return [
+                'success' => true,
+                'message' => Yii::t('backend', 'Gửi thành công')
+            ];
+        } else {
+            $errors = Html::tag('p', Yii::t('backend', 'Gửi thất bại'));
+            foreach ($coupon->getErrors() as $error) {
                 $errors .= Html::tag('p', $error[0]);
             }
             return [

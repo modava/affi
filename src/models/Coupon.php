@@ -45,6 +45,8 @@ class Coupon extends CouponTable
 {
     public $toastr_key = 'coupon';
 
+    public $partner_id; // Đối tác của KH
+
     const DISCOUNT_AMOUNT = 1;
     const DISCOUNT_PERCENT = 2;
 
@@ -276,6 +278,112 @@ class Coupon extends CouponTable
             $smsLog->status = SmsLog::STATUS_FAIL;
             $smsLog->save();
             return false;
+        }
+    }
+
+    public function sendSmsToFan($name, $phone)
+    {
+        $myauris_config = \Yii::$app->getModule('affiliate')->params['myauris_config'];
+        $url = $myauris_config['url_end_point'] . $myauris_config['endpoint']['send_sms_coupon'];
+
+        $arrayName = explode(' ', $name);
+
+        $client = new Client();
+        $params = [
+            'phone' => $phone,
+            'promotions_code' => $this->coupon_code,
+            'promotions_name' => $this->title,
+            'promotions_expired' => Yii::$app->formatter->asDate($this->expired_date),
+            'name' => array_pop($arrayName),
+            'promotions_qty' => $this->quantity,
+        ];
+
+        $smsLog = new SmsLog();
+        $smsLog->to_number = $phone;
+        $smsLog->request_log = json_encode($params);
+
+        try {
+            $res = $client->request('POST', $url, [
+                'headers' => Yii::$app->getModule('affiliate')->params['myauris_config']['headers'],
+                'form_params' => $params
+            ]);
+
+            $response = \GuzzleHttp\json_decode($res->getBody(), true);
+
+            $smsLog->response_log = json_encode($response);
+
+            if (array_key_exists('messageContent', $response)) {
+                $smsLog->message = $response['messageContent'];
+            } else {
+                $smsLog->message = Yii::t('backend', 'Lỗi kết nối');
+            }
+
+            if ($res->getStatusCode() == 200 && $response['code'] == 200) {
+                $smsLog->status = SmsLog::STATUS_SUCCESS;
+                $smsLog->save();
+                return true;
+            }
+
+            if (array_key_exists('msg', $response)) {
+                $this->addError('count_sms_sent', $response['msg']);
+            } else {
+                Yii::warning($response);
+                $this->addError('count_sms_sent', Yii::t('backend', 'Đã có lỗi xảy ra'));
+            }
+
+            $smsLog->status = SmsLog::STATUS_FAIL;
+            $smsLog->save();
+            return false;
+        } catch (GuzzleException $exception) {
+            $this->addError('count_sms_sent', Yii::t('backend', $exception->getMessage()));
+
+            $smsLog->status = SmsLog::STATUS_FAIL;
+            $smsLog->save();
+            return false;
+        }
+    }
+
+    public function getContentSmsCoupon($name = null)
+    {
+        $myauris_config = \Yii::$app->getModule('affiliate')->params['myauris_config'];
+        $url = $myauris_config['url_end_point'] . $myauris_config['endpoint']['get_sms_coupon'];
+
+        $arrayName = explode(' ', $this->customer->full_name);
+
+        $client = new Client();
+        $params = [
+            'phone' => $this->customer->phone,
+            'promotions_code' => $this->coupon_code,
+            'promotions_name' => $this->title,
+            'promotions_expired' => Yii::$app->formatter->asDate($this->expired_date),
+            'name' => $name !== null ? $name : array_pop($arrayName),
+            'promotions_qty' => $this->quantity,
+        ];
+
+        try {
+            $res = $client->request('POST', $url, [
+                'headers' => Yii::$app->getModule('affiliate')->params['myauris_config']['headers'],
+                'form_params' => $params
+            ]);
+
+            $response = \GuzzleHttp\json_decode($res->getBody(), true);
+
+            if ($res->getStatusCode() == 200 && $response['code'] == 200) {
+                return [
+                    'success' => true,
+                    'data' => $response['messageContent']
+                ];
+            }
+
+            return [
+                'success' => false,
+                'message' => array_key_exists('msg', $response) ? $response['msg'] : Yii::t('backend', 'Đã có lỗi xảy ra')
+            ];
+        } catch (GuzzleException $exception) {
+            return [
+                'success' => false,
+                'message' => $exception->getMessage()
+            ];
         }
     }
 }

@@ -41,10 +41,11 @@ return [
             'get_customer' => "affiliate/get-customer",
             'create_note' => "affiliate/save-log-cskh",
             'get_call_log' => 'affiliate/get-call-log',
-            'send_sms_coupon' => 'sms/send-sms-promotions'
+            'send_sms_coupon' => 'sms/send-sms-promotions',
+            'get_sms_coupon' => 'sms/get-content-sms-promotions',
         ],
         'header' => ['X-Api-Key: qWnUiio9_xxRpExYzqSyzCqn3Gz3ZjP6jN_pxKUX'], // @todo Refactor code here: chuyển MyAurisApi vào model
-        'headers' => ['X-Api-Key' => 'qWnUiio9_xxRpExYzqSyzCqn3Gz3ZjP6jN_pxKUX'],
+        'headers' => ['X-Api-Key' => 'qWnUiio9_xxRpExYzqSyzCqn3Gz3ZjP6jN_pxKUX',],
         'row_per_page' => 10,
         'field_to_endpoint' => [
 //             'co_so' => 'co-so', // @todo

@@ -61,7 +61,7 @@ class SmsLog extends SmsLogTable
     public function rules()
     {
         return [
-            [['message', 'to_number', 'customer_id',], 'required'],
+            [['message', 'to_number',], 'required'],
             [['message', 'response_log', 'request_log'], 'string'],
             [['customer_id', 'created_at', 'created_by'], 'integer'],
             [['to_number'], 'string', 'max' => 20],

@@ -123,6 +123,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'attribute' => 'customer_id',
                                                 'format' => 'raw',
                                                 'value' => function ($model) {
+                                                    if (!$model->customer_id) return '';
+
                                                     return Html::a($model->customer->full_name, Url::toRoute(['/affiliate/customer/view', 'id' => $model->customer_id]));
                                                 }
                                             ],

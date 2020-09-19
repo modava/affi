@@ -257,11 +257,6 @@ $datapickerAddon = '<button type="button" class="btn btn-light clear-value"><spa
 
 <?php
 $script = <<< JS
- $('.clear-value').on('click', function(e) {
-   e.stopImmediatePropagation();
-   $(this).closest('.input-group').find('input, select').val('').trigger('change');
- });
-
 saveStateSearchPanel('#search-panel', '.btn-hide-search', 'show-affiliate-search-panel');
 
 $('#affiliate-search').on('submit', function () {

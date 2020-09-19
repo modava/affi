@@ -1,5 +1,6 @@
 <?php
 
+use dosamigos\datepicker\DatePicker;
 use kartik\select2\Select2;
 use modava\affiliate\models\Customer;
 use modava\affiliate\widgets\JsCreateModalWidget;
@@ -56,14 +57,15 @@ if ($model->primaryKey === null) {
                 <?= $form->field($model, 'quantity')->input('number') ?>
             </div>
             <div class="col-6">
-                <?= $form->field($model, 'expired_date')->widget(DateTimePicker::class, [
-                    'template' => '{input}{button}',
-                    'pickButtonIcon' => 'btn btn-increment btn-light',
-                    'pickIconContent' => Html::tag('span', '', ['class' => 'glyphicon glyphicon-th']),
+                <?= $form->field($model, 'expired_date')->widget(DatePicker::class, [
+                    'addon' => '<button type="button" class="btn btn-increment btn-light"><i class="ion ion-md-calendar"></i></button>',
                     'clientOptions' => [
                         'autoclose' => true,
                         'format' => 'dd-mm-yyyy',
-                        'todayHighLight' => true,
+                        'todayHighlight' => true,
+                    ],
+                    'options' => [
+                            'readonly' => true
                     ]
                 ]) ?>
             </div>
