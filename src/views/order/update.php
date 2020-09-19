@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = Yii::t('backend', 'Update');
         <h4 class="hk-pg-title"><span class="pg-title-icon"><span
                         class="ion ion-md-apps"></span></span><?= Html::encode($this->title) ?>
         </h4>
-        <a class="btn btn-outline-light" href="<?= Url::to(['create']); ?>"
+        <a class="btn btn-outline-light btn-sm" href="<?= Url::to(['create']); ?>"
            title="<?= Yii::t('backend', 'Create'); ?>">
             <i class="fa fa-plus"></i> <?= Yii::t('backend', 'Create'); ?></a>
     </div>

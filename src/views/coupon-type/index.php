@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <h4 class="hk-pg-title"><span class="pg-title-icon"><span
                             class="ion ion-md-apps"></span></span><?= Html::encode($this->title) ?>
             </h4>
-            <a class="btn btn-outline-light" href="<?= \yii\helpers\Url::to(['create']); ?>"
+            <a class="btn btn-outline-light btn-sm" href="<?= \yii\helpers\Url::to(['create']); ?>"
                title="<?= Yii::t('backend', 'Create'); ?>">
                 <i class="fa fa-plus"></i> <?= Yii::t('backend', 'Create'); ?></a>
         </div>

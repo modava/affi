@@ -1,14 +1,13 @@
 <?php
 
-use modava\affiliate\AffiliateModule;
+use backend\widgets\ToastrWidget;
 use modava\affiliate\helpers\Utils;
+use modava\affiliate\widgets\DropdownWidget;
 use modava\affiliate\widgets\JsUtils;
 use modava\affiliate\widgets\NavbarWidgets;
-use yii\helpers\Html;
 use yii\grid\GridView;
-use backend\widgets\ToastrWidget;
+use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel modava\affiliate\models\search\CustomerSearch */
@@ -16,6 +15,7 @@ use yii\widgets\Pjax;
 
 $this->title = Yii::t('backend', 'Customers');
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <?= ToastrWidget::widget(['key' => 'toastr-' . $searchModel->toastr_key . '-index']) ?>
     <div class="container-fluid px-xxl-25 px-xl-10">
@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <h4 class="hk-pg-title"><span class="pg-title-icon"><span
                             class="ion ion-md-apps"></span></span><?= Html::encode($this->title) ?>
             </h4>
-            <a class="btn btn-outline-light" href="<?= \yii\helpers\Url::to(['create']); ?>"
+            <a class="btn btn-outline-light btn-sm" href="<?= \yii\helpers\Url::to(['create']); ?>"
                title="<?= Yii::t('backend', 'Create'); ?>">
                 <i class="fa fa-plus"></i> <?= Yii::t('backend', 'Create'); ?></a>
         </div>
@@ -104,10 +104,35 @@ $this->params['breadcrumbs'][] = $this->title;
                                             [
                                                 'class' => 'yii\grid\ActionColumn',
                                                 'header' => Yii::t('backend', 'Actions'),
-                                                'template' => '{create-coupon} {create-call-note} {hidden-input-customer-info} {create-feedback} {update} {delete}',
+                                                'template' => DropdownWidget::widget([
+                                                        'title' => Yii::t('t', 'Hành động'),
+                                                        'dropdowns' => [
+                                                            '{create-coupon}',
+                                                            '{create-call-note}',
+                                                            '{hidden-input-customer-info}',
+                                                            '{create-feedback}',
+                                                            '{update}',
+                                                            '{delete}',
+                                                        ],
+                                                        'isCustomItem' => true,
+                                                        'options' => [
+                                                            'class' => 'btn-success btn-sm fs-12'
+                                                        ]
+                                                    ]) . DropdownWidget::widget([
+                                                        'title' => Yii::t('t', 'Danh sách liên quan'),
+                                                        'dropdowns' => [
+                                                            '{list-coupon}',
+                                                            '{list-note}',
+                                                            '{list-feedback}',
+                                                        ],
+                                                        'isCustomItem' => true,
+                                                        'options' => [
+                                                            'class' => 'btn-success btn-sm fs-12'
+                                                        ]
+                                                    ]),
                                                 'buttons' => [
                                                     'update' => function ($url, $model) {
-                                                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>' . ' ' . Yii::t('affiliate', 'Cập nhật'), $url, [
                                                             'title' => Yii::t('backend', 'Update'),
                                                             'alia-label' => Yii::t('backend', 'Update'),
                                                             'data-pjax' => 0,
@@ -115,7 +140,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         ]);
                                                     },
                                                     'delete' => function ($url, $model) {
-                                                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', 'javascript:;', [
+                                                        return Html::a('<span class="glyphicon glyphicon-trash"></span>' . ' ' . Yii::t('affiliate', 'Xóa'), 'javascript:;', [
                                                             'title' => Yii::t('backend', 'Delete'),
                                                             'class' => 'btn btn-danger btn-xs btn-del m-1',
                                                             'data-title' => Yii::t('backend', 'Delete?'),
@@ -129,7 +154,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     'create-coupon' => function ($url, $model) {
                                                         if (!Utils::isReleaseObject('Coupon')) return '';
 
-                                                        return Html::a('<i class="icon dripicons-ticket"></i>', 'javascript:;', [
+                                                        return Html::a('<i class="icon dripicons-ticket"></i>' . ' ' . Yii::t('affiliate', 'Tạo Coupon'), 'javascript:;', [
                                                             'title' => Yii::t('backend', 'Create Coupon'),
                                                             'alia-label' => Yii::t('backend', 'Create Coupon'),
                                                             'data-pjax' => 0,
@@ -138,7 +163,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         ]);
                                                     },
                                                     'create-call-note' => function ($url, $model) {
-                                                        return Html::a('<i class="icon dripicons-to-do"></i>', 'javascript:;', [
+                                                        return Html::a('<i class="icon dripicons-to-do"></i>' . ' ' . Yii::t('affiliate', 'Tạo Note cuộc gọi'), 'javascript:;', [
                                                             'title' => Yii::t('backend', 'Create Call Note'),
                                                             'alia-label' => Yii::t('backend', 'Create Call Note'),
                                                             'data-pjax' => 0,
@@ -147,7 +172,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         ]);
                                                     },
                                                     'create-feedback' => function ($url, $model) {
-                                                        return Html::a('<span class="material-icons" style="font-size: 12px">feedback</span>', 'javascript:;', [
+                                                        return Html::a('<span class="material-icons" style="font-size: 12px">feedback</span>' . ' ' . Yii::t('affiliate', 'Tạo FeedBack'), 'javascript:;', [
                                                             'title' => Yii::t('backend', 'Create Feedback'),
                                                             'alia-label' => Yii::t('backend', 'Create Feedback'),
                                                             'data-pjax' => 0,
@@ -158,17 +183,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     },
                                                     'hidden-input-customer-info' => function ($url, $model) {
                                                         return Html::input('hidden', 'customer_info[]', json_encode($model->getAttributes()));
-                                                    }
-                                                ],
-                                                'headerOptions' => [
-                                                    'class' => 'header-200',
-                                                ],
-                                            ],
-                                            [
-                                                'class' => 'yii\grid\ActionColumn',
-                                                'header' => Yii::t('backend', 'Related Record'),
-                                                'template' => '{list-coupon} {list-note} {list-feedback}',
-                                                'buttons' => [
+                                                    },
                                                     'list-coupon' => function ($url, $model) {
                                                         if (!Utils::isReleaseObject('Coupon')) return '';
 
@@ -176,7 +191,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                                         $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
 
-                                                        return Html::a('<i class="icon dripicons-ticket"></i> ' . $bage, Url::toRoute(['/affiliate/coupon', 'CouponSearch[customer_id]' => $model->primaryKey]), [
+                                                        return Html::a('<i class="icon dripicons-ticket"></i> ' . ' ' . Yii::t('backend', 'Coupon') . $bage, Url::toRoute(['/affiliate/coupon', 'CouponSearch[customer_id]' => $model->primaryKey]), [
                                                             'title' => Yii::t('backend', 'List Tickets'),
                                                             'alia-label' => Yii::t('backend', 'List Tickets'),
                                                             'data-pjax' => 0,
@@ -192,7 +207,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                                         $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
 
-                                                        return Html::a('<i class="icon dripicons-to-do"></i>' . $bage, Url::toRoute(['/affiliate/note', 'NoteSearch[customer_id]' => $model->primaryKey]), [
+                                                        return Html::a('<i class="icon dripicons-to-do"></i>' . ' ' . Yii::t('backend', 'Note') . $bage, Url::toRoute(['/affiliate/note', 'NoteSearch[customer_id]' => $model->primaryKey]), [
                                                             'title' => Yii::t('backend', 'List Notes'),
                                                             'alia-label' => Yii::t('backend', 'List Notes'),
                                                             'data-pjax' => 0,
@@ -208,7 +223,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                                         $bage = $count ? '<span class="badge badge-light ml-1">' . $count . '</span>' : '';
 
-                                                        return Html::a('<span class="material-icons" style="font-size: 12px">feedback</span>' . $bage, Url::toRoute(['/affiliate/feedback', 'FeedbackSearch[customer_id]' => $model->primaryKey]), [
+                                                        return Html::a('<span class="material-icons" style="font-size: 12px">feedback</span>' . ' ' . Yii::t('backend', 'FeedBack') . $bage, Url::toRoute(['/affiliate/feedback', 'FeedbackSearch[customer_id]' => $model->primaryKey]), [
                                                             'title' => Yii::t('backend', 'List Feedback'),
                                                             'alia-label' => Yii::t('backend', 'List Feedback'),
                                                             'data-pjax' => 0,
@@ -221,7 +236,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     }
                                                 ],
                                                 'headerOptions' => [
-                                                    'width' => 150,
+                                                    'class' => 'header-100',
                                                 ],
                                             ],
                                             [

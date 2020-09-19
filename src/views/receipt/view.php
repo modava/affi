@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         class="ion ion-md-apps"></span></span><?=Yii::t('receipt', 'Chi tiết'); ?>: <?= Html::encode($this->title) ?>
         </h4>
         <p>
-            <a class="btn btn-outline-light" href="<?= Url::to(['create']); ?>"
+            <a class="btn btn-outline-light btn-sm" href="<?= Url::to(['create']); ?>"
                 title="<?= Yii::t('receipt', 'Create'); ?>">
                 <i class="fa fa-plus"></i> <?= Yii::t('receipt', 'Create'); ?></a>
 
