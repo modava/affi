@@ -139,6 +139,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         ]);
                                                     },
                                                     'update' => function ($url, $model) {
+                                                        if ($model->quantity_used > 0) return Html::button('Coupon đã sử dụng không được sửa', ['class' => 'btn btn-danger btn-xs my-1']);
+
                                                         return Html::a('<span class="glyphicon glyphicon-pencil"></span> ' . Yii::t('backend', 'Update'), $url, [
                                                             'title' => Yii::t('backend', 'Update'),
                                                             'alia-label' => Yii::t('backend', 'Update'),
@@ -147,6 +149,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         ]);
                                                     },
                                                     'delete' => function ($url, $model) {
+                                                        if ($model->quantity_used > 0) return  Html::button('Coupon đã sử dụng không được xóa', ['class' => 'btn btn-danger btn-xs']);
+
                                                         return Html::a('<span class="glyphicon glyphicon-trash"></span> ' . Yii::t('backend', 'Delete'), 'javascript:;', [
                                                             'title' => Yii::t('backend', 'Delete'),
                                                             'class' => 'btn btn-danger btn-xs btn-del m-1',

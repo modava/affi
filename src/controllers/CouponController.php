@@ -11,6 +11,7 @@ use yii\db\Exception;
 use Yii;
 use yii\helpers\Html;
 use yii\filters\VerbFilter;
+use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use modava\affiliate\AffiliateModule;
 use backend\components\MyController;
@@ -119,6 +120,15 @@ class CouponController extends MyController
     {
         $model = $this->findModel($id);
 
+        if ($model->quantity_used > 0) {
+            Yii::$app->session->setFlash('toastr-' . $model->toastr_key . '-view', [
+                'title' => 'Thông báo',
+                'text' => 'Không thể sửa Coupon đã sử dụng',
+                'type' => 'warning'
+            ]);
+            return $this->redirect(Url::toRoute(['view', 'id' => $id]));
+        }
+
         if ($model->load(Yii::$app->request->post())) {
             if ($model->validate()) {
                 if ($model->save()) {
@@ -157,6 +167,16 @@ class CouponController extends MyController
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
+
+        if ($model->quantity_used > 0) {
+            Yii::$app->session->setFlash('toastr-' . $model->toastr_key . '-view', [
+                'title' => 'Thông báo',
+                'text' => 'Không thể xoá Coupon đã sử dụng',
+                'type' => 'warning'
+            ]);
+            return $this->redirect(Url::toRoute(['view', 'id' => $id]));
+        }
+
         try {
             if ($model->delete()) {
                 Yii::$app->session->setFlash('toastr-' . $model->toastr_key . '-index', [
