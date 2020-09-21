@@ -60,7 +60,7 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
                                         ],
                                         'myOptions' => [
                                             'class' => 'dt-grid-content my-content pane-vScroll',
-                                            'data-minus' => '{"0":95,"1":".hk-navbar","2":".nav-tabs","3":".hk-pg-header","4":".hk-footer-wrap","5":"#affiliate-search"}'
+                                            'data-minus' => '{"0":115,"1":".hk-navbar","2":".nav-tabs","3":".hk-pg-header","4":".hk-footer-wrap","5":"#affiliate-search"}'
                                         ],
                                         'summaryOptions' => [
                                             'class' => 'summary pull-right',
@@ -303,7 +303,7 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
                                                 'label' => Yii::t('backend', 'Order Infomation'),
                                                 'format' => 'raw',
                                                 'headerOptions' => [
-                                                    'width' => 400
+                                                    'width' => 350
                                                 ],
                                                 'value' => function ($model) use ($dropdowns) {
                                                     return AffiliateDisplayHelper::getOrderInformation($model, $dropdowns['thao_tac']);
@@ -312,8 +312,9 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
                                             [
                                                 'label' => Yii::t('backend', 'Thông tin lịch điều trị'),
                                                 'format' => 'raw',
-                                                'headerOptions' => ['class' => 'header-300'],
-                                                'contentOptions' => ['class' => 'header-400 pr'],
+                                                'headerOptions' => [
+                                                    'width' => 400
+                                                ],
                                                 'value' => function ($model) use ($dropdowns) {
                                                     return AffiliateDisplayHelper::getTreatmentSchedule($model, $dropdowns['thao_tac']);
                                                 }
@@ -337,28 +338,22 @@ var customPjax = new myGridView();
     pjaxId: '#dt-pjax',
 });
 
-$('.create-coupon').on('click', function() {
+$('body').on('click', '.create-coupon', function() {
     let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_info[]"]').val());
     openCreateModal({model: 'Coupon', 
         'Coupon[customer_id]' : customerInfo.id,
     });
-});
-
-$('.create-call-note').on('click', function() {
+}).on('click', '.create-call-note', function() {
     let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_info[]"]').val());
     openCreateModal({model: 'Note', 
         'Note[customer_id]' : customerInfo.id,
     });
-});
-
-$('.create-feedback').on('click', function() {
+}).on('click', '.create-feedback', function() {
     let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_info[]"]').val());
     openCreateModal({model: 'Feedback', 
         'Feedback[customer_id]' : customerInfo.id
     });
-});
-
-$('.create-customer').on('click', function() {
+}).on('click', '.create-customer', function() {
     let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_partner_info[]"]').val());    
     openCreateModal({
         model: 'Customer',
@@ -375,10 +370,10 @@ $('.create-customer').on('click', function() {
         'Customer[date_accept_do_service]' : customerInfo.customer_come_date ? moment.unix(customerInfo.customer_come_date).format("YYYY-MM-DD") : '', 
         'Customer[date_checkin]' : customerInfo.time_lichhen ? moment.unix(customerInfo.time_lichhen).format("YYYY-MM-DD") : ''
     });
-});
-
-$('body').on('post-object-created', function() {
+}).on('post-object-created', function() {
     window.location.reload();
+}).on('click', '.btn-hide-search', function () {
+    customPjax.setHeightContent();
 });
 
 $('.customer-img-container').lightGallery();

@@ -84,6 +84,11 @@ textarea[readonly] {
     display: none;
 }
 
+#affiliate-search label,
+#affiliate-search .form-group {
+    margin-bottom: .3rem;
+}
+
 .select2-container .select2-selection--single .select2-selection__clear {
     position: absolute !important;
     right: 25px !important;

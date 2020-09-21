@@ -76,8 +76,7 @@ class CustomerSearch extends Customer
             'updated_by' => $this->updated_by,
         ]);
 
-        $query->andFilterWhere(['like', 'slug', $this->slug])
-            ->andFilterWhere(['like', 'email', $this->email])
+        $query->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'face_customer', $this->face_customer])
             ->andFilterWhere(['like', 'description', $this->description]);
 

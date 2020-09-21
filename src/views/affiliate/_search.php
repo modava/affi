@@ -36,10 +36,10 @@ $templateInput = [
 $datapickerAddon = '<button type="button" class="btn btn-light clear-value"><span class="fa fa-times"></span></button><button type="button" class="btn btn-increment btn-light"><i class="ion ion-md-calendar"></i></button>';
 ?>
 <?php $form = ActiveForm::begin(['method' => 'GET', 'id' => 'affiliate-search', 'action' => Url::toRoute(['/affiliate'])]); ?>
-<div class="hk-sec-wrapper">
+<div class="hk-sec-wrapper p-1">
     <div class="row collapse show" id="search-panel">
         <div class="col-md-5 col-sm-4 col-lg-5">
-            <div class="form-group row">
+            <div class="row">
                 <div class="col-6">
                     <?= $form->field($model, 'creation_time_from')->label(Yii::t('backend',
                         'Ngày tạo - từ'))->widget(DatePicker::class, [
@@ -71,7 +71,7 @@ $datapickerAddon = '<button type="button" class="btn btn-light clear-value"><spa
             </div>
         </div>
         <div class="col-md-3 col-sm-4 col-lg-3">
-            <div class="form-group row">
+            <div class="row">
                 <div class="col-12">
                     <?= $form->field($model, 'keyword', $templateInput)
                         ->textInput(['maxlength' => true])

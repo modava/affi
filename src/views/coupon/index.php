@@ -111,18 +111,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'class' => 'yii\grid\ActionColumn',
                                                 'header' => Yii::t('backend', 'Actions'),
                                                 'template' => DropdownWidget::widget([
-                                                        'title' => Yii::t('t', 'Hành động'),
-                                                        'dropdowns' => [
-                                                            '{send-sms-to-customer}',
-                                                            '{show-sms-coupon-content}',
-                                                            '{update}',
-                                                            '{delete}',
-                                                        ],
-                                                        'isCustomItem' => true,
-                                                        'options' => [
-                                                            'class' => 'btn-success btn-sm fs-12'
-                                                        ]
-                                                    ]),
+                                                    'title' => Yii::t('t', 'Hành động'),
+                                                    'dropdowns' => [
+                                                        '{send-sms-to-customer}',
+                                                        '{show-sms-coupon-content}',
+                                                        '{update}',
+                                                        '{delete}',
+                                                    ],
+                                                    'isCustomItem' => true,
+                                                    'options' => [
+                                                        'class' => 'btn-success btn-sm fs-12'
+                                                    ]
+                                                ]),
                                                 'headerOptions' => [
                                                     'class' => 'header-200',
                                                 ],
@@ -149,7 +149,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         ]);
                                                     },
                                                     'delete' => function ($url, $model) {
-                                                        if ($model->quantity_used > 0) return  Html::button('Coupon đã sử dụng không được xóa', ['class' => 'btn btn-danger btn-xs']);
+                                                        if ($model->quantity_used > 0) return Html::button('Coupon đã sử dụng không được xóa', ['class' => 'btn btn-danger btn-xs']);
 
                                                         return Html::a('<span class="glyphicon glyphicon-trash"></span> ' . Yii::t('backend', 'Delete'), 'javascript:;', [
                                                             'title' => Yii::t('backend', 'Delete'),
@@ -173,21 +173,34 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'attribute' => 'title',
                                                 'format' => 'raw',
                                                 'value' => function ($model) {
-                                                    return Html::a($model->title, ['view', 'id' => $model->id], [
-                                                        'title' => $model->title,
-                                                        'data-pjax' => 0,
-                                                    ]);
+                                                    $content = '<strong>Tiêu đề: </strong>' . Html::a($model->title, ['view', 'id' => $model->id], [
+                                                            'title' => $model->title,
+                                                            'data-pjax' => 0,
+                                                        ]) . '<br/>';
+                                                    $content .= '<strong>Mã Coupon: </strong>' . $model->coupon_code . '<br/>';
+                                                    $content .= '<strong>Số lần gửi SMS: </strong>' . $model->count_sms_sent . '<br/>';
+
+                                                    return $content;
+                                                },
+                                                'headerOptions' => [
+                                                    'class' => 'header-300',
+                                                ],
+                                            ],
+                                            [
+                                                'label' => Yii::t('backend', 'Thông tin Coupon'),
+                                                'format' => 'raw',
+                                                'value' => function ($model) {
+                                                    $content = '';
+
+                                                    $content .= '<strong>Số lượng: </strong>' . $model->quantity . '<br/>';
+                                                    $content .= '<strong>Đã sử dụng: </strong>' . $model->quantity_used . '<br/>';
+                                                    $content .= '<strong>Ngày hết hạn: </strong>' . ($model->expired_date ? Yii::$app->formatter->asDate($model->expired_date) : '') . '<br/>';
+
+                                                    return $content;
                                                 },
                                                 'headerOptions' => [
                                                     'class' => 'header-200',
                                                 ],
-                                            ],
-                                            'coupon_code',
-                                            [
-                                                'attribute' => 'count_sms_sent',
-                                                'contentOptions' => [
-                                                    'class' => 'text-right'
-                                                ]
                                             ],
                                             [
                                                 'attribute' => 'customer_id',
@@ -202,57 +215,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 ],
                                             ],
                                             [
-                                                'attribute' => 'quantity',
-                                                'contentOptions' => [
-                                                    'class' => 'text-right'
-                                                ]
-                                            ],
-                                            [
-                                                'attribute' => 'quantity_used',
-                                                'contentOptions' => [
-                                                    'class' => 'text-right'
-                                                ]
-                                            ],
-                                            [
-                                                'attribute' => 'expired_date',
+                                                'label' => Yii::t('backend', 'Thông tin Chiếu khấu'),
+                                                'format' => 'raw',
                                                 'value' => function ($model) {
-                                                    return $model->expired_date
-                                                        ? date('d-m-Y', strtotime($model->expired_date))
-                                                        : '';
-                                                }
-                                            ],
-                                            [
-                                                'attribute' => 'promotion_type',
-                                                'value' => function ($model) {
-                                                    return Yii::t('backend', Yii::$app->getModule('affiliate')->params["promotion_type"][$model->promotion_type]);
+                                                    $content = '';
+
+                                                    $content .= '<strong>Loại chiết khấu: </strong>' . Yii::t('backend', Yii::$app->getModule('affiliate')->params["promotion_type"][$model->promotion_type]) . '<br/>';
+                                                    $content .= '<strong>Giá trị chiết khấu: </strong>' . $model->promotion_value . '<br/>';
+                                                    $content .= '<strong>Cho chủ Coupon: </strong>' . $model->commission_for_owner . '<br/>';
+
+                                                    return $content;
                                                 },
                                                 'headerOptions' => [
-                                                    'class' => 'header-200',
+                                                    'class' => 'header-300',
                                                 ],
-                                            ],
-                                            [
-                                                'attribute' => 'min_discount',
-                                                'contentOptions' => [
-                                                    'class' => 'text-right'
-                                                ]
-                                            ],
-                                            [
-                                                'attribute' => 'max_discount',
-                                                'contentOptions' => [
-                                                    'class' => 'text-right'
-                                                ]
-                                            ],
-                                            [
-                                                'attribute' => 'promotion_value',
-                                                'contentOptions' => [
-                                                    'class' => 'text-right'
-                                                ]
-                                            ],
-                                            [
-                                                'attribute' => 'commission_for_owner',
-                                                'contentOptions' => [
-                                                    'class' => 'text-right'
-                                                ]
                                             ],
                                             [
                                                 'attribute' => 'created_by',
@@ -287,7 +263,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title"></h4>
+                    <h6 class="modal-title"></h6>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -295,19 +271,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="modal-body">
                     <?php $form = ActiveForm::begin(['method' => 'GET', 'id' => 'send-sms-to-fan-form', 'action' => Url::toRoute(['/affiliate/coupon/send-sms-coupon-to-fan'])]); ?>
 
-                        <div class="row">
-                            <div class="col-12">
-                                <?= $form->field($kolsFanForm, 'name')->label(Yii::t('backend', 'Tên'))->textInput() ?>
-                            </div>
-                            <div class="col-12">
-                                <?= $form->field($kolsFanForm, 'phone')->label(Yii::t('backend', 'Số điện thoại'))->textInput() ?>
-                                <?= $form->field($kolsFanForm, 'coupon_id')->label(false)->input('hidden') ?>
-                            </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <?= $form->field($kolsFanForm, 'name')->label(Yii::t('backend', 'Tên'))->textInput() ?>
                         </div>
+                        <div class="col-12">
+                            <?= $form->field($kolsFanForm, 'phone')->label(Yii::t('backend', 'Số điện thoại'))->textInput() ?>
+                            <?= $form->field($kolsFanForm, 'coupon_id')->label(false)->input('hidden') ?>
+                        </div>
+                    </div>
                     <strong>Nội dung:</strong>
-                        <div class="row">
-                            <div class="col-12 message-conatiner"></div>
-                        </div>
+                    <div class="row">
+                        <div class="col-12 message-conatiner"></div>
+                    </div>
                     <?php ActiveForm::end(); ?>
                 </div>
 

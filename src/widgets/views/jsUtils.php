@@ -122,10 +122,10 @@ $controllerURL = Url::toRoute(["/affiliate/handle-ajax"]);
     }
 
     window.onload = function () {
-        $('.copy').on('click', function () {
+        $('body').on('click', '.copy', function () {
             copyToClipboard($(this).data('copy'));
         });
-        $('.show-call-log').on('click', function () {
+        $('body').on('click', '.show-call-log', function () {
             getCallLog($(this));
         });
     }

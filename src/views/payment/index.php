@@ -1,9 +1,10 @@
 <?php
 
+use backend\widgets\ToastrWidget;
+use common\grid\MyGridView;
+use modava\affiliate\models\Payment;
 use modava\affiliate\widgets\NavbarWidgets;
 use yii\helpers\Html;
-use common\grid\MyGridView;
-use backend\widgets\ToastrWidget;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 
@@ -30,6 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <!-- Row -->
         <div class="row">
             <div class="col-xl-12">
+                <?= $this->render('_search', ['model' => $searchModel]); ?>
+
                 <section class="hk-sec-wrapper index">
 
                     <?php Pjax::begin(['id' => 'dt-pjax', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'GET']]); ?>
@@ -107,13 +110,23 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 ],
                                             ],
                                             [
-                                                'attribute' => 'title',
+                                                'label' => Yii::t('backend', 'Thông tin'),
                                                 'format' => 'raw',
                                                 'value' => function ($model) {
-                                                    return Html::a($model->title, ['view', 'id' => $model->id], [
-                                                        'title' => $model->title,
-                                                        'data-pjax' => 0,
-                                                    ]);
+                                                    $content = '<strong>Tiêu đề: </strong>' . Html::a($model->title, ['view', 'id' => $model->id], [
+                                                            'title' => $model->title,
+                                                            'data-pjax' => 0,
+                                                        ]) . '<br/>';
+
+                                                    $content .= '<strong>Số tiền: </strong>' . Yii::$app->formatter->asCurrency($model->amount) . '<br/>';
+
+                                                    if ($model->status === Payment::STATUS_DRAFT) $class = 'badge-light';
+                                                    else $class = 'badge-success';
+                                                    $tag = Html::tag('span', Yii::$app->getModule('affiliate')->params['payment_status'][$model->status], ['class' => "badge p-2 {$class}"]);
+
+                                                    $content .= '<strong>Tình trạng: </strong>' . $tag . '<br/>';
+
+                                                    return $content;
                                                 },
                                                 'headerOptions' => [
                                                     'class' => 'header-300'
@@ -123,28 +136,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'attribute' => 'customer_id',
                                                 'format' => 'raw',
                                                 'value' => function ($model) {
-                                                    return Html::a($model->customer->full_name, Url::toRoute(['/affiliate/customer/view', 'id' => $model->customer_id]));
+                                                    $content = '<strong>Tên: </strong>' . ($model->customer_id ? Html::a($model->customer->full_name, Url::toRoute(['/affiliate/customer/view', 'id' => $model->customer_id])) : '') . '<br/>';
+                                                    $content .= '<strong>Đối tác: </strong>' . Html::a($model->customer->partner->title, Url::toRoute(['/affiliate/partner/view', 'id' => $model->customer->partner_id]));
+                                                    return $content;
                                                 },
                                                 'headerOptions' => [
-                                                    'class' => 'header-300'
-                                                ]
-                                            ],
-                                            [
-                                                'attribute' => 'status',
-                                                'format' => 'raw',
-                                                'value' => function ($model) {
-                                                    if ($model->status === \modava\affiliate\models\Payment::STATUS_DRAFT) $class = 'badge-light';
-                                                    else $class = 'badge-success';
-                                                    $tag = Html::tag('span', Yii::$app->getModule('affiliate')->params['payment_status'][$model->status], ['class' => "badge p-2 {$class}"]);
-                                                    return Html::tag('h5', $tag);
-                                                }
-                                            ],
-                                            [
-                                                'attribute' => 'amount',
-                                                'format' => 'currency',
-                                                'contentOptions' => [
-                                                    'class' => 'text-right'
-                                                ]
+                                                    'class' => 'header-300',
+                                                ],
                                             ],
                                             'description:raw',
                                             [

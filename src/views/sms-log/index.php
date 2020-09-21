@@ -118,21 +118,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     'class' => 'header-300'
                                                 ],
                                             ],
-                                            'to_number',
                                             [
-                                                'attribute' => 'customer_id',
+                                                'label' => Yii::t('backend', 'Thông tin'),
                                                 'format' => 'raw',
                                                 'value' => function ($model) {
-                                                    if (!$model->customer_id) return '';
+                                                    $content = '<strong>Gửi đến: </strong>' . $model->to_number . '<br/>';
+                                                    $content .= '<strong>Khách hàng: </strong>' . ($model->customer_id ? Html::a($model->customer->full_name, Url::toRoute(['/affiliate/customer/view', 'id' => $model->customer_id])) : '') . '<br/>';
+                                                    $content .= '<strong>Tình trạng: </strong>' . Yii::$app->getModule('affiliate')->params['sms_log_status'][$model->status] . '<br/>';
 
-                                                    return Html::a($model->customer->full_name, Url::toRoute(['/affiliate/customer/view', 'id' => $model->customer_id]));
-                                                }
-                                            ],
-                                            [
-                                                'attribute' => 'status',
-                                                'value' => function ($model) {
-                                                    return Yii::$app->getModule('affiliate')->params['sms_log_status'][$model->status];
-                                                }
+                                                    return $content;
+                                                },
+                                                'headerOptions' => [
+                                                        'class' => 'header-300'
+                                                ]
                                             ],
                                             [
                                                 'attribute' => 'response_log',

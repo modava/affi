@@ -15,7 +15,7 @@ use yii\helpers\Url;
 <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="createCouponModalLabel"><?=Yii::t('backend', 'List'). ' ' . Yii::t('backend', $modelName)?></h5>
+            <h6 class="modal-title" id="createCouponModalLabel"><?=Yii::t('backend', 'List'). ' ' . Yii::t('backend', $modelName)?></h6>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -24,7 +24,7 @@ use yii\helpers\Url;
             <?=\Yii::$app->view->renderFile($filePath, ['searchModel' => $searchModel, 'dataProvider' => $dataProvider,]);?>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>

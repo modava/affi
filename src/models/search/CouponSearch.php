@@ -100,7 +100,6 @@ class CouponSearch extends Coupon
         }
 
         $query->andFilterWhere(['like', self::tableName() . '.title', $this->title])
-            ->andFilterWhere(['like', self::tableName() . '.slug', $this->slug])
             ->andFilterWhere(['like', self::tableName() . '.coupon_code', $this->coupon_code])
             ->andFilterWhere(['like', Customer::tableName() . '.partner_id', $this->partner_id])
             ->andFilterWhere(['like', self::tableName() . '.description', $this->description]);

@@ -2,6 +2,7 @@
 
 namespace modava\affiliate\models\search;
 
+use modava\affiliate\models\Customer;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -12,14 +13,16 @@ use modava\affiliate\models\Payment;
  */
 class PaymentSearch extends Payment
 {
+    public $partner_id;
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'customer_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['title', 'slug', 'description'], 'safe'],
+            [['id', 'customer_id', 'created_by', 'updated_at', 'updated_by', 'partner_id', 'status'], 'integer'],
+            [['title', 'slug', 'description', 'created_at'], 'safe'],
             [['amount'], 'number'],
         ];
     }
@@ -59,20 +62,28 @@ class PaymentSearch extends Payment
             return $dataProvider;
         }
 
+        $query->joinWith('customer');
+
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'customer_id' => $this->customer_id,
-            'amount' => $this->amount,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'created_by' => $this->created_by,
-            'updated_by' => $this->updated_by,
+            self::tableName() . '.id' => $this->id,
+            self::tableName() . '.customer_id' => $this->customer_id,
+            self::tableName() . '.amount' => $this->amount,
+            self::tableName() . '.status' => $this->status,
+            self::tableName() . '.updated_at' => $this->updated_at,
+            self::tableName() . '.created_by' => $this->created_by,
+            self::tableName() . '.updated_by' => $this->updated_by,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'slug', $this->slug])
-            ->andFilterWhere(['like', 'description', $this->description]);
+        if ($this->created_at) {
+            $query->andWhere('FROM_UNIXTIME(' . self::tableName() . '.created_at' . ', "%d-%m-%Y" ) = :created_at', [
+                ':created_at' => $this->created_at
+            ]);
+        }
+
+        $query->andFilterWhere(['like', self::tableName() . '.title', $this->title])
+            ->andFilterWhere(['like', Customer::tableName() . '.partner_id', $this->partner_id])
+            ->andFilterWhere(['like', self::tableName() . '.description', $this->description]);
 
         return $dataProvider;
     }
