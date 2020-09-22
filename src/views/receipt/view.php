@@ -11,7 +11,7 @@ use modava\affiliate\AffiliateModule;
 /* @var $model modava\affiliate\models\Receipt */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('receipt', 'Receipts'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Receipts'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -22,19 +22,19 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- Title -->
     <div class="hk-pg-header">
         <h4 class="hk-pg-title"><span class="pg-title-icon"><span
-                        class="ion ion-md-apps"></span></span><?=Yii::t('receipt', 'Chi tiết'); ?>: <?= Html::encode($this->title) ?>
+                        class="ion ion-md-apps"></span></span><?=Yii::t('backend', 'Chi tiết'); ?>: <?= Html::encode($this->title) ?>
         </h4>
         <p>
             <a class="btn btn-outline-light btn-sm" href="<?= Url::to(['create']); ?>"
-                title="<?= Yii::t('receipt', 'Create'); ?>">
-                <i class="fa fa-plus"></i> <?= Yii::t('receipt', 'Create'); ?></a>
+                title="<?= Yii::t('backend', 'Create'); ?>">
+                <i class="fa fa-plus"></i> <?= Yii::t('backend', 'Create'); ?></a>
 
             <?php if (!(Yii::$app->user->can('admin') || Yii::$app->user->can('develop'))):?>
-            <?= Html::a(Yii::t('receipt', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a(Yii::t('receipt', 'Delete'), ['delete', 'id' => $model->id], [
+            <?= Html::a(Yii::t('backend', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('backend', 'Delete'), ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
-                    'confirm' => Yii::t('receipt', 'Are you sure you want to delete this item?'),
+                    'confirm' => Yii::t('backend', 'Are you sure you want to delete this item?'),
                     'method' => 'post',
                 ],
             ]) ?>
@@ -73,11 +73,11 @@ $this->params['breadcrumbs'][] = $this->title;
 						'updated_at:datetime',
                         [
                             'attribute' => 'userCreated.userProfile.fullname',
-                            'label' => Yii::t('receipt', 'Created By')
+                            'label' => Yii::t('backend', 'Created By')
                         ],
                         [
                             'attribute' => 'userUpdated.userProfile.fullname',
-                            'label' => Yii::t('receipt', 'Updated By')
+                            'label' => Yii::t('backend', 'Updated By')
                         ],
                     ],
                 ]) ?>

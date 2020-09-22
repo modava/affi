@@ -2,8 +2,10 @@
 
 namespace modava\affiliate\controllers;
 
+use modava\affiliate\models\Order;
 use modava\affiliate\models\search\CustomerPartnerSearch;
 use modava\affiliate\models\table\CustomerTable;
+use yii\data\ActiveDataProvider;
 use yii\db\Exception;
 use Yii;
 use yii\helpers\Html;
@@ -64,6 +66,13 @@ class CustomerController extends MyController
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'orderDataProvider' => $dataProvider = new ActiveDataProvider([
+                'query' => Order::getListOrderUsedCoupon($id),
+                'pagination' => [
+                    'pageSize' => 50,
+                ],
+                'sort' => ['defaultOrder' => ['id' => SORT_DESC]]
+            ])
         ]);
     }
 
@@ -239,7 +248,7 @@ class CustomerController extends MyController
         return $out;
     }
 
-        public function actionImportKols()
+    public function actionImportKols()
     {
         $path = Yii::getAlias('@modava/affiliate/templates/kols-export.xlsx');
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($path);
@@ -257,6 +266,15 @@ class CustomerController extends MyController
 
         Yii::$app->response->format = Response::FORMAT_JSON;
         return 'Done';
+    }
+
+    public function actionGetListOrder() {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $customerId = Yii::$app->request->get('customer_id');
+        $listOrder = Order::getListOrderUsedCoupon($customerId);
+
+        return $listOrder;
     }
 
     public function actionTotalCommission($id)

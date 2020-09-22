@@ -101,6 +101,8 @@ class AffiliateDisplayHelper
         foreach ($model['don_hang'] as $donhang) {
             if (array_key_exists('lich_dieu_tri', $donhang)) {
                 foreach ($donhang['lich_dieu_tri'] as $lichDieuTriInfo) {
+                    $popoverTitle = '';
+                    $popoverContent = '';
                     $content1 = '';
                     $arrThaoTac = [];
 
@@ -110,14 +112,22 @@ class AffiliateDisplayHelper
                         }
                     }
 
-                    $content1 = "<strong>Mã HĐ: {$donhang['order_code']}</strong> <i>(" . date('d-m-Y', $donhang['ngay_tao']) . ")</i><br/>";
-                    $content1 .= '<strong>Phòng:</strong> ' . $lichDieuTriInfo['room_id'] . '<br>';
-                    $content1 .= '<strong>Thac tác: </strong>' . implode(', ', $arrThaoTac) . '<br>';
-                    $content1 .= '<strong>Ekip:</strong> ' . $lichDieuTriInfo['ekip'] . '<br>';
-                    $content1 .= '<strong>Trợ thủ:</strong> ' . implode(', ', $lichDieuTriInfo['tro_thu']) . '<br>';
-                    $content1 .= '<strong>Ngày điều trị: </strong>' . date('d-m-Y H:i', $lichDieuTriInfo['time_dieu_tri']) . '<br>';
+                    $popoverTitle = '<strong>Ngày điều trị:</strong> ' . date('d-m-Y H:i', $lichDieuTriInfo['time_dieu_tri']);
 
-                    $content .= "<div class='hk-sec-wrapper mb-2 px-3 py-2 w-350p text-left'>{$content1}</div>";
+                    $popoverContent = "<strong>Mã HĐ: {$donhang['order_code']}</strong> <i>(" . date('d-m-Y', $donhang['ngay_tao']) . ")</i><br/>";
+                    $popoverContent .= '<strong>Phòng:</strong> ' . $lichDieuTriInfo['room_id'] . '<br>';
+                    $popoverContent .= '<strong>Thao tác: </strong>' . implode(', ', $arrThaoTac) . '<br>';
+                    $popoverContent .= '<strong>Ekip:</strong> ' . $lichDieuTriInfo['ekip'] . '<br>';
+                    $popoverContent .= '<strong>Trợ thủ:</strong> ' . implode(', ', $lichDieuTriInfo['tro_thu']) . '<br>';
+//                    $content1 .= '<strong>Ngày điều trị: </strong>' . date('d-m-Y H:i', $lichDieuTriInfo['time_dieu_tri']) . '<br>';
+
+
+//                    $content .= "<div class='hk-sec-wrapper mb-2 px-3 py-2 w-350p text-left'>{$content1}</div>";
+//                    $content .= '<button type="button" class="btn btn-sm" data-toggle="popover" title="' . $popoverTitle . '" data-content="' . $popoverContent . '" data-html="true" data-placement="bottom">' . $popoverTitle . '</button>';
+                    $content .= '<div class="hk-sec-wrapper mb-2 px-3 py-2 w-300p text-left" type="button"
+                                      data-toggle="popover"
+                                      data-content="' . $popoverContent . '"
+                                      data-html="true" data-placement="bottom">' . $popoverTitle . '</div>';
                 }
             }
         }

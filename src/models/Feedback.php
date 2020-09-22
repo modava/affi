@@ -38,6 +38,10 @@ use yii\helpers\ArrayHelper;
     */
 class Feedback extends FeedbackTable
 {
+    const UNSATISFIED_TYPE = 0;
+    const SATISFIED_TYPE = 1;
+    const NORMAL_TYPE = 2;
+
     public $toastr_key = 'feedback';
     public function behaviors()
     {

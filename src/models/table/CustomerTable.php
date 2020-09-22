@@ -7,6 +7,7 @@ use modava\affiliate\models\Coupon;
 use modava\affiliate\models\Feedback;
 use modava\affiliate\models\Note;
 use modava\affiliate\models\Partner;
+use modava\affiliate\models\UnsatisfiedReason;
 use modava\location\models\LocationCountry;
 use modava\location\models\LocationDistrict;
 use modava\location\models\LocationProvince;

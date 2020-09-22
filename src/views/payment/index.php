@@ -68,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ],
                                         'myOptions' => [
                                             'class' => 'dt-grid-content my-content pane-vScroll',
-                                            'data-minus' => '{"0":95,"1":".hk-navbar","2":".nav-tabs","3":".hk-pg-header","4":".hk-footer-wrap"}'
+                                            'data-minus' => '{"0":95,"1":".hk-navbar","2":".nav-tabs","3":".hk-pg-header","4":".hk-footer-wrap","5":".coupon-search"}'
                                         ],
                                         'summaryOptions' => [
                                             'class' => 'summary pull-right',

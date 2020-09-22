@@ -84,8 +84,8 @@ textarea[readonly] {
     display: none;
 }
 
-#affiliate-search label,
-#affiliate-search .form-group {
+form label,
+form .form-group {
     margin-bottom: .3rem;
 }
 

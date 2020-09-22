@@ -11,7 +11,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel modava\affiliate\models\search\ReceiptSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('receipt', 'Receipts');
+$this->title = Yii::t('backend', 'Receipts');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
     <div class="container-fluid px-xxl-15 px-xl-10">
@@ -23,8 +23,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             class="ion ion-md-apps"></span></span><?= Html::encode($this->title) ?>
             </h4>
             <a class="btn btn-outline-light btn-sm" href="<?= \yii\helpers\Url::to(['create']); ?>"
-               title="<?= Yii::t('receipt', 'Create'); ?>">
-                <i class="fa fa-plus"></i> <?= Yii::t('receipt', 'Create'); ?></a>
+               title="<?= Yii::t('backend', 'Create'); ?>">
+                <i class="fa fa-plus"></i> <?= Yii::t('backend', 'Create'); ?></a>
         </div>
 
         <!-- Row -->
@@ -67,10 +67,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'class' => 'summary pull-right',
                                         ],
                                         'pager' => [
-                                            'firstPageLabel' => Yii::t('receipt', 'First'),
-                                            'lastPageLabel' => Yii::t('receipt', 'Last'),
-                                            'prevPageLabel' => Yii::t('receipt', 'Previous'),
-                                            'nextPageLabel' => Yii::t('receipt', 'Next'),
+                                            'firstPageLabel' => Yii::t('backend', 'First'),
+                                            'lastPageLabel' => Yii::t('backend', 'Last'),
+                                            'prevPageLabel' => Yii::t('backend', 'Previous'),
+                                            'nextPageLabel' => Yii::t('backend', 'Next'),
                                             'maxButtonCount' => 5,
 
                                             'options' => [
@@ -146,7 +146,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             ],
                                             [
                                                 'class' => 'yii\grid\ActionColumn',
-                                                'header' => Yii::t('receipt', 'Actions'),
+                                                'header' => Yii::t('backend', 'Actions'),
                                                 'template' => '{update} {delete}',
                                                 'buttons' => [
                                                     'update' => function ($url, $model) {
@@ -154,8 +154,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                                             return '';
                                                         }
                                                         return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                                                            'title' => Yii::t('receipt', 'Update'),
-                                                            'alia-label' => Yii::t('receipt', 'Update'),
+                                                            'title' => Yii::t('backend', 'Update'),
+                                                            'alia-label' => Yii::t('backend', 'Update'),
                                                             'data-pjax' => 0,
                                                             'class' => 'btn btn-info btn-xs'
                                                         ]);
@@ -165,9 +165,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                                             return '';
                                                         }
                                                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', 'javascript:;', [
-                                                            'title' => Yii::t('receipt', 'Delete'),
+                                                            'title' => Yii::t('backend', 'Delete'),
                                                             'class' => 'btn btn-danger btn-xs btn-del',
-                                                            'data-title' => Yii::t('receipt', 'Delete?'),
+                                                            'data-title' => Yii::t('backend', 'Delete?'),
                                                             'data-pjax' => 0,
                                                             'data-url' => $url,
                                                             'btn-success-class' => 'success-delete',

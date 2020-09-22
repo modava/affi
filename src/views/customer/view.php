@@ -5,18 +5,18 @@ use modava\affiliate\models\Coupon;
 use modava\affiliate\models\search\PartnerSearch;
 use modava\chart\MiniList;
 use yii\data\ActiveDataProvider;
-use yii\grid\GridView;
 use modava\charts\BarChart;
+use yii\grid\GridView;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use backend\widgets\ToastrWidget;
 use modava\affiliate\widgets\NavbarWidgets;
-use modava\affiliate\AffiliateModule;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model modava\affiliate\models\Customer */
+/* @var $orderDataProvider */
 
 $this->title = $model->full_name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('backend', 'Customers'), 'url' => ['index']];
@@ -66,6 +66,9 @@ $dataProvider = new ActiveDataProvider([
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#detail"><?= Yii::t('backend', 'Chi tiết') ?></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#list-order"><?= Yii::t('backend', 'DS Đơn sử dụng Coupon') ?></a>
                     </li>
                 </ul>
 
@@ -229,6 +232,132 @@ $dataProvider = new ActiveDataProvider([
                                     ],
                                 ],
                             ]) ?>
+                        </section>
+                    </div>
+                    <div class="tab-pane fade" id="list-order">
+                        <section class="hk-sec-wrapper table-responsive">
+                            <?php Pjax::begin(['id' => 'list-order-use-coupon', 'timeout' => false, 'enablePushState' => false, 'clientOptions' => ['method' => 'GET']]); ?>
+                            <?= GridView::widget([
+                                'pager' => [
+                                    'firstPageLabel' => Yii::t('backend', 'First'),
+                                    'lastPageLabel' => Yii::t('backend', 'Last'),
+                                    'prevPageLabel' => Yii::t('backend', 'Previous'),
+                                    'nextPageLabel' => Yii::t('backend', 'Next'),
+                                    'maxButtonCount' => 5,
+
+                                    'options' => [
+                                        'tag' => 'ul',
+                                        'class' => 'pagination pull-left',
+                                    ],
+
+                                    // Customzing CSS class for pager link
+                                    'linkOptions' => ['class' => 'page-link'],
+                                    'activePageCssClass' => 'active',
+                                    'disabledPageCssClass' => 'disabled page-disabled',
+                                    'pageCssClass' => 'page-item',
+
+                                    // Customzing CSS class for navigating link
+                                    'prevPageCssClass' => 'paginate_button page-item prev',
+                                    'nextPageCssClass' => 'paginate_button page-item next',
+                                    'firstPageCssClass' => 'paginate_button page-item first',
+                                    'lastPageCssClass' => 'paginate_button page-item last',
+                                ],
+                                'dataProvider' => $orderDataProvider,
+                                'columns' => [
+                                    [
+                                        'attribute' => 'title',
+                                        'format' => 'raw',
+                                        'value' => function ($model) {
+                                            return Html::a($model->title, ['order/view', 'id' => $model->id], [
+                                                'title' => $model->title,
+                                                'data-pjax' => 0,
+                                            ]);
+                                        },
+                                        'headerOptions' => [
+                                            'class' => 'header-200',
+                                        ]
+                                    ],
+                                    [
+                                        'attribute' => 'coupon_id',
+                                        'format' => 'raw',
+                                        'value' => function ($model) {
+                                            return Html::a($model->coupon->coupon_code, Url::toRoute(['coupon/view', 'id' => $model->coupon_id]), [
+                                                'data-pjax' => 0
+                                            ]);
+                                        },
+                                        'headerOptions' => [
+                                            'class' => 'header-200',
+                                        ]
+                                    ],
+                                    [
+                                        'attribute' => 'status',
+                                        'value' => function ($model) {
+                                            if ($model->status === null) return null;
+
+                                            return Yii::$app->getModule('affiliate')->params['order_status'][$model->status];
+                                        },
+                                        'contentOptions' => [
+                                            'class' => 'header-200'
+                                        ]
+                                    ],
+                                    'partner_order_code',
+                                    'partner_customer_id',
+                                    [
+                                        'attribute' => 'date_create',
+                                        'format' => 'datetime'
+                                    ],
+                                    [
+                                        'attribute' => 'pre_total',
+                                        'format' => 'currency',
+                                        'contentOptions' => [
+                                            'class' => 'text-right',
+                                        ]
+                                    ],
+                                    [
+                                        'attribute' => 'discount',
+                                        'format' => 'currency',
+                                        'contentOptions' => [
+                                            'class' => 'text-right',
+                                        ],
+                                    ],
+                                    [
+                                        'attribute' => 'commision_for_coupon_owner',
+                                        'format' => 'currency',
+                                        'contentOptions' => [
+                                            'class' => 'text-right',
+                                        ],
+                                    ],
+                                    [
+                                        'attribute' => 'other_discount',
+                                        'format' => 'currency',
+                                        'contentOptions' => [
+                                            'class' => 'text-right',
+                                        ],
+                                    ],
+                                    [
+                                        'attribute' => 'final_total',
+                                        'format' => 'currency',
+                                        'contentOptions' => [
+                                            'class' => 'text-right',
+                                        ]
+                                    ],
+                                    [
+                                        'attribute' => 'created_by',
+                                        'value' => 'userCreated.userProfile.fullname',
+                                        'headerOptions' => [
+                                            'width' => 150,
+                                        ],
+                                    ],
+                                    [
+                                        'attribute' => 'created_at',
+                                        'format' => 'datetime',
+                                        'headerOptions' => [
+                                            'width' => 150,
+                                        ],
+                                    ],
+                                ],
+                            ]) ?>
+                            <?php Pjax::end(); ?>
                         </section>
                     </div>
                 </div>

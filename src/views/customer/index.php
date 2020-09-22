@@ -298,6 +298,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 ],
                                             ],
                                         ],
+                                        'rowOptions'=>function($model){
+                                            if($model->isUnsatisfied()){
+                                                return ['class' => 'bg-danger'];
+                                            }
+                                        },
                                     ]); ?>
                                 </div>
                             </div>

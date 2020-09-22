@@ -37,7 +37,7 @@ $datapickerAddon = '<button type="button" class="btn btn-light clear-value"><spa
 ?>
 <?php $form = ActiveForm::begin(['method' => 'GET', 'id' => 'affiliate-search', 'action' => Url::toRoute(['/affiliate'])]); ?>
 <div class="hk-sec-wrapper p-1">
-    <div class="row collapse show" id="search-panel">
+    <div class="row collapse show save-state-search" data-search-panel="affiliate-index-search-panel" id="search-panel">
         <div class="col-md-5 col-sm-4 col-lg-5">
             <div class="row">
                 <div class="col-6">
@@ -257,8 +257,6 @@ $datapickerAddon = '<button type="button" class="btn btn-light clear-value"><spa
 
 <?php
 $script = <<< JS
-saveStateSearchPanel('#search-panel', '.btn-hide-search', 'show-affiliate-search-panel');
-
 $('#affiliate-search').on('submit', function () {
     $(this).find('[name="page"]').val(1); // Reset page to 1 before search anything
 });

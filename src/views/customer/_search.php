@@ -25,7 +25,7 @@ $templateInput = [
     ]); ?>
 
     <section class="hk-sec-wrapper mb-2">
-        <div class="row collapse show" id="search-panel">
+        <div class="row collapse show save-state-search" data-search-panel="affiliate-customer-search-panel" id="search-panel">
             <div class="col-md-3 col-sm-4 col-lg-3">
                 <div class="form-group row">
                     <div class="col-12">
@@ -60,10 +60,3 @@ $templateInput = [
     <?php ActiveForm::end(); ?>
 
 </div>
-<?php
-
-$script = <<<JS
-saveStateSearchPanel('#search-panel', '.btn-hide-search', 'affiliate-customer-search-panel');
-JS;
-
-$this->registerJs($script, yii\web\View::POS_END);

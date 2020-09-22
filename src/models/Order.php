@@ -271,4 +271,12 @@ class Order extends OrderTable
     {
         CustomerPartnerSearch::getCustomerById($this->partner_customer_id);
     }
+
+    public static function getListOrderUsedCoupon($customerId) {
+        $list = self::find()
+            ->joinWith('coupon')
+            ->where([Coupon::tableName().'.customer_id' => $customerId]);
+
+        return $list;
+    }
 }

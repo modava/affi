@@ -1,6 +1,7 @@
 <?php
 use modava\affiliate\models\Coupon;
 use modava\affiliate\models\Customer;
+use modava\affiliate\models\Feedback;
 use modava\affiliate\models\Order;
 use modava\affiliate\models\Payment;
 use modava\affiliate\models\SmsLog;
@@ -64,9 +65,9 @@ return [
         '1' => Yii::t('backend', 'For Partner System'),
     ],
     'feedback_type' => [
-        '0' => Yii::t('backend', 'Unsatisfied'),
-        '1' => Yii::t('backend', 'Satisfied'),
-        '2' => Yii::t('backend', 'Bình thường'),
+        Feedback::UNSATISFIED_TYPE => Yii::t('backend', 'Unsatisfied'),
+        Feedback::SATISFIED_TYPE => Yii::t('backend', 'Satisfied'),
+        Feedback::NORMAL_TYPE => Yii::t('backend', 'Bình thường'),
     ],
     'feedback_type_color' => [
         '0' => '#ab26aa',

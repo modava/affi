@@ -284,4 +284,20 @@ class Customer extends CustomerTable
 
         return $data;
     }
+
+    public function isUnsatisfied () {
+        $listFeedback = $this->feedbacks;
+
+        if (!$listFeedback) {
+            return false;
+        }
+
+        $lastFeedback = array_pop($listFeedback);
+
+        if ($lastFeedback->feedback_type === Feedback::UNSATISFIED_TYPE) {
+            return true;
+        }
+
+        return false;
+    }
 }

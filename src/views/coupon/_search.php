@@ -29,9 +29,8 @@ $datapickerAddon = '<button type="button" class="btn btn-light clear-value"><spa
             ],
         ]); ?>
 
-
-        <section class="hk-sec-wrapper mb-2">
-            <div class="row collapse show" id="search-panel">
+        <section class="hk-sec-wrapper p-1 mb-2">
+            <div class="row collapse show save-state-search" data-search-panel="affiliate-coupon-search-panel" id="search-panel">
                 <div class="col-md-3 col-sm-4 col-lg-3">
                     <div class="form-group row">
                         <div class="col-12">

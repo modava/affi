@@ -56,24 +56,6 @@ $controllerURL = Url::toRoute(["/affiliate/handle-ajax"]);
         });
     }
 
-    function saveStateSearchPanel(searchPanel, button, key) {
-        if (!window.localStorage.getItem(key)) {
-            window.localStorage.setItem(key, 'show');
-        }
-
-        if (window.localStorage.getItem(key) === 'show') $(searchPanel).addClass('show');
-        else $(searchPanel).removeClass('show');
-
-        $(button).on('click', function() {
-            if (window.localStorage.getItem(key) === 'show') {
-                window.localStorage.setItem(key, 'hide');
-            }
-            else {
-                window.localStorage.setItem(key, 'show');
-            }
-        });
-    }
-
     function copyToClipboard(text) {
         let dummy = document.createElement("input");
         document.body.appendChild(dummy);

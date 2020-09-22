@@ -1,3 +1,21 @@
+function saveStateSearchPanel(searchPanel, button, key) {
+    if (!window.localStorage.getItem(key)) {
+        window.localStorage.setItem(key, 'show');
+    }
+
+    if (window.localStorage.getItem(key) === 'show') $(searchPanel).addClass('show');
+    else $(searchPanel).removeClass('show');
+
+    $(button).on('click', function() {
+        if (window.localStorage.getItem(key) === 'show') {
+            window.localStorage.setItem(key, 'hide');
+        }
+        else {
+            window.localStorage.setItem(key, 'show');
+        }
+    });
+}
+
 $(function () {
     "use strict";
 
@@ -119,4 +137,7 @@ $(function () {
         $(this).closest('.input-group').find('input, select').val('').trigger('change');
     });
 
+    $('.save-state-search').each(function () {
+        saveStateSearchPanel($(this), $(this).closest('.hk-sec-wrapper').find('.btn-hide-search'), $(this).data('search-panel'));
+    });
 });

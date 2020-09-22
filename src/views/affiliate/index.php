@@ -60,16 +60,16 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
                                         ],
                                         'myOptions' => [
                                             'class' => 'dt-grid-content my-content pane-vScroll',
-                                            'data-minus' => '{"0":115,"1":".hk-navbar","2":".nav-tabs","3":".hk-pg-header","4":".hk-footer-wrap","5":"#affiliate-search"}'
+                                            'data-minus' => '{"0":95,"1":".hk-navbar","2":".nav-tabs","3":".hk-pg-header","4":".hk-footer-wrap","5":"#affiliate-search"}'
                                         ],
                                         'summaryOptions' => [
                                             'class' => 'summary pull-right',
                                         ],
                                         'pager' => [
-                                            'firstPageLabel' => Yii::t('receipt', 'First'),
-                                            'lastPageLabel' => Yii::t('receipt', 'Last'),
-                                            'prevPageLabel' => Yii::t('receipt', 'Previous'),
-                                            'nextPageLabel' => Yii::t('receipt', 'Next'),
+                                            'firstPageLabel' => Yii::t('backend', 'First'),
+                                            'lastPageLabel' => Yii::t('backend', 'Last'),
+                                            'prevPageLabel' => Yii::t('backend', 'Previous'),
+                                            'nextPageLabel' => Yii::t('backend', 'Next'),
                                             'maxButtonCount' => 5,
 
                                             'options' => [
@@ -276,7 +276,7 @@ Yii::$app->getModule('affiliate')->params['partner_id']['dashboard-myauris'] = $
                                                     },
                                                 ],
                                                 'headerOptions' => [
-                                                    'width' => 150,
+                                                    'width' => 200,
                                                 ],
                                             ],
                                             [
@@ -337,44 +337,45 @@ var customPjax = new myGridView();
     customPjax.init({
     pjaxId: '#dt-pjax',
 });
-
-$('body').on('click', '.create-coupon', function() {
-    let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_info[]"]').val());
-    openCreateModal({model: 'Coupon', 
-        'Coupon[customer_id]' : customerInfo.id,
+$(function () {
+    $('body').on('click', '.create-coupon', function() {
+        let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_info[]"]').val());
+        openCreateModal({model: 'Coupon', 
+            'Coupon[customer_id]' : customerInfo.id,
+        });
+    }).on('click', '.create-call-note', function() {
+        let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_info[]"]').val());
+        openCreateModal({model: 'Note', 
+            'Note[customer_id]' : customerInfo.id,
+        });
+    }).on('click', '.create-feedback', function() {
+        let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_info[]"]').val());
+        openCreateModal({model: 'Feedback', 
+            'Feedback[customer_id]' : customerInfo.id
+        });
+    }).on('click', '.create-customer', function() {
+        let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_partner_info[]"]').val());    
+        openCreateModal({
+            model: 'Customer',
+            'Customer[full_name]' : customerInfo.full_name,
+            'Customer[phone]' : customerInfo.phone,
+            'Customer[face_customer]' : customerInfo.face_customer,
+            'Customer[partner_id]' : $myAuris->primaryKey,
+            'Customer[partner_customer_id]' : customerInfo.id,
+            'Customer[birthday]' : customerInfo.birthday ? moment(customerInfo.birthday, 'DD-MM-YYYY').format('YYYY-MM-DD') : '',
+            'Customer[sex]' : customerInfo.sex,
+            'Customer[province_id]' : customerInfo.province,
+            'Customer[district_id]' : customerInfo.district,
+            'Customer[address]' : customerInfo.address,
+            'Customer[date_accept_do_service]' : customerInfo.customer_come_date ? moment.unix(customerInfo.customer_come_date).format("YYYY-MM-DD") : '', 
+            'Customer[date_checkin]' : customerInfo.time_lichhen ? moment.unix(customerInfo.time_lichhen).format("YYYY-MM-DD") : ''
+        });
+    }).on('post-object-created', function() {
+        window.location.reload();
+    }).on('click', '.btn-hide-search', function () {
+        customPjax.setHeightContent();
     });
-}).on('click', '.create-call-note', function() {
-    let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_info[]"]').val());
-    openCreateModal({model: 'Note', 
-        'Note[customer_id]' : customerInfo.id,
-    });
-}).on('click', '.create-feedback', function() {
-    let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_info[]"]').val());
-    openCreateModal({model: 'Feedback', 
-        'Feedback[customer_id]' : customerInfo.id
-    });
-}).on('click', '.create-customer', function() {
-    let customerInfo = JSON.parse($(this).closest('td').find('[name="customer_partner_info[]"]').val());    
-    openCreateModal({
-        model: 'Customer',
-        'Customer[full_name]' : customerInfo.full_name,
-        'Customer[phone]' : customerInfo.phone,
-        'Customer[face_customer]' : customerInfo.face_customer,
-        'Customer[partner_id]' : $myAuris->primaryKey,
-        'Customer[partner_customer_id]' : customerInfo.id,
-        'Customer[birthday]' : customerInfo.birthday ? moment(customerInfo.birthday, 'DD-MM-YYYY').format('YYYY-MM-DD') : '',
-        'Customer[sex]' : customerInfo.sex,
-        'Customer[province_id]' : customerInfo.province,
-        'Customer[district_id]' : customerInfo.district,
-        'Customer[address]' : customerInfo.address,
-        'Customer[date_accept_do_service]' : customerInfo.customer_come_date ? moment.unix(customerInfo.customer_come_date).format("YYYY-MM-DD") : '', 
-        'Customer[date_checkin]' : customerInfo.time_lichhen ? moment.unix(customerInfo.time_lichhen).format("YYYY-MM-DD") : ''
-    });
-}).on('post-object-created', function() {
-    window.location.reload();
-}).on('click', '.btn-hide-search', function () {
-    customPjax.setHeightContent();
-});
+})
 
 $('.customer-img-container').lightGallery();
 JS;

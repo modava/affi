@@ -66,16 +66,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ],
                                         'myOptions' => [
                                             'class' => 'dt-grid-content my-content pane-vScroll',
-                                            'data-minus' => '{"0":95,"1":".hk-navbar","2":".nav-tabs","3":".hk-pg-header","4":".hk-footer-wrap"}'
+                                            'data-minus' => '{"0":95,"1":".hk-navbar","2":".nav-tabs","3":".hk-pg-header","4":".hk-footer-wrap","5":".coupon-search}'
                                         ],
                                         'summaryOptions' => [
                                             'class' => 'summary pull-right',
                                         ],
                                         'pager' => [
-                                            'firstPageLabel' => Yii::t('receipt', 'First'),
-                                            'lastPageLabel' => Yii::t('receipt', 'Last'),
-                                            'prevPageLabel' => Yii::t('receipt', 'Previous'),
-                                            'nextPageLabel' => Yii::t('receipt', 'Next'),
+                                            'firstPageLabel' => Yii::t('backend', 'First'),
+                                            'lastPageLabel' => Yii::t('backend', 'Last'),
+                                            'prevPageLabel' => Yii::t('backend', 'Previous'),
+                                            'nextPageLabel' => Yii::t('backend', 'Next'),
                                             'maxButtonCount' => 5,
 
                                             'options' => [
