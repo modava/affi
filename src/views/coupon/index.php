@@ -111,7 +111,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'class' => 'yii\grid\ActionColumn',
                                                 'header' => Yii::t('backend', 'Actions'),
                                                 'template' => DropdownWidget::widget([
-                                                    'title' => Yii::t('t', 'Hành động'),
+                                                    'title' => Yii::t('backend', 'Hành động'),
                                                     'dropdowns' => [
                                                         '{send-sms-to-customer}',
                                                         '{show-sms-coupon-content}',

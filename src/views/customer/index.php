@@ -105,7 +105,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'class' => 'yii\grid\ActionColumn',
                                                 'header' => Yii::t('backend', 'Actions'),
                                                 'template' => DropdownWidget::widget([
-                                                        'title' => Yii::t('t', 'Hành động'),
+                                                        'title' => Yii::t('backend', 'Hành động'),
                                                         'dropdowns' => [
                                                             '{create-coupon}',
                                                             '{create-call-note}',
@@ -119,7 +119,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                             'class' => 'btn-success btn-sm fs-12'
                                                         ]
                                                     ]) . DropdownWidget::widget([
-                                                        'title' => Yii::t('t', 'DS liên quan'),
+                                                        'title' => Yii::t('backend', 'DS liên quan'),
                                                         'dropdowns' => [
                                                             '{list-coupon}',
                                                             '{list-note}',
@@ -132,7 +132,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     ]),
                                                 'buttons' => [
                                                     'update' => function ($url, $model) {
-                                                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>' . ' ' . Yii::t('affiliate', 'Cập nhật'), $url, [
+                                                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>' . ' ' . Yii::t('backend', 'Cập nhật'), $url, [
                                                             'title' => Yii::t('backend', 'Update'),
                                                             'alia-label' => Yii::t('backend', 'Update'),
                                                             'data-pjax' => 0,
@@ -140,7 +140,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         ]);
                                                     },
                                                     'delete' => function ($url, $model) {
-                                                        return Html::a('<span class="glyphicon glyphicon-trash"></span>' . ' ' . Yii::t('affiliate', 'Xóa'), 'javascript:;', [
+                                                        return Html::a('<span class="glyphicon glyphicon-trash"></span>' . ' ' . Yii::t('backend', 'Xóa'), 'javascript:;', [
                                                             'title' => Yii::t('backend', 'Delete'),
                                                             'class' => 'btn btn-danger btn-xs btn-del m-1',
                                                             'data-title' => Yii::t('backend', 'Delete?'),
@@ -154,7 +154,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     'create-coupon' => function ($url, $model) {
                                                         if (!Utils::isReleaseObject('Coupon')) return '';
 
-                                                        return Html::a('<i class="icon dripicons-ticket"></i>' . ' ' . Yii::t('affiliate', 'Tạo Coupon'), 'javascript:;', [
+                                                        return Html::a('<i class="icon dripicons-ticket"></i>' . ' ' . Yii::t('backend', 'Tạo Coupon'), 'javascript:;', [
                                                             'title' => Yii::t('backend', 'Create Coupon'),
                                                             'alia-label' => Yii::t('backend', 'Create Coupon'),
                                                             'data-pjax' => 0,
@@ -163,7 +163,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         ]);
                                                     },
                                                     'create-call-note' => function ($url, $model) {
-                                                        return Html::a('<i class="icon dripicons-to-do"></i>' . ' ' . Yii::t('affiliate', 'Tạo Note cuộc gọi'), 'javascript:;', [
+                                                        return Html::a('<i class="icon dripicons-to-do"></i>' . ' ' . Yii::t('backend', 'Tạo Note cuộc gọi'), 'javascript:;', [
                                                             'title' => Yii::t('backend', 'Create Call Note'),
                                                             'alia-label' => Yii::t('backend', 'Create Call Note'),
                                                             'data-pjax' => 0,
@@ -172,7 +172,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         ]);
                                                     },
                                                     'create-feedback' => function ($url, $model) {
-                                                        return Html::a('<span class="material-icons" style="font-size: 12px">feedback</span>' . ' ' . Yii::t('affiliate', 'Tạo FeedBack'), 'javascript:;', [
+                                                        return Html::a('<span class="material-icons" style="font-size: 12px">feedback</span>' . ' ' . Yii::t('backend', 'Tạo FeedBack'), 'javascript:;', [
                                                             'title' => Yii::t('backend', 'Create Feedback'),
                                                             'alia-label' => Yii::t('backend', 'Create Feedback'),
                                                             'data-pjax' => 0,
