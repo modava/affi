@@ -3,8 +3,8 @@ function saveStateSearchPanel(searchPanel, button, key) {
         window.localStorage.setItem(key, 'show');
     }
 
-    if (window.localStorage.getItem(key) === 'show') $(searchPanel).addClass('show');
-    else $(searchPanel).removeClass('show');
+    if (window.localStorage.getItem(key) === 'show') $(searchPanel).collapse('show');
+    else $(searchPanel).collapse('hide');
 
     $(button).on('click', function() {
         if (window.localStorage.getItem(key) === 'show') {
@@ -135,6 +135,10 @@ $(function () {
     $('body').on('click', '.clear-value', function (e) {
         e.stopImmediatePropagation();
         $(this).closest('.input-group').find('input, select').val('').trigger('change');
+    }).on('post-object-created', function() {
+        window.location.reload();
+    }).on('shown.bs.collapse hidden.bs.collapse', '.save-state-search', function () {
+        customPjax.setHeightContent();
     });
 
     $('.save-state-search').each(function () {

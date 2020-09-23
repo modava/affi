@@ -2,7 +2,7 @@
 
 use dosamigos\datepicker\DatePicker;
 use kartik\select2\Select2;
-use modava\affiliate\models\Partner;
+use modava\affiliate\models\table\PartnerTable;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -71,7 +71,7 @@ $datapickerAddon = '<button type="button" class="btn btn-light clear-value"><spa
                 <div class="col-md-3 col-sm-4 col-lg-3">
                     <div class="form-group row">
                         <div class="col-12">
-                            <?= $form->field($model, 'partner_id', $templateInput)->label('KH: Đối tác')->dropDownList(ArrayHelper::map(Partner::getAllRecords(), 'id', 'title'), [
+                            <?= $form->field($model, 'partner_id', $templateInput)->label('KH: Đối tác')->dropDownList(ArrayHelper::map(PartnerTable::getAllRecords(), 'id', 'title'), [
                                 'prompt' => Yii::t('backend', 'Chọn một giá trị ...')
                             ]) ?>
                         </div>

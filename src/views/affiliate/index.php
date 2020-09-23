@@ -370,13 +370,14 @@ $(function () {
             'Customer[date_accept_do_service]' : customerInfo.customer_come_date ? moment.unix(customerInfo.customer_come_date).format("YYYY-MM-DD") : '', 
             'Customer[date_checkin]' : customerInfo.time_lichhen ? moment.unix(customerInfo.time_lichhen).format("YYYY-MM-DD") : ''
         });
-    }).on('post-object-created', function() {
-        window.location.reload();
-    }).on('click', '.btn-hide-search', function () {
-        customPjax.setHeightContent();
     });
 })
 
 $('.customer-img-container').lightGallery();
+$(document).on('pjax:complete', function() {
+    $('.customer-img-container').lightGallery();
+    $('[data-toggle="popover"]').popover();
+})
+
 JS;
 $this->registerJs($script, \yii\web\View::POS_END);
