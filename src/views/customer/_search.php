@@ -17,6 +17,7 @@ $templateInput = [
 <div class="customer-search">
 
     <?php $form = ActiveForm::begin([
+        'id' => 'customer-search',
         'action' => ['index'],
         'method' => 'get',
         'options' => [
