@@ -96,5 +96,9 @@ return [
     'sms_log_status' => [
         SmsLog::STATUS_SUCCESS => Yii::t('backend', 'Thành công'),
         SmsLog::STATUS_FAIL => Yii::t('backend', 'Thất bại'),
-    ]
+    ],
+    'customer_payment_type' => [
+        Customer::PAYMENT_TYPE_TRANSFER => Yii::t('backend', 'Chuyển khoản ngân hàng'),
+        Customer::PAYMENT_TYPE_CASH => Yii::t('backend', 'Tiền mặt'),
+    ],
 ];

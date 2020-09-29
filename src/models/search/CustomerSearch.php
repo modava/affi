@@ -64,7 +64,8 @@ class CustomerSearch extends Customer
         $query->andFilterWhere([
             'OR',
             ['like', 'full_name', $this->keyword],
-            ['like', 'phone', $this->keyword]
+            ['like', 'phone', $this->keyword],
+            ['like', 'id_card_number', $this->keyword],
         ]);
 
         $query->andFilterWhere([

@@ -45,6 +45,8 @@ use modava\affiliate\helpers\Utils;
  * @property string $bank_name
  * @property string $bank_branch
  * @property string $bank_customer_id
+ * @property string $id_card_number CMND CTCD
+ * @property int $payment_type Phương thức chuyển khoản
  *
  * @property Coupon[] $affiliateCoupons
  * @property User $createdBy
@@ -57,6 +59,9 @@ class Customer extends CustomerTable
     public $toastr_key = 'customer';
     const STATUS_DANG_LAM_DICH_VU = 0;
     const STATUS_HOAN_THANH_DICH_VU = 1;
+
+    const PAYMENT_TYPE_TRANSFER = 1;
+    const PAYMENT_TYPE_CASH = 2;
 
     public function behaviors()
     {
@@ -146,10 +151,11 @@ class Customer extends CustomerTable
 
         return [
             [['full_name', 'phone', 'partner_id', 'status'], 'required'],
-            [['partner_id', 'sex', 'partner_customer_id', 'country_id', 'province_id', 'district_id', 'ward_id'], 'integer'],
+            [['partner_id', 'sex', 'partner_customer_id', 'country_id', 'province_id', 'district_id', 'ward_id', 'payment_type'], 'integer'],
             [['description', 'address'], 'string'],
             [['full_name', 'email', 'face_customer', 'bank_customer_id', 'bank_branch', 'bank_name'], 'string', 'max' => 255],
             [['phone'], 'string', 'max' => 15],
+            [['id_card_number'], 'string', 'max' => 20],
             [
                 ['partner_customer_id',],
                 'unique',
@@ -162,8 +168,38 @@ class Customer extends CustomerTable
                 'when' => $vallidatePartnerCustomerId['when'],
                 'whenClient' => $vallidatePartnerCustomerId['whenClient']
             ],
+            [
+                ['bank_name',],
+                'required',
+                'when' => function () {
+                    return !!$this->payment_type;
+                },
+                'whenClient' =>  "function() {
+                    return $('#payment_type').val() != '';
+                }"
+            ],
+            [
+                ['id_card_number',],
+                'required',
+                'when' => function () {
+                    return $this->payment_type == self::PAYMENT_TYPE_CASH;
+                },
+                'whenClient' =>  "function() {
+                    return $('#payment_type').val() === '" . self::PAYMENT_TYPE_CASH . "';
+                }"
+            ],
+            [
+                ['bank_branch', 'bank_customer_id'],
+                'required',
+                'when' => function () {
+                    return $this->payment_type == self::PAYMENT_TYPE_TRANSFER;
+                },
+                'whenClient' =>  "function() {
+                    return $('#payment_type').val() === '" . self::PAYMENT_TYPE_TRANSFER . "';
+                }"
+            ],
             [['bank_customer_id'], 'string', 'max' => 35],
-            [['slug', 'phone'], 'unique'],
+            [['slug', 'phone', 'id_card_number'], 'unique'],
             [['email'], 'email'],
             [['total_commission', 'total_commission_paid', 'total_commission_remain'], 'number'],
             [['birthday', 'date_accept_do_service', 'date_checkin'], 'safe'],
@@ -212,6 +248,8 @@ class Customer extends CustomerTable
             'bank_branch' => Yii::t('backend', 'Chi nhánh ngân hàng'),
             'bank_name' => Yii::t('backend', 'Tên ngân hàng'),
             'bank_customer_id' => Yii::t('backend', 'Số tài khoản ngân hàng'),
+            'id_card_number' => Yii::t('backend', 'CMND/CTCD'),
+            'payment_type' => Yii::t('backend', 'Phương thức thanh toán'),
         ];
     }
 

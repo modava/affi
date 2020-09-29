@@ -32,9 +32,9 @@ $templateInput = [
                     <div class="col-12">
                         <?= $form->field($model, 'keyword', $templateInput)
                             ->textInput(['maxlength' => true])
-                            ->label(Yii::t('backend', 'Tên, SĐT'))
+                            ->label(Yii::t('backend', 'Tên, SĐT, CMND/CTCD'))
                             ->input('text',
-                                ['placeholder' => Yii::t('backend', 'Tên, SĐT')]) ?>
+                                ['placeholder' => Yii::t('backend', 'Tên, SĐT, CMND/CTCD')]) ?>
                     </div>
                 </div>
             </div>

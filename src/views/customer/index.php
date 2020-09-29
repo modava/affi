@@ -284,10 +284,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                             ],
                                             [
                                                 'attribute' => 'birthday',
-                                                'format' => 'date',
+                                                'format' => 'raw',
                                                 'headerOptions' => [
-                                                    'class' => 'header-100',
+                                                    'class' => 'header-200',
                                                 ],
+                                                'value' => function ($model) {
+                                                    $content = "<strong>Ngày sinh: </strong>" . ($model->birthday ? Yii::$app->formatter->asDate($model->birthday) : '') . "<br/>";
+                                                    $content .= "<strong>CMND/CTCD: </strong>" . $model->id_card_number . "<br/>";
+                                                    $content .= "<strong>Phương thức chuyển khoản HH: </strong>" . ($model->payment_type ? Yii::$app->getModule('affiliate')->params['customer_payment_type'][$model->payment_type] : '') . "<br/>";
+                                                    return $content;
+                                                }
                                             ],
                                             //'description:ntext',
                                             [

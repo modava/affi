@@ -65,6 +65,17 @@ $model->country_id = 237; // Viet Nam
             <div class="col-6 col-md-4">
                 <?= $form->field($model, 'face_customer')->textInput(['maxlength' => true]) ?>
             </div>
+            <div class="col-6 col-md-4">
+                <?= $form->field($model, 'id_card_number')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-6 col-md-4">
+                <?= $form->field($model, 'payment_type')->dropDownList(Yii::$app->getModule('affiliate')->params['customer_payment_type'], [
+                    'prompt' => Yii::t('backend', 'Select an option ...'),
+                    'id' => 'payment_type'
+                ]) ?>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-6">
                 <?= $form->field($model, 'partner_id')->dropDownList(
                     ArrayHelper::map(\modava\affiliate\models\table\PartnerTable::getAllRecords(), 'id', 'title'),
@@ -189,7 +200,7 @@ $model->country_id = 237; // Viet Nam
             </div>
 
             <div class="form-group">
-                <?= Html::submitButton(Yii::t('backend', 'Save'), ['class' => 'btn btn-success']) ?>
+                <?= Html::submitButton(Yii::t('backend', 'Save'), ['class' => 'btn btn-sm btn-success']) ?>
             </div>
         </div>
 

@@ -1,17 +1,17 @@
 <?php
 
+use backend\widgets\ToastrWidget;
 use modava\affiliate\helpers\Utils;
 use modava\affiliate\models\Coupon;
 use modava\affiliate\models\search\PartnerSearch;
-use modava\chart\MiniList;
-use yii\data\ActiveDataProvider;
-use modava\charts\BarChart;
-use yii\grid\GridView;
-use yii\helpers\Url;
-use yii\helpers\Html;
-use yii\widgets\DetailView;
-use backend\widgets\ToastrWidget;
 use modava\affiliate\widgets\NavbarWidgets;
+use modava\chart\MiniList;
+use modava\charts\BarChart;
+use yii\data\ActiveDataProvider;
+use yii\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\DetailView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
@@ -38,8 +38,8 @@ $dataProvider = new ActiveDataProvider([
                             class="ion ion-md-apps"></span></span><?= Html::encode($this->title) ?>
             </h4>
             <p>
-                <?php if ($model->partner_id === PartnerSearch::getRecordBySlug('dashboard-myauris')->id) :?>
-                <button class="btn btn-primary js-more-info btn-sm" data-customer-id="<?= $model->partner_customer_id ?>"><?= Yii::t('backend', 'More Information') ?></button>
+                <?php if ($model->partner_id === PartnerSearch::getRecordBySlug('dashboard-myauris')->id) : ?>
+                    <button class="btn btn-primary js-more-info btn-sm" data-customer-id="<?= $model->partner_customer_id ?>"><?= Yii::t('backend', 'More Information') ?></button>
                 <?php endif; ?>
                 <a class="btn btn-outline-light btn-sm" href="<?= Url::to(['create']); ?>"
                    title="<?= Yii::t('backend', 'Create'); ?>">
@@ -168,6 +168,14 @@ $dataProvider = new ActiveDataProvider([
                                         'value' => function ($model) {
                                             if (!$model->sex) return '';
                                             return Yii::$app->getModule('affiliate')->params['sex'][$model->sex];
+                                        }
+                                    ],
+                                    'id_card_number',
+                                    [
+                                        'attribute' => 'payment_type',
+                                        'format' => 'raw',
+                                        'value' => function ($model) {
+                                            return $model->payment_type ? Yii::$app->getModule('affiliate')->params['customer_payment_type'][$model->payment_type] : '';
                                         }
                                     ],
                                     'total_commission:currency',
