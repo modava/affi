@@ -14,9 +14,9 @@ use Yii;
 class Utils
 {
     const DB_DATE_FORMART = 'Y-m-d';
-    const DB_DATETIME_FORMART = 'Y-m-d h:i:s';
+    const DB_DATETIME_FORMART = 'Y-m-d H:i:s';
     const DISPLAY_DATE_FORMART = 'd-m-Y';
-    const DISPLAY_DATETIME_FORMART = 'd-m-Y h:i:s';
+    const DISPLAY_DATETIME_FORMART = 'd-m-Y H:i:s';
 
     public static function decamelize($string) {
         return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $string));
