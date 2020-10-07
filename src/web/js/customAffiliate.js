@@ -144,4 +144,9 @@ $(function () {
     $('.save-state-search').each(function () {
         saveStateSearchPanel($(this), $(this).closest('.hk-sec-wrapper').find('.btn-hide-search'), $(this).data('search-panel'));
     });
+
+    $('.light-gallery-container').lightGallery();
+    $(document).on('pjax:complete', function() {
+        $('.light-gallery-container').lightGallery();
+    })
 });

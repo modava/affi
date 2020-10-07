@@ -53,10 +53,7 @@ if ($model->primaryKey === null) $model->status = Payment::STATUS_DRAFT;
             ]) ?>
         </div>
         <div class="col-12">
-            <?= $form->field($model, 'description')->widget(\modava\tiny\TinyMce::class, [
-                'options' => ['rows' => 20],
-                'type' => 'content'
-            ]) ?>
+            <?= $form->field($model, 'description')->textarea() ?>
         </div>
         <div class="form-group">
             <?= Html::submitButton(Yii::t('backend', 'Save'), ['class' => 'btn btn-success']) ?>

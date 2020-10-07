@@ -68,7 +68,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                 }
                             ],
                             'amount:currency',
-                            'description:raw',
+                            [
+                                'label' => Yii::t('backend', 'Hình Ảnh'),
+                                'format' => 'raw',
+                                'headerOptions' => [
+                                    'class' => 'header-300'
+                                ],
+                                'value' => function ($model) {
+                                    return $model->getDisplayImages();
+                                }
+                            ],
                             'created_at:datetime',
                             'updated_at:datetime',
                             [

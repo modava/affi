@@ -160,8 +160,9 @@ class HandleAjaxController extends MyAffiliateController
 
     public function actionGetCustomerMoreInfo () {
         $customerId = Yii::$app->request->get('customerId');
-        $data = MyAurisApi::getCustomerInfo($customerId);
-        $listThaoTac = MyAurisApi::getListThaoTac();
+        $data = CustomerPartnerSearch::getCustomerById($customerId);
+        $customerSearch = new CustomerPartnerSearch();
+        $listThaoTac = $customerSearch->getDropdown('thao_tac');
 
         if (!$data || (isset($data['status']) && $data['status'] == 500)) {
             if (isset($data['status']) && $data['status'] == 500) {

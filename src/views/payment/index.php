@@ -141,7 +141,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     'class' => 'header-300',
                                                 ],
                                             ],
-                                            'description:raw',
+                                            [
+                                                'label' => Yii::t('backend', 'Hình Ảnh'),
+                                                'format' => 'raw',
+                                                'headerOptions' => [
+                                                    'class' => 'header-300'
+                                                ],
+                                                'value' => function ($model) {
+                                                    return $model->getDisplayImages();
+                                                }
+                                            ],
                                             [
                                                 'attribute' => 'created_by',
                                                 'value' => 'userCreated.userProfile.fullname',

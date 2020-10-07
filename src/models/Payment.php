@@ -9,6 +9,7 @@ use yii\behaviors\SluggableBehavior;
 use common\helpers\MyHelper;
 use yii\db\ActiveRecord;
 use Yii;
+use yii\helpers\Html;
 
 /**
 * This is the model class for table "affiliate_payment".
@@ -178,5 +179,22 @@ class Payment extends PaymentTable
 
     public static function findByCustomer($customerid) {
         return self::find()->where(['customer_id' => $customerid])->all();
+    }
+
+    public function getDisplayImages() {
+        if (!$this->description) return '';
+        $as = '';
+        $imgs = json_decode($this->description);
+
+        foreach ($imgs as $img) {
+            $imgDOM = Html::img($img, [
+                'class' => "img-fluid mx-1 rounded",
+                'width' => '100px'
+            ]);
+
+            $as = Html::a($imgDOM, $img) . $as;
+        }
+
+        return "<div class='light-gallery-container'>{$as}</div>";
     }
 }
