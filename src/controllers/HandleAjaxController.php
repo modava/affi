@@ -175,7 +175,7 @@ class HandleAjaxController extends MyAffiliateController
         }
 
         return $this->renderAjax('dashboard-myauris-customer-modal', [
-            'model' => $data['data'],
+            'model' => $data,
             'listThaotac' => $listThaoTac
         ]);
     }
