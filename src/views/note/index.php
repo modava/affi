@@ -2,6 +2,7 @@
 
 use backend\widgets\ToastrWidget;
 use common\grid\MyGridView;
+use modava\affiliate\helpers\Utils;
 use modava\affiliate\widgets\NavbarWidgets;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -113,13 +114,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                                             'data-pjax' => 0,
                                                         ]) . '<br/>';
 
-                                                    $content .= '<strong>Thời gian gọi: </strong>' . ($model->call_time
-                                                            ? Yii::$app->formatter->asDatetime($model->call_time)
-                                                            : '') . '<br/>';
+                                                    $content .= '<strong>Thời gian gọi: </strong>' . Utils::convertDateTimeToDisplayFormat($model->call_time) . '<br/>';
 
-                                                    $content .= '<strong>Thời gian gọi lại: </strong>' . ($model->recall_time
-                                                            ? Yii::$app->formatter->asDatetime($model->recall_time)
-                                                            : '') . '<br/>';
+                                                    $content .= '<strong>Thời gian gọi lại: </strong>' . Utils::convertDateTimeToDisplayFormat($model->recall_time) . '<br/>';
 
 
                                                     return $content;

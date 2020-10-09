@@ -1,5 +1,6 @@
 <?php
 
+use modava\affiliate\helpers\Utils;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -60,17 +61,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'attribute' => 'call_time',
                             'value' => function ($model) {
-                                return $model->call_time
-                                    ? date('d-m-Y H:i', strtotime($model->call_time))
-                                    : '';
+                                return Utils::convertDateTimeToDBFormat($model->call_time);
                             }
                         ],
                         [
                             'attribute' => 'recall_time',
                             'value' => function ($model) {
-                                return $model->recall_time
-                                    ? date('d-m-Y H:i', strtotime($model->recall_time))
-                                    : '';
+                                return Utils::convertDateTimeToDBFormat($model->recall_time);
                             }
                         ],
                         [
