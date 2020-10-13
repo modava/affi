@@ -2,6 +2,7 @@
 
 use backend\widgets\ToastrWidget;
 use common\grid\MyGridView;
+use modava\affiliate\widgets\JsUtils;
 use modava\affiliate\widgets\NavbarWidgets;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -30,11 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
         <!-- Row -->
+        <?php Pjax::begin(['id' => 'dt-pjax', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'GET']]); ?>
         <div class="row">
             <div class="col-xl-12">
-                <section class="hk-sec-wrapper index">
+                <?= $this->render('_search', ['model' => $searchModel]); ?>
 
-                    <?php Pjax::begin(['id' => 'dt-pjax', 'timeout' => false, 'enablePushState' => true, 'clientOptions' => ['method' => 'GET']]); ?>
+                <section class="hk-sec-wrapper index">
                     <div class="row">
                         <div class="col-sm">
                             <div class="table-wrap">
@@ -234,11 +236,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>
                         </div>
                     </div>
-                    <?php Pjax::end(); ?>
                 </section>
             </div>
         </div>
+        <?php Pjax::end(); ?>
     </div>
+
+<?= JsUtils::widget() ?>
 <?php
 $urlChangePageSize = \yii\helpers\Url::toRoute(['perpage']);
 $script = <<< JS

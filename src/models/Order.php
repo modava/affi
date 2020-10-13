@@ -40,12 +40,21 @@ use yii\db\ActiveRecord;
  */
 class Order extends OrderTable
 {
-    public $toastr_key = 'affiliate-order';
-
     const CHUA_HOAN_THANH = 0;
     const HOAN_THANH = 1;
     const HUY = 2;
     const KE_TOAN_DUYET = 3;
+    const DA_THANH_TOAN = 4;
+    public $toastr_key = 'affiliate-order';
+
+    public static function getListOrderUsedCoupon($customerId)
+    {
+        $list = self::find()
+            ->joinWith('coupon')
+            ->where([Coupon::tableName() . '.customer_id' => $customerId]);
+
+        return $list;
+    }
 
     public function behaviors()
     {
@@ -226,21 +235,15 @@ class Order extends OrderTable
         parent::afterSave($insert, $changedAttributes);
     }
 
-    public function afterDelete()
-    {
-        $this->updateCouponUses();
-        $this->updateCommissionForCustomer();
-        return parent::afterDelete();
-    }
-
     /**
      *  Cập nhật giá trị đã sử dụng của coupon
-     *  Số lượng đã sử dụng của coupon bằng số lương đơn hàng khác hủy: chưa hoàn thành hoặc hoàn thành
+     *  Số lượng đã sử dụng của coupon bằng số lương đơn hàng khác hủy
      */
     public function updateCouponUses()
     {
         $countOrder = self::find()
-            ->where(['coupon_id' => $this->coupon_id, 'status' => [self::CHUA_HOAN_THANH, self::HOAN_THANH, self::KE_TOAN_DUYET]])
+            ->where(['coupon_id' => $this->coupon_id])
+            ->andWhere(['!=', 'status', self::HUY])
             ->count();
 
         $coupon = Coupon::findOne($this->coupon_id);
@@ -258,7 +261,7 @@ class Order extends OrderTable
             ->select([self::tableName() . '.commision_for_coupon_owner'])
             ->joinWith(['coupon'])
             ->where([
-                'status' => self::KE_TOAN_DUYET,
+                'status' => [self::KE_TOAN_DUYET, self::DA_THANH_TOAN],
                 Coupon::tableName() . '.customer_id' => $this->coupon->customer_id
             ])->sum('commision_for_coupon_owner');
 
@@ -272,11 +275,10 @@ class Order extends OrderTable
         CustomerPartnerSearch::getCustomerById($this->partner_customer_id);
     }
 
-    public static function getListOrderUsedCoupon($customerId) {
-        $list = self::find()
-            ->joinWith('coupon')
-            ->where([Coupon::tableName().'.customer_id' => $customerId]);
-
-        return $list;
+    public function afterDelete()
+    {
+        $this->updateCouponUses();
+        $this->updateCommissionForCustomer();
+        return parent::afterDelete();
     }
 }

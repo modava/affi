@@ -18,8 +18,8 @@ class OrderSearch extends Order
     public function rules()
     {
         return [
-            [['id', 'coupon_id', 'created_at', 'updated_at', 'created_by', 'updated_by', 'status'], 'integer'],
-            [['title', 'slug', 'description'], 'safe'],
+            [['id', 'coupon_id', 'created_at', 'updated_at', 'created_by', 'updated_by', ], 'integer'],
+            [['title', 'slug', 'description', 'status'], 'safe'],
             [['pre_total', 'discount', 'final_total'], 'number'],
         ];
     }
