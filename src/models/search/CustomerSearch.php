@@ -13,6 +13,9 @@ use modava\affiliate\models\Customer;
 class CustomerSearch extends Customer
 {
     public $keyword;
+    public $need_to_pay; // Cần trả hoa hồng
+    public $has_commission; // Có hoa hồng
+    public $paid_commission; // Đã có trả hoa hồng
     /**
      * @inheritdoc
      */
@@ -20,7 +23,8 @@ class CustomerSearch extends Customer
     {
         return [
             [['id', 'partner_id', 'created_at', 'updated_at', 'created_by', 'updated_by', ], 'integer'],
-            [['slug', 'full_name', 'phone', 'email', 'face_customer', 'description', 'sex', 'birthday', 'phone', 'keyword'], 'safe'],
+            [['slug', 'full_name', 'phone', 'email', 'face_customer', 'description', 'sex', 'birthday', 'phone', 'keyword', 'need_to_pay'], 'safe'],
+            [['need_to_pay', 'has_commission', 'paid_commission'], 'in', 'range' => ['0', '1']]
         ];
     }
 
@@ -40,7 +44,7 @@ class CustomerSearch extends Customer
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $forApi = false)
     {
         $query = Customer::find();
 
@@ -51,11 +55,15 @@ class CustomerSearch extends Customer
             'sort' => ['defaultOrder' => ['id' => SORT_DESC]]
         ]);
 
-        $this->load($params);
+        if ($forApi) {
+            $this->loadFromApi($params);
+        } else {
+            $this->load($params);
+        }
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+             $query->where('0=1');
             return $dataProvider;
         }
 
@@ -80,6 +88,18 @@ class CustomerSearch extends Customer
         $query->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'face_customer', $this->face_customer])
             ->andFilterWhere(['like', 'description', $this->description]);
+
+        if ($this->need_to_pay && $this->need_to_pay == '1') {
+            $query->andWhere(['>', 'total_commission_remain', 0]);
+        }
+
+        if ($this->has_commission && $this->has_commission == '1') {
+            $query->andWhere(['>', 'total_commission', 0]);
+        }
+
+        if ($this->paid_commission && $this->paid_commission == '1') {
+            $query->andWhere(['>', 'total_commission_paid', 0]);
+        }
 
         return $dataProvider;
     }

@@ -338,4 +338,16 @@ class Customer extends CustomerTable
 
         return false;
     }
+
+    public function loadFromApi($params)
+    {
+        $formName = $this->formName();
+        $paramsPrepare = [];
+
+        foreach ($params as $k => $v) {
+            $paramsPrepare[$formName][$k] = $v;
+        }
+
+        return $this->load($paramsPrepare);
+    }
 }
