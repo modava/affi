@@ -83,7 +83,7 @@ return [
         Order::CHUA_HOAN_THANH => Yii::t('backend', 'Chưa hoàn thành'),
         Order::HOAN_THANH => Yii::t('backend', 'Hoàn thành'),
         Order::HUY => Yii::t('backend', 'Hủy'),
-        Order::KE_TOAN_DUYET => Yii::t('backend', 'Kế toán đã duyệt'),
+        Order::KE_TOAN_DUYET => Yii::t('backend', 'Lễ tân đã xác nhận thu tiền'),
         Order::DA_THANH_TOAN => Yii::t('backend', 'Đã thanh toán')
     ],
     'note_is_recall' => [

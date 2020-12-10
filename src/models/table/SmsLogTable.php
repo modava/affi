@@ -2,12 +2,11 @@
 
 namespace modava\affiliate\models\table;
 
-use cheatsheet\Time;
+use backend\components\MyModel;
 use modava\affiliate\models\query\SmsLogQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
-class SmsLogTable extends \yii\db\ActiveRecord
+class SmsLogTable extends MyModel
 {
     const STATUS_DISABLED = 0;
     const STATUS_PUBLISHED = 1;

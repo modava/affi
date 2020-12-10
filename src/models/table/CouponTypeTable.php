@@ -2,11 +2,11 @@
 
 namespace modava\affiliate\models\table;
 
+use backend\components\MyModel;
 use cheatsheet\Time;
 use Yii;
-use yii\db\ActiveRecord;
 
-class CouponTypeTable extends \yii\db\ActiveRecord
+class CouponTypeTable extends MyModel
 {
     const CACHE_KEY_GET_ALL = 'redis-affiliate-coupon-type-get-all';
 

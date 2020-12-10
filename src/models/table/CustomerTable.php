@@ -2,21 +2,20 @@
 
 namespace modava\affiliate\models\table;
 
+use backend\components\MyModel;
 use cheatsheet\Time;
 use modava\affiliate\models\Coupon;
 use modava\affiliate\models\Feedback;
 use modava\affiliate\models\Note;
 use modava\affiliate\models\Partner;
-use modava\affiliate\models\UnsatisfiedReason;
 use modava\location\models\LocationCountry;
 use modava\location\models\LocationDistrict;
 use modava\location\models\LocationProvince;
 use modava\location\models\LocationWard;
 use Yii;
-use yii\db\ActiveRecord;
 use common\models\User;
 
-class CustomerTable extends \yii\db\ActiveRecord
+class CustomerTable extends MyModel
 {
     const CACHE_KEY_GET_ALL = 'redis-affiliate-customer-get-all';
     const CACHE_KEY_RECORD_PREFIX = 'redis-affiliate-customer-record';

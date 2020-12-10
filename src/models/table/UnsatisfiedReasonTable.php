@@ -2,12 +2,12 @@
 
 namespace modava\affiliate\models\table;
 
+use backend\components\MyModel;
 use cheatsheet\Time;
 use modava\affiliate\models\query\UnsatisfiedReasonQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
-class UnsatisfiedReasonTable extends \yii\db\ActiveRecord
+class UnsatisfiedReasonTable extends MyModel
 {
     const STATUS_DISABLED = 0;
     const STATUS_PUBLISHED = 1;

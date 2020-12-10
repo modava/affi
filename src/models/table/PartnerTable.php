@@ -2,11 +2,11 @@
 
 namespace modava\affiliate\models\table;
 
+use backend\components\MyModel;
 use cheatsheet\Time;
 use Yii;
-use yii\db\ActiveRecord;
 
-class PartnerTable extends \yii\db\ActiveRecord
+class PartnerTable extends MyModel
 {
     const CACHE_KEY_GET_ALL = 'redis-affiliate-partner-get-all';
 

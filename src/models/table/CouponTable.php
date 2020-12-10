@@ -2,11 +2,10 @@
 
 namespace modava\affiliate\models\table;
 
-use cheatsheet\Time;
+use backend\components\MyModel;
 use Yii;
-use yii\db\ActiveRecord;
 
-class CouponTable extends \yii\db\ActiveRecord
+class CouponTable extends MyModel
 {
     public static function tableName()
     {

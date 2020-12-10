@@ -2,11 +2,10 @@
 
 namespace modava\affiliate\models\table;
 
-use cheatsheet\Time;
+use backend\components\MyModel;
 use Yii;
-use yii\db\ActiveRecord;
 
-class NoteTable extends \yii\db\ActiveRecord
+class NoteTable extends MyModel
 {
     public static function tableName()
     {
