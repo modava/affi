@@ -12,7 +12,6 @@ $config = [
             'class' => MyErrorHandler::class,
         ],
     ],
-    'params' => require __DIR__ . '/params.php',
 ];
 
 return $config;
